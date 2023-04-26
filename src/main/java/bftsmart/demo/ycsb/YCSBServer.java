@@ -66,6 +66,9 @@ public class YCSBServer extends DefaultRecoverable {
 
     public static void main(String[] args) throws Exception {
         if (args.length == 1) {
+
+            System.out.println("Usage: java ... YCSBServer <replica_id> with arg0 = "+ args[0]);
+
             new YCSBServer(Integer.parseInt(args[0]));
         } else {
             System.out.println("Usage: java ... YCSBServer <replica_id>");

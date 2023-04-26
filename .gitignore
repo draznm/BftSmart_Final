@@ -48,4 +48,7 @@ Thumbs.db
 *.wmv
 
 build/*
+.idea/*
+.ipynb_checkpoints/*
+.gradle/*
 

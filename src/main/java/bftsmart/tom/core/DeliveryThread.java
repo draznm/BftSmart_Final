@@ -206,11 +206,12 @@ public final class DeliveryThread extends Thread {
 		decidedLockOtherClusters.lock();
 
 
-
+		logger.info("msg.getOcmd().skip_iter is "+ msg.getOcmd().skip_iter+ "msg.getOcmd().from_cid_start," +
+				"last_skip_cid are "+ msg.getOcmd().from_cid_start + last_skip_cid);
 
 		if (msg.getOcmd().skip_iter && msg.getOcmd().from_cid_start >last_skip_cid)
 		{
-
+			logger.info(" signalling othercluster lock condition");
 			last_skip_cid = msg.getOcmd().from_cid_start;
 			decidedLockOtherClusters.unlock();
 			notEmptyQueueOtherClusters.signalAll();
@@ -229,6 +230,7 @@ public final class DeliveryThread extends Thread {
 
 		if (othermsgs_received_mc())
 		{
+			logger.info(" othermsgs_received_mc(): signalling othercluster lock condition");
 			notEmptyQueueOtherClusters.signalAll();
 		}
 

@@ -107,7 +107,7 @@ public class YCSBClient extends DB {
         YCSBMessage replyMsg = YCSBMessage.getObject(reply);
 
         try {
-            Thread.sleep(10);
+            Thread.sleep(25);
         } catch (InterruptedException e) {
             System.out.println("Interruption during sleep"+e);
         }

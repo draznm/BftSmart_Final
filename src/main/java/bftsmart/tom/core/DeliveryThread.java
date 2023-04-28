@@ -518,7 +518,7 @@ public void sending_other_clusters(int[] consensusIds, int[] regenciesIds, int[]
 			if(!((requests.length==1) &&(requests[0].length==1) && (requests[0][0].getReqType()==RECONFIG)))
 			{
 				logger.info("waiting for notEmptyQueueOtherClusters signal");
-				Boolean wf = notEmptyQueueOtherClusters.await( 20, TimeUnit.SECONDS);
+				Boolean wf = notEmptyQueueOtherClusters.await( 30, TimeUnit.SECONDS);
 //				notEmptyQueueOtherClusters.await();
 
 				logger.info("Wait flag with wf: {}", wf);

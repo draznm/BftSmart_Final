@@ -96,6 +96,19 @@ public final class DeliveryThread extends Thread {
 	private final Lock LcLockMC = new ReentrantLock();
 
 	private final Condition notEmptyQueueOtherClusters = decidedLockOtherClusters.newCondition();
+	private int wait_time = 20;
+	public void setWait_time(int t)
+	{
+		this.wait_time = t;
+	}
+
+	public int getWait_time()
+	{
+		return this.wait_time;
+	}
+
+
+
 
 	private final Condition ReconfigLockMCCondition = ReconfigLockMC.newCondition();
 	private final Condition LcLockMCCondition = LcLockMC.newCondition();
@@ -479,7 +492,7 @@ public void sending_other_clusters(int[] consensusIds, int[] regenciesIds, int[]
 	logger.info("\n\n\n\n\n\n\n\n tgtArray, consensusIds, consensusIds[0], lastcid is {}, {}, {}, {}", tgtArray,
 			consensusIds, consensusIds[0], lastcid);
 
-	if (3>1) // if (lastcid!=1000)
+	if (lastcid!=3000)
 	{
 		//									logger.info("\n\n\n\n\n SENDING OTHER CLUSTERS THE DECIDED VALUES");
 		this.tomLayer.getCommunication().send(tgtArray, this.ocmd);
@@ -520,7 +533,7 @@ public void sending_other_clusters(int[] consensusIds, int[] regenciesIds, int[]
 			if(!((requests.length==1) &&(requests[0].length==1) && (requests[0][0].getReqType()==RECONFIG)))
 			{
 				logger.info("waiting for notEmptyQueueOtherClusters signal");
-				Boolean wf = notEmptyQueueOtherClusters.await( 30, TimeUnit.SECONDS);
+				Boolean wf = notEmptyQueueOtherClusters.await( wait_time, TimeUnit.SECONDS);
 //				notEmptyQueueOtherClusters.await();
 
 				logger.info("Wait flag with wf: {}", wf);
@@ -703,7 +716,7 @@ public void sending_other_clusters(int[] consensusIds, int[] regenciesIds, int[]
 
 
 
-
+				
 					deliverMessages(consensusIds, regenciesIds, leadersIds, cDecs, requests);
 
 					// ******* EDUARDO BEGIN ***********//

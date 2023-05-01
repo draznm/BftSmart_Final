@@ -106,11 +106,11 @@ public class YCSBClient extends DB {
         byte[] reply = proxy.invokeOrdered(msg.getBytes());
         YCSBMessage replyMsg = YCSBMessage.getObject(reply);
 
-        try {
-            Thread.sleep(25);
-        } catch (InterruptedException e) {
-            System.out.println("Interruption during sleep"+e);
-        }
+//        try {
+//            Thread.sleep(4);
+//        } catch (InterruptedException e) {
+//            System.out.println("Interruption during sleep"+e);
+//        }
 
         return replyMsg.getResult();
     }

@@ -43,6 +43,15 @@ public class RequestsTimer {
     private RequestTimerTask rtTask = null;
     private TOMLayer tomLayer; // TOM layer
     private long timeout;
+
+
+    private long cid = 1;
+
+
+//    public void setCid(long cid) {
+//        this.cid = cid;
+//    }
+
     private long shortTimeout;
     private TreeSet<TOMMessage> watched = new TreeSet<TOMMessage>();
     private ReentrantReadWriteLock rwLock = new ReentrantReadWriteLock();
@@ -62,6 +71,8 @@ public class RequestsTimer {
      */
     public RequestsTimer(TOMLayer tomLayer, ServerCommunicationSystem communication, ServerViewController controller) {
         this.tomLayer = tomLayer;
+        logger.info("starting RequestsTimer with lastexec_cid: "+tomLayer.getLastExec()+", in exec: " + tomLayer.getInExec());
+        this.cid = tomLayer.getLastExec();
         
         this.communication = communication;
         this.controller = controller;
@@ -75,12 +86,20 @@ public class RequestsTimer {
     }
     
     public void startTimer() {
+
+
+
+
         if (rtTask == null) {
+
+
+
             logger.info("shortTimeout, timeout are {}, {}", shortTimeout, timeout);
 //            shortTimeout = 1;
             long t = (shortTimeout > -1 ? shortTimeout : timeout);
             //shortTimeout = -1;
             rtTask = new RequestTimerTask();
+            rtTask.setRequestTimerTask_cid(tomLayer.getLastExec());
             if (controller.getCurrentViewN() > 1) timer.schedule(rtTask, t);
         }
     }
@@ -143,7 +162,7 @@ public class RequestsTimer {
     }
     
     public void run_lc_protocol() {
-        logger.info("\n\n\n RUNNING LC PROTOCOL\n\n\n");
+        logger.info("\n\n\n RUNNING LC PROTOCOL for cid: \n\n\n" + this.cid);
         
         long t = (shortTimeout > -1 ? shortTimeout : timeout);
         
@@ -300,12 +319,29 @@ public class RequestsTimer {
     
     class RequestTimerTask extends TimerTask {
 
+        public long RequestTimerTask_cid;
+
+        public void setRequestTimerTask_cid(long cid)
+        {
+            this.RequestTimerTask_cid = cid;
+
+        }
+
         @Override
         /**
          * This is the code for the TimerTask. It executes the timeout for the first
          * message on the watched list.
          */
         public void run() {
+            logger.info("RequestTimerTask triggerred with cid:"+ this.RequestTimerTask_cid);
+
+            try {
+                System.out.println(10/0);
+            } catch (ArithmeticException e) {
+                e.printStackTrace();
+                // System.err.println(e.toString());
+                //System.err.println(e.getMessage());
+            }
             
             int[] myself = new int[1];
             myself[0] = controller.getStaticConf().getProcessId();

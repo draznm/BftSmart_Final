@@ -96,7 +96,7 @@ public final class DeliveryThread extends Thread {
 	private final Lock LcLockMC = new ReentrantLock();
 
 	private final Condition notEmptyQueueOtherClusters = decidedLockOtherClusters.newCondition();
-	private int wait_time = 20;
+	private int wait_time = 40;
 	public void setWait_time(int t)
 	{
 		this.wait_time = t;
@@ -492,7 +492,7 @@ public void sending_other_clusters(int[] consensusIds, int[] regenciesIds, int[]
 	logger.info("\n\n\n\n\n\n\n\n tgtArray, consensusIds, consensusIds[0], lastcid is {}, {}, {}, {}", tgtArray,
 			consensusIds, consensusIds[0], lastcid);
 
-	if (lastcid!=3000)
+	if (2>1)//(lastcid!=3000)
 	{
 		//									logger.info("\n\n\n\n\n SENDING OTHER CLUSTERS THE DECIDED VALUES");
 		this.tomLayer.getCommunication().send(tgtArray, this.ocmd);
@@ -719,6 +719,8 @@ public void sending_other_clusters(int[] consensusIds, int[] regenciesIds, int[]
 				
 					deliverMessages(consensusIds, regenciesIds, leadersIds, cDecs, requests);
 
+//					tomLayer.requestsTimer.setCid(lastDecision.getConsensusId());
+
 					// ******* EDUARDO BEGIN ***********//
 
 					if (controller.hasUpdates()) {
@@ -771,6 +773,7 @@ public void sending_other_clusters(int[] consensusIds, int[] regenciesIds, int[]
 						ReconfigLockMC.lock();
 						logger.info("\n\n\n-----GOING TO WAIT FOR NEW NODE CONFIRMATION\n\n\n");
 						ReconfigLockMCCondition.await();
+						logger.info("\n\n\n-----NEW NODE CONFIRMED\n\n\n");
 						ReconfigLockMC.unlock();
 					}
 

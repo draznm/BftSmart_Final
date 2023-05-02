@@ -62,7 +62,7 @@ public class ServiceProxy extends TOMSender {
 	private Random rand = new Random(System.currentTimeMillis());
 	private int replyServer;
 	private HashResponseController hashResponseController;
-	private int invokeUnorderedHashedTimeout = 10;
+	private int invokeUnorderedHashedTimeout = 18;
 
 	/**
 	 * Constructor

@@ -408,7 +408,7 @@ public final class Acceptor {
 	 */
 	private void acceptReceived(Epoch epoch, ConsensusMessage msg) {
 		int cid = epoch.getConsensus().getId();
-		logger.debug("ACCEPT from " + msg.getSender() + " for consensus " + cid);
+		logger.info("ACCEPT from " + msg.getSender() + " for consensus " + cid);
 		epoch.setAccept(msg.getSender(), msg.getValue());
 		epoch.addToProof(msg);
 
@@ -422,11 +422,11 @@ public final class Acceptor {
 	 * @param value Value sent in the message
 	 */
 	private void computeAccept(int cid, Epoch epoch, byte[] value) {
-		logger.debug("I have {} ACCEPTs for cId:{}, Timestamp:{} ", epoch.countAccept(value), cid,
+		logger.info("I have {} ACCEPTs for cId:{}, Timestamp:{} ", epoch.countAccept(value), cid,
 				epoch.getTimestamp());
 
 		if (epoch.countAccept(value) > controller.getQuorum() && !epoch.getConsensus().isDecided()) {
-			logger.debug("Deciding consensus " + cid);
+			logger.info("Deciding consensus " + cid);
 			decide(epoch);
 		}
 	}

@@ -96,7 +96,7 @@ public final class DeliveryThread extends Thread {
 	private final Lock LcLockMC = new ReentrantLock();
 
 	private final Condition notEmptyQueueOtherClusters = decidedLockOtherClusters.newCondition();
-	private int wait_time = 20;
+	private int wait_time = 12;
 	public void setWait_time(int t)
 	{
 		this.wait_time = t;
@@ -927,7 +927,7 @@ public void sending_other_clusters(int[] consensusIds, int[] regenciesIds, int[]
 	}
 
 	public void signalRemoteChange(SystemMessage sm) {
-		if( ((SMMessage) sm).getCID() > lastLCLockMsg)
+		if( ((SMMessage) sm).getCID() > lastLCLockMsg+10)
 		{
 
 			try {

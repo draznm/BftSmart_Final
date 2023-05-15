@@ -96,7 +96,7 @@ public final class DeliveryThread extends Thread {
 	private final Lock LcLockMC = new ReentrantLock();
 
 	private final Condition notEmptyQueueOtherClusters = decidedLockOtherClusters.newCondition();
-	private int wait_time = 40;
+	private int wait_time = 20;
 	public void setWait_time(int t)
 	{
 		this.wait_time = t;

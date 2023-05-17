@@ -96,7 +96,7 @@ public final class DeliveryThread extends Thread {
 	private final Lock LcLockMC = new ReentrantLock();
 
 	private final Condition notEmptyQueueOtherClusters = decidedLockOtherClusters.newCondition();
-	private int wait_time = 12;
+	private int wait_time = 20;
 	public void setWait_time(int t)
 	{
 		this.wait_time = t;
@@ -492,7 +492,7 @@ public void sending_other_clusters(int[] consensusIds, int[] regenciesIds, int[]
 	logger.info("\n\n\n\n\n\n\n\n tgtArray, consensusIds, consensusIds[0], lastcid is {}, {}, {}, {}", tgtArray,
 			consensusIds, consensusIds[0], lastcid);
 
-	if (lastcid!=7000)
+	if (lastcid!=3000)
 	{
 		//									logger.info("\n\n\n\n\n SENDING OTHER CLUSTERS THE DECIDED VALUES");
 		this.tomLayer.getCommunication().send(tgtArray, this.ocmd);
@@ -536,9 +536,10 @@ public void sending_other_clusters(int[] consensusIds, int[] regenciesIds, int[]
 				Boolean wf = notEmptyQueueOtherClusters.await( wait_time, TimeUnit.SECONDS);
 //				notEmptyQueueOtherClusters.await();
 
-				logger.info("Wait flag with wf: {}", wf);
+				logger.info("Wait flag with wf: {} with wait_time= {}, with last leaderchangeID = {}",
+						wf, wait_time, tomLayer.getLastLeaderChangeId());
 
-				if (!wf)
+				if (!wf && lastcid > tomLayer.getLastLeaderChangeId() + 20  )
 				{
 					LcLockMC.lock();
 
@@ -719,8 +720,6 @@ public void sending_other_clusters(int[] consensusIds, int[] regenciesIds, int[]
 				
 					deliverMessages(consensusIds, regenciesIds, leadersIds, cDecs, requests);
 
-//					tomLayer.requestsTimer.setCid(lastDecision.getConsensusId());
-
 					// ******* EDUARDO BEGIN ***********//
 
 					if (controller.hasUpdates()) {
@@ -773,7 +772,6 @@ public void sending_other_clusters(int[] consensusIds, int[] regenciesIds, int[]
 						ReconfigLockMC.lock();
 						logger.info("\n\n\n-----GOING TO WAIT FOR NEW NODE CONFIRMATION\n\n\n");
 						ReconfigLockMCCondition.await();
-						logger.info("\n\n\n-----NEW NODE CONFIRMED\n\n\n");
 						ReconfigLockMC.unlock();
 					}
 
@@ -927,7 +925,7 @@ public void sending_other_clusters(int[] consensusIds, int[] regenciesIds, int[]
 	}
 
 	public void signalRemoteChange(SystemMessage sm) {
-		if( ((SMMessage) sm).getCID() > lastLCLockMsg+10)
+		if( ((SMMessage) sm).getCID() > lastLCLockMsg)
 		{
 
 			try {

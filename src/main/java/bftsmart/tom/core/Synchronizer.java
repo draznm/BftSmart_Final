@@ -541,7 +541,6 @@ public class Synchronizer {
             logger.info("\n New leader is {}", leader);
 
 
-
             int in = tom.getInExec(); // cid to execute
             int last = tom.getLastExec(); // last cid decided
 

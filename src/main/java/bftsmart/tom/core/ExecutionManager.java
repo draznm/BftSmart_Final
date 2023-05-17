@@ -256,15 +256,8 @@ public final class ExecutionManager {
                         msg.getNumber() > (lastConsId + 1) || 
                         (inExec != -1 && inExec < msg.getNumber()) || 
                         (inExec == -1 && msg.getType() != MessageFactory.PROPOSE)) { //not propose message for the next consensus
-
-
-                    boolean a1 =  msg.getNumber() > (lastConsId + 1);
-                    boolean a2 =  (inExec != -1 && inExec < msg.getNumber());
-                    boolean a3 =  (inExec == -1 && msg.getType() != MessageFactory.PROPOSE);
-
                     logger.info("Message for consensus " +
-                            msg.getNumber() + " is out of context, adding it to out of context set with bools = "
-                            +isRetrievingState+", "+ a1+", "+a2+", "+a3);
+                            msg.getNumber() + " is out of context, adding it to out of context set");
                     
 
                     //System.out.println("(ExecutionManager.checkLimits) Message for consensus " + 

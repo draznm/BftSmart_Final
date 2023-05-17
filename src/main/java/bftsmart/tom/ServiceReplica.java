@@ -306,7 +306,7 @@ public class ServiceReplica {
         List<TOMMessage> toBatch = new ArrayList<>();
         List<MessageContext> msgCtxts = new ArrayList<>();
         boolean noop = true;
-        logger.info("Tejas: ----> reached inside receiveMessages");
+//        logger.info("Tejas: ----> reached inside receiveMessages");
         for (TOMMessage[] requestsFromConsensus : requests) {
 
             TOMMessage firstRequest = requestsFromConsensus[0];
@@ -346,7 +346,7 @@ public class ServiceReplica {
                             }   request.deliveryTime = System.nanoTime();
                             if (executor instanceof BatchExecutable) {
                                 
-                               logger.info("Batching request from " + request.getSender());
+                               logger.debug("Batching request from " + request.getSender());
                                 
                                 // This is used to deliver the content decided by a consensus instance directly to
                                 // a Recoverable object. It is useful to allow the application to create a log and
@@ -373,7 +373,7 @@ public class ServiceReplica {
                                 
                                 if (response != null) {
                                     
-                                    logger.info("sending reply to " + response.getSender());
+                                    logger.debug("sending reply to " + response.getSender());
                                     replier.manageReply(response, msgCtx);
                                 }
                             } else { //this code should never be executed
@@ -465,10 +465,10 @@ public class ServiceReplica {
                 for (TOMMessage reply : replies) {
 
                     if (SVController.getStaticConf().getNumRepliers() > 0) {
-                        logger.info("Sending reply to " + reply.getSender() + " with sequence number " + reply.getSequence() + " and operation ID " + reply.getOperationId() +" via ReplyManager");
+                        logger.debug("Sending reply to " + reply.getSender() + " with sequence number " + reply.getSequence() + " and operation ID " + reply.getOperationId() +" via ReplyManager");
                         repMan.send(reply);
                     } else {
-                        logger.info("Sending reply to " + reply.getSender() + " with sequence number " + reply.getSequence() + " and operation ID " + reply.getOperationId());
+                        logger.debug("Sending reply to " + reply.getSender() + " with sequence number " + reply.getSequence() + " and operation ID " + reply.getOperationId());
                         replier.manageReply(reply, null);
                         //cs.send(new int[]{request.getSender()}, request.reply);
                     }

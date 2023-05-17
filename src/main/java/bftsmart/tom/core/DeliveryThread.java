@@ -492,7 +492,7 @@ public void sending_other_clusters(int[] consensusIds, int[] regenciesIds, int[]
 	logger.info("\n\n\n\n\n\n\n\n tgtArray, consensusIds, consensusIds[0], lastcid is {}, {}, {}, {}", tgtArray,
 			consensusIds, consensusIds[0], lastcid);
 
-	if (lastcid!=7000)
+	if (2>1)//(lastcid!=2500)
 	{
 		//									logger.info("\n\n\n\n\n SENDING OTHER CLUSTERS THE DECIDED VALUES");
 		this.tomLayer.getCommunication().send(tgtArray, this.ocmd);
@@ -501,7 +501,7 @@ public void sending_other_clusters(int[] consensusIds, int[] regenciesIds, int[]
 	else
 	{
 		logger.info("clusterid==1 is {}", clusterid==1);
-		if (clusterid==1)
+		if (clusterid>0)
 		{
 			this.tomLayer.getCommunication().send(tgtArray, this.ocmd);
 		}
@@ -536,8 +536,8 @@ public void sending_other_clusters(int[] consensusIds, int[] regenciesIds, int[]
 				Boolean wf = notEmptyQueueOtherClusters.await( wait_time, TimeUnit.SECONDS);
 //				notEmptyQueueOtherClusters.await();
 
-				logger.info("Wait flag with wf: {} with wait_time= {}, with last leaderchangeID = {}",
-						wf, wait_time, tomLayer.getLastLeaderChangeId());
+				logger.info("Wait flag with wf: {} with wait_time= {}, with last leaderchangeID = {} and hmap = {}",
+						wf, wait_time, tomLayer.getLastLeaderChangeId(), hmap);
 
 				if (!wf && lastcid > tomLayer.getLastLeaderChangeId() + 20  )
 				{

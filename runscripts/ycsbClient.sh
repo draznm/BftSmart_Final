@@ -13,4 +13,4 @@
 # limitations under the License.
 
 #/bin/bash
-java -Dlogback.configurationFile="./config/logback.xml" -cp "lib/*:build/install/library/lib/*" com.yahoo.ycsb.Client -threads 200 -target 100000 -P "./config/workloads/workloada" -p measurementtype=timeseries -p timeseries.granularity=1000 -db bftsmart.demo.ycsb.YCSBClient -p ClientID=${1} -s
+java -Dlogback.configurationFile="./config/logback.xml" -cp "lib/*:build/install/library/lib/*" com.yahoo.ycsb.Client -threads 400 -target 100000 -P "./config/workloads/workloada" -p measurementtype=timeseries -p timeseries.granularity=1000 -db bftsmart.demo.ycsb.YCSBClient -p ClientID=${1} -s

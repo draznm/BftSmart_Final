@@ -291,7 +291,7 @@ public final class DeliveryThread extends Thread {
 		{
 
 //			if (hmap_temp.get(key) < controller.getCurrentViewN() - controller.getCurrentView().getF())
-			if (hmap_temp.get(key) < 3)
+			if (hmap_temp.get(key) < 1)
 				{
 				flag_ok_from_all_clusters = false;
 			}

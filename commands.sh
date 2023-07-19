@@ -1,3 +1,3 @@
-git clone https://tmane002@bitbucket.org/tmane002/BftSmart_Final.git
-cd bftsmartt
+git clone https://github.com/tmane002/BftSmart_Final.git
+cd BftSmart_Final
 sh job.sh

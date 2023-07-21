@@ -288,7 +288,7 @@ public class ServiceProxy extends TOMSender {
 			logger.error("Problem aquiring semaphore",ex);
 		}
 
-		logger.info("Response extracted = " + response);
+		logger.debug("Response extracted = " + response);
 
 		byte[] ret = null;
 
@@ -516,7 +516,7 @@ public class ServiceProxy extends TOMSender {
 					}
 				}
 			} else {
-				logger.info("Ignoring reply from " + reply.getSender()
+				logger.debug("Ignoring reply from " + reply.getSender()
 						+ " with reqId:" + reply.getSequence() + ". Currently wait reqId= " + reqId);
                             
                         }
@@ -524,7 +524,7 @@ public class ServiceProxy extends TOMSender {
 			// Critical section ends here. The semaphore can be released
 			canReceiveLock.unlock();
 		} catch (Exception ex) {
-			logger.info("Problem processing reply", ex);
+			logger.error("Problem processing reply", ex);
 			canReceiveLock.unlock();
 		}
 	}

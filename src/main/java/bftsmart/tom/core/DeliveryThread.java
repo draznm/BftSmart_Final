@@ -96,19 +96,6 @@ public final class DeliveryThread extends Thread {
 	private final Lock LcLockMC = new ReentrantLock();
 
 	private final Condition notEmptyQueueOtherClusters = decidedLockOtherClusters.newCondition();
-	private int wait_time = 20;
-	public void setWait_time(int t)
-	{
-		this.wait_time = t;
-	}
-
-	public int getWait_time()
-	{
-		return this.wait_time;
-	}
-
-
-
 
 	private final Condition ReconfigLockMCCondition = ReconfigLockMC.newCondition();
 	private final Condition LcLockMCCondition = LcLockMC.newCondition();
@@ -219,12 +206,11 @@ public final class DeliveryThread extends Thread {
 		decidedLockOtherClusters.lock();
 
 
-		logger.info("msg.getOcmd().skip_iter is "+ msg.getOcmd().skip_iter+ "msg.getOcmd().from_cid_start," +
-				"last_skip_cid are "+ msg.getOcmd().from_cid_start + last_skip_cid);
+
 
 		if (msg.getOcmd().skip_iter && msg.getOcmd().from_cid_start >last_skip_cid)
 		{
-			logger.info(" signalling othercluster lock condition");
+
 			last_skip_cid = msg.getOcmd().from_cid_start;
 			decidedLockOtherClusters.unlock();
 			notEmptyQueueOtherClusters.signalAll();
@@ -243,7 +229,6 @@ public final class DeliveryThread extends Thread {
 
 		if (othermsgs_received_mc())
 		{
-			logger.info(" othermsgs_received_mc(): signalling othercluster lock condition");
 			notEmptyQueueOtherClusters.signalAll();
 		}
 
@@ -492,8 +477,7 @@ public void sending_other_clusters(int[] consensusIds, int[] regenciesIds, int[]
 	logger.info("\n\n\n\n\n\n\n\n tgtArray, consensusIds, consensusIds[0], lastcid is {}, {}, {}, {}", tgtArray,
 			consensusIds, consensusIds[0], lastcid);
 
-	if (2>1)//(lastcid!=2500)
-	{
+	if (lastcid!=1000) {
 		//									logger.info("\n\n\n\n\n SENDING OTHER CLUSTERS THE DECIDED VALUES");
 		this.tomLayer.getCommunication().send(tgtArray, this.ocmd);
 
@@ -501,7 +485,7 @@ public void sending_other_clusters(int[] consensusIds, int[] regenciesIds, int[]
 	else
 	{
 		logger.info("clusterid==1 is {}", clusterid==1);
-		if (clusterid>0)
+		if (clusterid==1)
 		{
 			this.tomLayer.getCommunication().send(tgtArray, this.ocmd);
 		}
@@ -533,13 +517,12 @@ public void sending_other_clusters(int[] consensusIds, int[] regenciesIds, int[]
 			if(!((requests.length==1) &&(requests[0].length==1) && (requests[0][0].getReqType()==RECONFIG)))
 			{
 				logger.info("waiting for notEmptyQueueOtherClusters signal");
-				Boolean wf = notEmptyQueueOtherClusters.await( wait_time, TimeUnit.SECONDS);
+				Boolean wf = notEmptyQueueOtherClusters.await( 20, TimeUnit.SECONDS);
 //				notEmptyQueueOtherClusters.await();
 
-				logger.info("Wait flag with wf: {} with wait_time= {}, with last leaderchangeID = {} and hmap = {}",
-						wf, wait_time, tomLayer.getLastLeaderChangeId(), hmap);
+				logger.info("Wait flag with wf: {}", wf);
 
-				if (!wf && lastcid > tomLayer.getLastLeaderChangeId() + 20  )
+				if (!wf)
 				{
 					LcLockMC.lock();
 
@@ -717,7 +700,7 @@ public void sending_other_clusters(int[] consensusIds, int[] regenciesIds, int[]
 
 
 
-				
+
 					deliverMessages(consensusIds, regenciesIds, leadersIds, cDecs, requests);
 
 					// ******* EDUARDO BEGIN ***********//
@@ -746,7 +729,8 @@ public void sending_other_clusters(int[] consensusIds, int[] regenciesIds, int[]
 
 					logger.info("lastReconfig is {}, lastExected is {}, tomLayer.getStateManager().getLastCID() " +
 							"is {}", lastReconfig, tomLayer.getLastExec(), tomLayer.getStateManager().getLastCID());
-					
+
+
 
 
 

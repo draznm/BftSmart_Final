@@ -127,10 +127,6 @@ public final class TOMLayer extends Thread implements RequestReceiver {
 
     private int LastLeaderChangeId = -1;
 
-    public int getLastLeaderChangeId() {
-        return LastLeaderChangeId;
-    }
-
     /**
      * Creates a new instance of TOMulticastLayer
      *

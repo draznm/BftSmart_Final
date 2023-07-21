@@ -54,10 +54,6 @@ public class YCSBClient extends DB {
         proxy = new ServiceProxy(myId, "config"+Integer.toString(ClientID));
 
         System.out.println("YCSBKVClient. Initiated client id, myId: " + ClientID + ", "+ myId);
-
-
-        Client c;
-
     }
 
     @Override
@@ -109,13 +105,6 @@ public class YCSBClient extends DB {
         YCSBMessage msg = YCSBMessage.newUpdateRequest(table, key, map);
         byte[] reply = proxy.invokeOrdered(msg.getBytes());
         YCSBMessage replyMsg = YCSBMessage.getObject(reply);
-
-//        try {
-//            Thread.sleep(4);
-//        } catch (InterruptedException e) {
-//            System.out.println("Interruption during sleep"+e);
-//        }
-
         return replyMsg.getResult();
     }
 

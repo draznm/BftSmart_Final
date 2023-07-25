@@ -90,10 +90,11 @@ public class MessageHandler {
 
 
 			try {
-				System.out.wait(wait_time);
+				Thread.sleep(wait_time);
 			} catch (InterruptedException e) {
 				throw new RuntimeException(e);
 			}
+
 
 			//                try {
 //                    TimeUnit.MICROSECONDS.sleep(this.cinfo.NodeToLatency.get(this.id));

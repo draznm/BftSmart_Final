@@ -16,6 +16,7 @@ limitations under the License.
 package bftsmart.communication;
 
 import bftsmart.consensus.messages.OtherClusterMessage;
+import bftsmart.demo.counter.ClusterInfo;
 import bftsmart.tom.leaderchange.LCMessageOCReply;
 import bftsmart.tom.leaderchange.LCMessageOtherCluster;
 import org.slf4j.Logger;
@@ -43,7 +44,56 @@ public class MessageHandler {
 	private Acceptor acceptor;
 	private TOMLayer tomLayer;
 
-	public MessageHandler() {}
+	private ClusterInfo cinfo;
+	int[][] LatencyInfo;
+	public MessageHandler() {
+
+
+		this.cinfo = new ClusterInfo();
+		LatencyInfo = new int[3][3];
+
+		LatencyInfo[0][0] = 0;
+		LatencyInfo[0][1] = 65;
+		LatencyInfo[0][2] = 112;
+
+		LatencyInfo[1][0] = 65;
+		LatencyInfo[1][1] = 0;
+		LatencyInfo[1][2] = 70;
+
+		LatencyInfo[2][0] = 112;
+		LatencyInfo[2][1] = 70;
+		LatencyInfo[2][2] = 0;
+
+
+
+	}
+
+
+
+	public void simulate_geodistributed(SystemMessage sm)
+	{
+		int wait_time = LatencyInfo[cinfo.getClusterNumber(sm.getSender())][cinfo.getClusterNumber(this.tomLayer.getDeliveryThread().getNodeId())];
+		logger.info("wait time for sender = " + sm.getSender() + " with receiver = " +
+				this.tomLayer.getDeliveryThread().getNodeId() + " is " + wait_time);
+
+		if (wait_time > 0)
+		{
+			try {
+				System.out.wait(wait_time);
+			} catch (InterruptedException e) {
+				throw new RuntimeException(e);
+			}
+		}
+
+//                try {
+//                    TimeUnit.MICROSECONDS.sleep(this.cinfo.NodeToLatency.get(this.id));
+//                } catch (InterruptedException e) {
+//                    throw new RuntimeException(e);
+//                }
+
+
+
+	}
 
 	public void setAcceptor(Acceptor acceptor) {
 		this.acceptor = acceptor;
@@ -56,7 +106,10 @@ public class MessageHandler {
 	@SuppressWarnings("unchecked")
 	protected void processData(SystemMessage sm) throws IOException, ClassNotFoundException {
 
+
 //		logger.info("SystemMessage being processed inside processData");
+
+		simulate_geodistributed(sm);
 
 		if (sm instanceof OtherClusterMessage)
 		{

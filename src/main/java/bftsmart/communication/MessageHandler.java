@@ -45,24 +45,24 @@ public class MessageHandler {
 	private TOMLayer tomLayer;
 
 	private ClusterInfo cinfo;
-	int[][] LatencyInfo;
+	private int[][] LatencyInfo;
 	public MessageHandler() {
 
 
 		this.cinfo = new ClusterInfo();
-		LatencyInfo = new int[3][3];
+		this.LatencyInfo = new int[3][3];
 
-		LatencyInfo[0][0] = 0;
-		LatencyInfo[0][1] = 65;
-		LatencyInfo[0][2] = 112;
+		this.LatencyInfo[0][0] = 0;
+		this.LatencyInfo[0][1] = 65;
+		this.LatencyInfo[0][2] = 112;
 
-		LatencyInfo[1][0] = 65;
-		LatencyInfo[1][1] = 0;
-		LatencyInfo[1][2] = 70;
+		this.LatencyInfo[1][0] = 65;
+		this.LatencyInfo[1][1] = 0;
+		this.LatencyInfo[1][2] = 70;
 
-		LatencyInfo[2][0] = 112;
-		LatencyInfo[2][1] = 70;
-		LatencyInfo[2][2] = 0;
+		this.LatencyInfo[2][0] = 112;
+		this.LatencyInfo[2][1] = 70;
+		this.LatencyInfo[2][2] = 0;
 
 
 
@@ -74,20 +74,20 @@ public class MessageHandler {
 	{
 		if ( sm instanceof OtherClusterMessage)
 		{
-//			OtherClusterMessage ocm = (OtherClusterMessage) sm;
-//			int	currentClusterId = 0;
-//			try {
-//				currentClusterId = Integer.parseInt(ocm.getOcmd().fromConfig.replaceAll("[^0-9]", ""));
-//			} catch (IOException e) {
-//				throw new RuntimeException(e);
-//			} catch (ClassNotFoundException e) {
-//				throw new RuntimeException(e);
-//			}
+			OtherClusterMessage ocm = (OtherClusterMessage) sm;
+			int	currentClusterId = 0;
+			try {
+				currentClusterId = Integer.parseInt(ocm.getOcmd().fromConfig.replaceAll("[^0-9]", ""));
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			} catch (ClassNotFoundException e) {
+				throw new RuntimeException(e);
+			}
 //
-//			int wait_time = LatencyInfo[currentClusterId][cinfo.getClusterNumber(this.tomLayer.getDeliveryThread().getNodeId())];
-//			logger.info("wait time for sender = " + sm.getSender() + " with receiver = " +
-//					this.tomLayer.getDeliveryThread().getNodeId() + " is " + wait_time);
-//
+			int wait_time = LatencyInfo[currentClusterId][cinfo.getClusterNumber(this.tomLayer.getDeliveryThread().getNodeId())];
+			logger.info("wait time for sender = " + sm.getSender() + " with receiver = " +
+					this.tomLayer.getDeliveryThread().getNodeId() + " is " + wait_time);
+
 
 //			try {
 //				System.out.wait(wait_time);

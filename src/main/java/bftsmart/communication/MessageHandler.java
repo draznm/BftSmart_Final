@@ -84,16 +84,16 @@ public class MessageHandler {
 				throw new RuntimeException(e);
 			}
 //
-			int wait_time = LatencyInfo[currentClusterId][cinfo.getClusterNumber(this.tomLayer.getDeliveryThread().getNodeId())];
+			int wait_time = LatencyInfo[currentClusterId%3][cinfo.getClusterNumber(this.tomLayer.getDeliveryThread().getNodeId())%3];
 			logger.info("wait time for sender = " + sm.getSender() + " with receiver = " +
 					this.tomLayer.getDeliveryThread().getNodeId() + " is " + wait_time);
 
 
-//			try {
-//				System.out.wait(wait_time);
-//			} catch (InterruptedException e) {
-//				throw new RuntimeException(e);
-//			}
+			try {
+				System.out.wait(wait_time);
+			} catch (InterruptedException e) {
+				throw new RuntimeException(e);
+			}
 
 			//                try {
 //                    TimeUnit.MICROSECONDS.sleep(this.cinfo.NodeToLatency.get(this.id));

@@ -72,12 +72,23 @@ public class MessageHandler {
 
 	public void simulate_geodistributed(SystemMessage sm)
 	{
-		int wait_time = LatencyInfo[cinfo.getClusterNumber(sm.getSender())][cinfo.getClusterNumber(this.tomLayer.getDeliveryThread().getNodeId())];
-		logger.info("wait time for sender = " + sm.getSender() + " with receiver = " +
-				this.tomLayer.getDeliveryThread().getNodeId() + " is " + wait_time);
-
-		if (wait_time > 0)
+		if ( sm instanceof OtherClusterMessage)
 		{
+			OtherClusterMessage ocm = (OtherClusterMessage) sm;
+			int	currentClusterId = 0;
+			try {
+				currentClusterId = Integer.parseInt(ocm.getOcmd().fromConfig.replaceAll("[^0-9]", ""));
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			} catch (ClassNotFoundException e) {
+				throw new RuntimeException(e);
+			}
+
+			int wait_time = LatencyInfo[currentClusterId][cinfo.getClusterNumber(this.tomLayer.getDeliveryThread().getNodeId())];
+			logger.info("wait time for sender = " + sm.getSender() + " with receiver = " +
+					this.tomLayer.getDeliveryThread().getNodeId() + " is " + wait_time);
+
+
 			try {
 				System.out.wait(wait_time);
 			} catch (InterruptedException e) {

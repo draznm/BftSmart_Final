@@ -175,7 +175,7 @@ public class ServersCommunicationLayer extends Thread {
 		context.init(kmf.getKeyManagers(), trustMgrFactory.getTrustManagers(), new SecureRandom());
 
 		serverSocketFactory = context.getServerSocketFactory();
-        logger.info("myPort, InetAddress.getByName(myAddress) are: {}, {}", myPort, InetAddress.getByName(myAddress));
+        logger.info("myPort, InetAddress.getByName(myAddress) and myAddress are: {}, {}, {}", myPort, InetAddress.getByName(myAddress), myAddress);
 		this.serverSocketSSLTLS = (SSLServerSocket) serverSocketFactory.createServerSocket(myPort, 100,
 				InetAddress.getByName(myAddress));
 

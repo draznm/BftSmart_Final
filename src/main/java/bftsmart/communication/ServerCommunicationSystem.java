@@ -158,7 +158,7 @@ public class ServerCommunicationSystem extends Thread {
                     logger.debug("<-- receiving, msg:" + sm);
 
 //                    System.out.wait(this.latency);
-                    TimeUnit.MICROSECONDS.sleep(this.latency);
+//                    TimeUnit.MICROSECONDS.sleep(this.latency);
 
 
                     try {

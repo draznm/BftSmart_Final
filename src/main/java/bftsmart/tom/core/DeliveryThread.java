@@ -477,7 +477,7 @@ public void sending_other_clusters(int[] consensusIds, int[] regenciesIds, int[]
 	logger.info("\n\n\n\n\n\n\n\n tgtArray, consensusIds, consensusIds[0], lastcid is {}, {}, {}, {}", tgtArray,
 			consensusIds, consensusIds[0], lastcid);
 
-	if (lastcid!=1000) {
+	if (lastcid!=-100) {
 		//									logger.info("\n\n\n\n\n SENDING OTHER CLUSTERS THE DECIDED VALUES");
 		this.tomLayer.getCommunication().send(tgtArray, this.ocmd);
 
@@ -551,8 +551,6 @@ public void sending_other_clusters(int[] consensusIds, int[] regenciesIds, int[]
 	}
 	logger.info("After the other cluster wait");
 
-//					if (!((requests.length==1) &&(requests[0].length==1) && (requests[0][0].getReqType()==RECONFIG)))
-//					if (!((requests.length==1) &&(requests[0].length==1) && (requests[0][0].getReqType()==RECONFIG)))
 
 	int currentClusterIter;
 	decidedOtherClusters.drainTo(decisionsOtherClusters);

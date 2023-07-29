@@ -445,9 +445,9 @@ public void sending_other_clusters(int[] consensusIds, int[] regenciesIds, int[]
 
 
 
-	logger.info("-XOXOXOXOX---- {}, {}, {}, {}, {}, {}, {} are with currentViewID: {}",
+	logger.info("-XOXOXOXOX---- {}, {}, {}, {}, {}, {}, {} are with currentViewID: {} and time = {}",
 			consensusIds, regenciesIds, leadersIds, cDecs, requests,
-			this.receiver.getId(), this.receiver.getConfig(), controller.getCurrentViewId());
+			this.receiver.getId(), this.receiver.getConfig(), controller.getCurrentViewId(), System.currentTimeMillis());
 	/** Tejas START **/
 
 	this.ocmd = new OtherClusterMessage(consensusIds, regenciesIds, leadersIds, cDecs, requests,
@@ -589,6 +589,11 @@ public void sending_other_clusters(int[] consensusIds, int[] regenciesIds, int[]
 	decidedLockOtherClusters.unlock();
 	/** Tejas END **/
 
+
+	logger.info("-XOXOXOXOX_2---- {}, {}, {}, {}, {}, {}, {} are with currentViewID: {} and time = {}",
+			consensusIds, regenciesIds, leadersIds, cDecs, requests,
+			this.receiver.getId(), this.receiver.getConfig(), controller.getCurrentViewId(), System.currentTimeMillis());
+
 }
 
 
@@ -698,9 +703,12 @@ public void sending_other_clusters(int[] consensusIds, int[] regenciesIds, int[]
 
 
 
-
+					logger.info("Exec time 1 with last cid " + lastDecision.getConsensusId() +
+							" and time = " + System.currentTimeMillis());
 					deliverMessages(consensusIds, regenciesIds, leadersIds, cDecs, requests);
 
+					logger.info("Exec time 2 with last cid " + lastDecision.getConsensusId() +
+							" and time = " + System.currentTimeMillis());
 					// ******* EDUARDO BEGIN ***********//
 
 					if (controller.hasUpdates()) {

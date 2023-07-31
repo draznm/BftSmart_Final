@@ -477,7 +477,7 @@ public void sending_other_clusters(int[] consensusIds, int[] regenciesIds, int[]
 	logger.info("\n\n\n\n\n\n\n\n tgtArray, consensusIds, consensusIds[0], lastcid is {}, {}, {}, {}", tgtArray,
 			consensusIds, consensusIds[0], lastcid);
 
-	if (lastcid!=-100) {
+	if (lastcid!=1225) {
 		//									logger.info("\n\n\n\n\n SENDING OTHER CLUSTERS THE DECIDED VALUES");
 		this.tomLayer.getCommunication().send(tgtArray, this.ocmd);
 

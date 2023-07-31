@@ -128,7 +128,7 @@ public class MessageHandler {
 
 //		logger.info("SystemMessage being processed inside processData");
 
-		simulate_geodistributed(sm);
+//		simulate_geodistributed(sm);
 
 		if (sm instanceof OtherClusterMessage)
 		{

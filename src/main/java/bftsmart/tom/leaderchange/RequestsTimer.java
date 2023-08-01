@@ -143,7 +143,7 @@ public class RequestsTimer {
     }
     
     public void run_lc_protocol() {
-        logger.info("\n\n\n RUNNING LC PROTOCOL\n\n\n");
+        logger.info("\n\n\n RUNNING LC PROTOCOL\n\n\n" + System.currentTimeMillis());
         
         long t = (shortTimeout > -1 ? shortTimeout : timeout);
         

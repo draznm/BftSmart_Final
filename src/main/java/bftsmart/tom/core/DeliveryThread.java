@@ -112,6 +112,8 @@ public final class DeliveryThread extends Thread {
 	private final Condition deliveryPausedCondition = pausingDeliveryLock.newCondition();
 	private int isPauseDelivery;
 
+	private int rvc_timeout = 20;
+
 	OtherClusterMessage ocmd;
 
 	ClusterInfo cinfo;
@@ -517,7 +519,7 @@ public void sending_other_clusters(int[] consensusIds, int[] regenciesIds, int[]
 			if(!((requests.length==1) &&(requests[0].length==1) && (requests[0][0].getReqType()==RECONFIG)))
 			{
 				logger.info("waiting for notEmptyQueueOtherClusters signal");
-				Boolean wf = notEmptyQueueOtherClusters.await( 20, TimeUnit.SECONDS);
+				Boolean wf = notEmptyQueueOtherClusters.await( rvc_timeout, TimeUnit.SECONDS);
 //				notEmptyQueueOtherClusters.await();
 
 				logger.info("Wait flag with wf: {}", wf);
@@ -960,6 +962,15 @@ public void sending_other_clusters(int[] consensusIds, int[] regenciesIds, int[]
 		int[] tgtArray = tgtList.stream().filter(Objects::nonNull).mapToInt(Integer::intValue).toArray();
 
 		this.tomLayer.getCommunication().send(tgtArray, this.ocmd);
+
+	}
+
+	public void increase_rvc_timeout() {
+		decidedLockOtherClusters.lock();
+
+		this.rvc_timeout += 20;
+		decidedLockOtherClusters.unlock();
+
 
 	}
 

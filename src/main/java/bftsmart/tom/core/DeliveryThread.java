@@ -968,6 +968,8 @@ public void sending_other_clusters(int[] consensusIds, int[] regenciesIds, int[]
 	public void increase_rvc_timeout() {
 		decidedLockOtherClusters.lock();
 
+		logger.info("increased rvc_timeout");
+
 		this.rvc_timeout += 20;
 		decidedLockOtherClusters.unlock();
 

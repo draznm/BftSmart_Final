@@ -749,9 +749,9 @@ public final class TOMLayer extends Thread implements RequestReceiver {
 
     }
 
-    public void increase_rvc_timeout()
+    public void increase_rvc_timeout(int cid)
     {
-        dt.increase_rvc_timeout();
+        dt.increase_rvc_timeout(cid);
     }
 
     public void signalRemoteChange(SystemMessage sm) {

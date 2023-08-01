@@ -242,7 +242,7 @@ public class MessageHandler {
 					case TOMUtil.REMOTE_VIEW_CHANGE:
 						logger.info("REMOTE_VIEW_CHANGE receieved from {} with CID: {}",
 								sm.getSender(), ((SMMessage) sm).getCID());
-						tomLayer.increase_rvc_timeout();
+						tomLayer.increase_rvc_timeout( ((SMMessage) sm).getCID());
 						tomLayer.StartLeaderChange(sm);
 						break;
 					case TOMUtil.REMOTE_NODE_READY:

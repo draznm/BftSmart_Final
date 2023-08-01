@@ -113,6 +113,7 @@ public final class DeliveryThread extends Thread {
 	private int isPauseDelivery;
 
 	private int rvc_timeout = 20;
+	private int last_rvc_msg = -1;
 
 	OtherClusterMessage ocmd;
 
@@ -526,20 +527,31 @@ public void sending_other_clusters(int[] consensusIds, int[] regenciesIds, int[]
 
 				if (!wf)
 				{
-					LcLockMC.lock();
+
+					if (Math.abs(lastcid-this.last_rvc_msg) > 2)
+					{
+
+						LcLockMC.lock();
 
 
-					SMMessage smsg = new StandardSMMessage(controller.getStaticConf().getProcessId(),
-							lastcid, TOMUtil.REMOTE_VIEW_CHANGE, 0, null, null, -1, -1);
+						SMMessage smsg = new StandardSMMessage(controller.getStaticConf().getProcessId(),
+								lastcid, TOMUtil.REMOTE_VIEW_CHANGE, 0, null, null, -1, -1);
 
-					tomLayer.getCommunication().send(tgtArray, smsg);
+						tomLayer.getCommunication().send(tgtArray, smsg);
 
-					logger.info("Waiting After Sending Remote View Change message to Leader sent to" +
-							"{}",tgtArray);
+						logger.info("Waiting After Sending Remote View Change message to Leader sent to" +
+								"{}",tgtArray);
 
 
-					LcLockMCCondition.await();
-					LcLockMC.unlock();
+						LcLockMCCondition.await();
+						LcLockMC.unlock();
+
+					}
+					else
+					{
+						notEmptyQueueOtherClusters.await();
+					}
+
 				}
 
 			}
@@ -965,12 +977,15 @@ public void sending_other_clusters(int[] consensusIds, int[] regenciesIds, int[]
 
 	}
 
-	public void increase_rvc_timeout() {
+	public void increase_rvc_timeout(int cid) {
 		decidedLockOtherClusters.lock();
 
 		logger.info("increased rvc_timeout");
 
 		this.rvc_timeout += 20;
+		this.last_rvc_msg = cid;
+
+
 		decidedLockOtherClusters.unlock();
 
 

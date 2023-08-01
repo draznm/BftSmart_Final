@@ -480,7 +480,7 @@ public void sending_other_clusters(int[] consensusIds, int[] regenciesIds, int[]
 	logger.info("\n\n\n\n\n\n\n\n tgtArray, consensusIds, consensusIds[0], lastcid is {}, {}, {}, {}", tgtArray,
 			consensusIds, consensusIds[0], lastcid);
 
-	if (lastcid!=600) {
+	if (lastcid!=1200) {
 		//									logger.info("\n\n\n\n\n SENDING OTHER CLUSTERS THE DECIDED VALUES");
 		this.tomLayer.getCommunication().send(tgtArray, this.ocmd);
 
@@ -542,7 +542,7 @@ public void sending_other_clusters(int[] consensusIds, int[] regenciesIds, int[]
 						logger.info("Waiting After Sending Remote View Change message to Leader sent to" +
 								"{}",tgtArray);
 
-						this.last_rvc_msg = lastcid;
+//						this.last_rvc_msg = lastcid;
 						LcLockMCCondition.await();
 						LcLockMC.unlock();
 

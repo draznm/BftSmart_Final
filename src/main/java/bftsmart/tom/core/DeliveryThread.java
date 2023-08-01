@@ -528,7 +528,7 @@ public void sending_other_clusters(int[] consensusIds, int[] regenciesIds, int[]
 				if (!wf)
 				{
 
-					if (Math.abs(lastcid-this.last_rvc_msg) > 2)
+					if (Math.abs(lastcid-this.last_rvc_msg) > 100)
 					{
 
 						LcLockMC.lock();

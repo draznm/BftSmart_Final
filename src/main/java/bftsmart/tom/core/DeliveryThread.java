@@ -542,7 +542,7 @@ public void sending_other_clusters(int[] consensusIds, int[] regenciesIds, int[]
 						logger.info("Waiting After Sending Remote View Change message to Leader sent to" +
 								"{}",tgtArray);
 
-
+						this.last_rvc_msg = lastcid;
 						LcLockMCCondition.await();
 						LcLockMC.unlock();
 

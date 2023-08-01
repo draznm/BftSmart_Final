@@ -775,7 +775,7 @@ public void sending_other_clusters(int[] consensusIds, int[] regenciesIds, int[]
 					{
 						ReconfigLockMC.lock();
 						logger.info("\n\n\n-----GOING TO WAIT FOR NEW NODE CONFIRMATION\n\n\n");
-						ReconfigLockMCCondition.await();
+//						ReconfigLockMCCondition.await();
 						ReconfigLockMC.unlock();
 					}
 
@@ -924,7 +924,7 @@ public void sending_other_clusters(int[] consensusIds, int[] regenciesIds, int[]
 
 	public void signalReconfigConfirmationNewNode() {
 		ReconfigLockMC.lock();
-		ReconfigLockMCCondition.signalAll();
+//		ReconfigLockMCCondition.signalAll();
 		ReconfigLockMC.unlock();
 	}
 

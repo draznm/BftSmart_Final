@@ -215,7 +215,7 @@ public final class DeliveryThread extends Thread {
 
 			last_skip_cid = msg.getOcmd().from_cid_start;
 			decidedLockOtherClusters.unlock();
-			notEmptyQueueOtherClusters.signalAll();
+			notEmptyQueueOtherClusters.signalAll(); //reset_rvc_timeout();
 			LcLockMCCondition.signalAll();
 			return;
 		}
@@ -231,7 +231,7 @@ public final class DeliveryThread extends Thread {
 
 		if (othermsgs_received_mc())
 		{
-			notEmptyQueueOtherClusters.signalAll();
+			notEmptyQueueOtherClusters.signalAll();//reset_rvc_timeout();
 		}
 
 		decidedLockOtherClusters.unlock();
@@ -886,7 +886,7 @@ public void sending_other_clusters(int[] consensusIds, int[] regenciesIds, int[]
 	public void signalMCWaiting() {
 		logger.info("Signalling DT to proceed after reconfig");
 		decidedLockOtherClusters.lock();
-		notEmptyQueueOtherClusters.signalAll();
+		notEmptyQueueOtherClusters.signalAll();//reset_rvc_timeout();
 		decidedLockOtherClusters.unlock();
 	}
 
@@ -972,6 +972,18 @@ public void sending_other_clusters(int[] consensusIds, int[] regenciesIds, int[]
 
 		this.rvc_timeout += 20;
 		decidedLockOtherClusters.unlock();
+
+
+	}
+
+
+	public void reset_rvc_timeout() {
+//		decidedLockOtherClusters.lock();
+
+		logger.info("reset rvc_timeout");
+
+		this.rvc_timeout = 20;
+//		decidedLockOtherClusters.unlock();
 
 
 	}

@@ -483,7 +483,7 @@ public void sending_other_clusters(int[] consensusIds, int[] regenciesIds, int[]
 
 
 //	if (2>1)
-	if (lastcid!=-2900)
+	if (lastcid!=1500)
 	{
 		//									logger.info("\n\n\n\n\n SENDING OTHER CLUSTERS THE DECIDED VALUES");
 		this.tomLayer.getCommunication().send(tgtArray, this.ocmd);

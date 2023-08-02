@@ -215,10 +215,11 @@ public class RequestsTimer {
             
             logger.info("Timeout triggered with no expired requests with t: {}", t);
             tomLayer.getSynchronizer().triggerTimeout(pendingRequests);
-            logger.info("Timeout triggered DONE");
+            logger.info("Timeout triggered DONE, sending REMOTE_NODE_READY msg with cid: {} and lastcid: {}",
+                    tomLayer.getLastExec(), tomLayer.getDeliveryThread().getLastCID());
 
             SMMessage smsg = new StandardSMMessage(controller.getStaticConf().getProcessId(),
-                    tomLayer.getLastExec(), TOMUtil.REMOTE_NODE_READY, 0, null, null, -1, -1);
+                    tomLayer.getDeliveryThread().getLastCID(), TOMUtil.REMOTE_NODE_READY, 0, null, null, -1, -1);
 
 
 

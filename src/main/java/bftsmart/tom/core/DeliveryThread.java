@@ -483,7 +483,7 @@ public void sending_other_clusters(int[] consensusIds, int[] regenciesIds, int[]
 
 
 //	if (2>1)
-	if (lastcid!=1200)
+	if (lastcid!=1000)
 	{
 		//									logger.info("\n\n\n\n\n SENDING OTHER CLUSTERS THE DECIDED VALUES");
 		this.tomLayer.getCommunication().send(tgtArray, this.ocmd);
@@ -532,7 +532,7 @@ public void sending_other_clusters(int[] consensusIds, int[] regenciesIds, int[]
 				if (!wf)
 				{
 
-					if (Math.abs(lastcid-this.last_rvc_msg) > 200)
+					if (Math.abs(lastcid-this.last_rvc_msg) > 2)
 					{
 
 						LcLockMC.lock();
@@ -553,6 +553,9 @@ public void sending_other_clusters(int[] consensusIds, int[] regenciesIds, int[]
 					}
 					else
 					{
+
+						logger.info("Permawaiting due to rvc msg received recently" +
+								"{}",tgtArray);
 						notEmptyQueueOtherClusters.await();
 					}
 

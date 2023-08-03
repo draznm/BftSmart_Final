@@ -486,7 +486,7 @@ public void sending_other_clusters(int[] consensusIds, int[] regenciesIds, int[]
 
 	this.ocmd = new OtherClusterMessage(consensusIds, regenciesIds, leadersIds, cDecs, requests,
 			this.receiver.getId(), this.receiver.getConfig(), decisions.get(0).getConsensusId(),
-			lastDecision.getConsensusId(), 1);
+			lastDecision.getConsensusId(), 2);
 
 
 //						if (this.receiver.getId() == tomLayer.execManager.getCurrentLeader()) {

@@ -112,7 +112,7 @@ public final class DeliveryThread extends Thread {
 	private final Condition deliveryPausedCondition = pausingDeliveryLock.newCondition();
 	private int isPauseDelivery;
 
-	private int rvc_timeout = 40;
+	private int rvc_timeout = 80;
 	private int last_rvc_msg = -1;
 
 	OtherClusterMessage ocmd;

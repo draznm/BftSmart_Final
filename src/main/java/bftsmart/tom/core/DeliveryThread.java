@@ -202,28 +202,33 @@ public final class DeliveryThread extends Thread {
 	public void deliveryOtherCluster(OtherClusterMessage msg) throws IOException, ClassNotFoundException
 	{
 
-		logger.info("Tejas: reached inside deliveryOtherCluster, from_cid_start, from, fromConfig, msg.getSender()," +
-						" msg instanceof Forwarded are {}, {}, {}, {}, {}, getCurrentViewN: {}", msg.getOcmd().from_cid_start,
-				msg.getOcmd().from
-		, msg.getOcmd().fromConfig, msg.getSender(),((SystemMessage) msg instanceof ForwardedMessage),
-				controller.getCurrentViewN());
+
 
 		if(msg.getOcmd().type==1)
 		{
 
-			int clusterid = cinfo.getAllConnectionsMap().get(this.receiver.getId()).ClusterNumber;
+			logger.info("Tejas: reached inside deliveryOtherCluster type 1, from_cid_start, from, fromConfig, msg.getSender()," +
+							" msg instanceof Forwarded are {}, {}, {}, {}, {}, getCurrentViewN: {}", msg.getOcmd().from_cid_start,
+					msg.getOcmd().from
+					, msg.getOcmd().fromConfig, msg.getSender(),((SystemMessage) msg instanceof ForwardedMessage),
+					controller.getCurrentViewN());
 
 
-			int[] tgtArray = cinfo.getOwnClusterArray(clusterid).stream().filter(Objects::nonNull).mapToInt(Integer::intValue).toArray();
+//			int clusterid = cinfo.getAllConnectionsMap().get(this.receiver.getId()).ClusterNumber;
+
+
+			int[] tgtArray = controller.getCurrentViewOtherAcceptors();
 //
 //
-//			this.ocmd = new OtherClusterMessage(msg.getOcmd().consId, msg.getOcmd().regencies, msg.getOcmd().leaders,
-//					msg.getOcmd().cDecs, msg.getOcmd().requests,
-//					msg.getOcmd().from, msg.getOcmd().fromConfig, msg.getOcmd().from_cid_start,
-//					msg.getOcmd().from_cid_end, 2);
-			msg.setOcmdType(2);
+			this.ocmd = new OtherClusterMessage(msg.getOcmd().consId, msg.getOcmd().regencies, msg.getOcmd().leaders,
+					msg.getOcmd().cDecs, msg.getOcmd().requests,
+					msg.getOcmd().from, msg.getOcmd().fromConfig, msg.getOcmd().from_cid_start,
+					msg.getOcmd().from_cid_end, 2);
+//			msg.setOcmdType(2);
 
-			this.tomLayer.getCommunication().send(tgtArray, msg);
+			logger.info("Sending type 2 message to {}", tgtArray);
+
+			this.tomLayer.getCommunication().send(tgtArray, this.ocmd);
 
 //			this.tomLayer.getCommunication().send(tgtArray, this.ocmd);
 
@@ -231,7 +236,11 @@ public final class DeliveryThread extends Thread {
 		else if (msg.getOcmd().type==2)
 		{
 
-
+			logger.info("Tejas: reached inside deliveryOtherCluster type 2, from_cid_start, from, fromConfig, msg.getSender()," +
+							" msg instanceof Forwarded are {}, {}, {}, {}, {}, getCurrentViewN: {}", msg.getOcmd().from_cid_start,
+					msg.getOcmd().from
+					, msg.getOcmd().fromConfig, msg.getSender(),((SystemMessage) msg instanceof ForwardedMessage),
+					controller.getCurrentViewN());
 			decidedLockOtherClusters.lock();
 
 
@@ -486,7 +495,7 @@ public void sending_other_clusters(int[] consensusIds, int[] regenciesIds, int[]
 
 	this.ocmd = new OtherClusterMessage(consensusIds, regenciesIds, leadersIds, cDecs, requests,
 			this.receiver.getId(), this.receiver.getConfig(), decisions.get(0).getConsensusId(),
-			lastDecision.getConsensusId(), 1);
+			lastDecision.getConsensusId(), 2);
 
 
 //						if (this.receiver.getId() == tomLayer.execManager.getCurrentLeader()) {

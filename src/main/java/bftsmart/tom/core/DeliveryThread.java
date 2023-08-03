@@ -199,43 +199,74 @@ public final class DeliveryThread extends Thread {
 
 
 
-	public void deliveryOtherCluster(OtherClusterMessage msg) throws IOException, ClassNotFoundException {
+	public void deliveryOtherCluster(OtherClusterMessage msg) throws IOException, ClassNotFoundException
+	{
 
 		logger.info("Tejas: reached inside deliveryOtherCluster, from_cid_start, from, fromConfig, msg.getSender()," +
 						" msg instanceof Forwarded are {}, {}, {}, {}, {}, getCurrentViewN: {}", msg.getOcmd().from_cid_start,
 				msg.getOcmd().from
 		, msg.getOcmd().fromConfig, msg.getSender(),((SystemMessage) msg instanceof ForwardedMessage),
 				controller.getCurrentViewN());
-		decidedLockOtherClusters.lock();
 
-
-
-
-		if (msg.getOcmd().skip_iter && msg.getOcmd().from_cid_start >last_skip_cid)
+		if(msg.getOcmd().type==1)
 		{
 
-			last_skip_cid = msg.getOcmd().from_cid_start;
-			decidedLockOtherClusters.unlock();
-			notEmptyQueueOtherClusters.signalAll(); //reset_rvc_timeout();
-			LcLockMCCondition.signalAll();
-			return;
-		}
+			int clusterid = cinfo.getAllConnectionsMap().get(this.receiver.getId()).ClusterNumber;
 
-		try {
+
+			int[] tgtArray = cinfo.getOwnClusterArray(clusterid).stream().filter(Objects::nonNull).mapToInt(Integer::intValue).toArray();
+//
+//
+//			this.ocmd = new OtherClusterMessage(msg.getOcmd().consId, msg.getOcmd().regencies, msg.getOcmd().leaders,
+//					msg.getOcmd().cDecs, msg.getOcmd().requests,
+//					msg.getOcmd().from, msg.getOcmd().fromConfig, msg.getOcmd().from_cid_start,
+//					msg.getOcmd().from_cid_end, 2);
+			msg.setOcmdType(2);
+
+			this.tomLayer.getCommunication().send(tgtArray, msg);
+
+//			this.tomLayer.getCommunication().send(tgtArray, this.ocmd);
+
+		}
+		else if (msg.getOcmd().type==2)
+		{
+
+
+			decidedLockOtherClusters.lock();
+
+
+
+
+			if (msg.getOcmd().skip_iter && msg.getOcmd().from_cid_start >last_skip_cid)
+			{
+
+				last_skip_cid = msg.getOcmd().from_cid_start;
+				decidedLockOtherClusters.unlock();
+				notEmptyQueueOtherClusters.signalAll(); //reset_rvc_timeout();
+				LcLockMCCondition.signalAll();
+				return;
+			}
+
+			try {
 
 //			int clusterId = Integer.parseInt(msg.getOcmd().fromConfig.replaceAll("[^0-9]", ""));
-			decidedOtherClusters.put(msg);
+				decidedOtherClusters.put(msg);
 
-		} catch (Exception e) {
-			logger.error("Tejas: Could not insert OtherCLusterMessage into decided queue and mark requests as delivered", e);
+			} catch (Exception e) {
+				logger.error("Tejas: Could not insert OtherCLusterMessage into decided queue and mark requests as delivered", e);
+			}
+
+			if (othermsgs_received_mc())
+			{
+				notEmptyQueueOtherClusters.signalAll();//reset_rvc_timeout();
+			}
+
+			decidedLockOtherClusters.unlock();
+
 		}
 
-		if (othermsgs_received_mc())
-		{
-			notEmptyQueueOtherClusters.signalAll();//reset_rvc_timeout();
-		}
 
-		decidedLockOtherClusters.unlock();
+
 
 	}
 
@@ -455,7 +486,7 @@ public void sending_other_clusters(int[] consensusIds, int[] regenciesIds, int[]
 
 	this.ocmd = new OtherClusterMessage(consensusIds, regenciesIds, leadersIds, cDecs, requests,
 			this.receiver.getId(), this.receiver.getConfig(), decisions.get(0).getConsensusId(),
-			lastDecision.getConsensusId());
+			lastDecision.getConsensusId(), 1);
 
 
 //						if (this.receiver.getId() == tomLayer.execManager.getCurrentLeader()) {
@@ -464,18 +495,19 @@ public void sending_other_clusters(int[] consensusIds, int[] regenciesIds, int[]
 	HashMap<Integer, HostsConfig.Config> hostmap = cinfo.getAllConnectionsMap();
 	int clusterid = hostmap.get(this.receiver.getId()).ClusterNumber;
 
-
-	List<Integer> tgtList = new ArrayList<Integer>();
-
-	//						for (int i=0; i < this.cinfo.totalCount; i++)
-	for (int i : hostmap.keySet()) {
-		if (cinfo.getAllConnectionsMap().get(i).ClusterNumber != clusterid) {
-			tgtList.add(i);
-		}
-
-	}
+//
+//	List<Integer> tgtList = new ArrayList<Integer>();
+//
+//	//						for (int i=0; i < this.cinfo.totalCount; i++)
+//	for (int i : hostmap.keySet()) {
+//		if (cinfo.getAllConnectionsMap().get(i).ClusterNumber != clusterid) {
+//			tgtList.add(i);
+//		}
+//
+//	}
 	//							logger.info("tgtList is {}", tgtList);
-	int[] tgtArray = tgtList.stream().filter(Objects::nonNull).mapToInt(Integer::intValue).toArray();
+//	int[] tgtArray = tgtList.stream().filter(Objects::nonNull).mapToInt(Integer::intValue).toArray();
+	int[] tgtArray = cinfo.getFPlusOneArray(clusterid).stream().filter(Objects::nonNull).mapToInt(Integer::intValue).toArray();
 
 	logger.info("\n\n\n\n\n\n\n\n tgtArray, consensusIds, consensusIds[0], lastcid is {}, {}, {}, {}", tgtArray,
 			consensusIds, consensusIds[0], lastcid);

@@ -68,51 +68,52 @@ public class MessageHandler {
 
 	}
 
-
-
-	public void simulate_geodistributed(SystemMessage sm)
-	{
-		if ( sm instanceof OtherClusterMessage)
-		{
-			OtherClusterMessage ocm = (OtherClusterMessage) sm;
-			int	currentClusterId = 0;
-			try {
-				currentClusterId = Integer.parseInt(ocm.getOcmd().fromConfig.replaceAll("[^0-9]", ""));
-			} catch (IOException e) {
-				throw new RuntimeException(e);
-			} catch (ClassNotFoundException e) {
-				throw new RuntimeException(e);
-			}
 //
-			int wait_time = LatencyInfo[currentClusterId%3][cinfo.getClusterNumber(this.tomLayer.getDeliveryThread().getNodeId())%3];
-			logger.info("wait time for sender = " + sm.getSender() + " with receiver = " +
-					this.tomLayer.getDeliveryThread().getNodeId() + " is " + wait_time);
-
-
-			try {
-				Thread.sleep(wait_time);
-			} catch (InterruptedException e) {
-				throw new RuntimeException(e);
-			}
-
-
-			//                try {
-//                    TimeUnit.MICROSECONDS.sleep(this.cinfo.NodeToLatency.get(this.id));
-//                } catch (InterruptedException e) {
-//                    throw new RuntimeException(e);
-//                }
-
-
-
-
-
-		}
-
-
-
-
-
-	}
+//
+//	public void simulate_geodistributed(SystemMessage sm)
+//	{
+//
+//		if ( sm instanceof OtherClusterMessage)
+//		{
+//			OtherClusterMessage ocm = (OtherClusterMessage) sm;
+//			int	currentClusterId = 0;
+//			try {
+//				currentClusterId = Integer.parseInt(ocm.getOcmd().fromConfig.replaceAll("[^0-9]", ""));
+//			} catch (IOException e) {
+//				throw new RuntimeException(e);
+//			} catch (ClassNotFoundException e) {
+//				throw new RuntimeException(e);
+//			}
+////
+//			int wait_time = LatencyInfo[currentClusterId%3][cinfo.getClusterNumber(this.tomLayer.getDeliveryThread().getNodeId())%3];
+//			logger.info("wait time for sender = " + sm.getSender() + " with receiver = " +
+//					this.tomLayer.getDeliveryThread().getNodeId() + " is " + wait_time);
+//
+//
+//			try {
+//				Thread.sleep(wait_time);
+//			} catch (InterruptedException e) {
+//				throw new RuntimeException(e);
+//			}
+//
+//
+//			//                try {
+////                    TimeUnit.MICROSECONDS.sleep(this.cinfo.NodeToLatency.get(this.id));
+////                } catch (InterruptedException e) {
+////                    throw new RuntimeException(e);
+////                }
+//
+//
+//
+//
+//
+//		}
+//
+//
+//
+//
+//
+//	}
 
 	public void setAcceptor(Acceptor acceptor) {
 		this.acceptor = acceptor;

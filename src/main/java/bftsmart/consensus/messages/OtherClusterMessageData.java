@@ -21,8 +21,10 @@ public class OtherClusterMessageData implements Serializable {
 
     public boolean skip_iter = false;
 
+    public int type = 1;
+
     public OtherClusterMessageData(int[] consId, int[] regencies, int[] leaders, CertifiedDecision[] cDecs,
-                                   TOMMessage[][] requests, int from, String fromConfig, int from_cid_start, int from_cid_end)
+                                   TOMMessage[][] requests, int from, String fromConfig, int from_cid_start, int from_cid_end, int type)
     {
         this.consId = consId;
         this.regencies = regencies;
@@ -33,7 +35,7 @@ public class OtherClusterMessageData implements Serializable {
         this.from = from;
         this.from_cid_start = from_cid_start;
         this.from_cid_end = from_cid_end;
-
+        this.type = type;
     }
 
 
@@ -43,4 +45,7 @@ public class OtherClusterMessageData implements Serializable {
     }
 
 
+    public void setType(int type) {
+        this.type = type;
+    }
 }

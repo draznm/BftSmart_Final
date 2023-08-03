@@ -33,13 +33,18 @@ public class OtherClusterMessage extends SystemMessage {
      * @param payload dada that comes with the message
      */
     public OtherClusterMessage(int[] consId, int[] regencies, int[] leaders, CertifiedDecision[] cDecs,
-                     TOMMessage[][] requests, int from, String fromConfig, int from_cid_start, int from_cid_end) throws IOException {
+                     TOMMessage[][] requests, int from, String fromConfig, int from_cid_start, int from_cid_end, int type) throws IOException {
         super(from);
 
         this.ocmd = new OtherClusterMessageData(consId, regencies, leaders, cDecs,
-                requests, from, fromConfig, from_cid_start, from_cid_end);
+                requests, from, fromConfig, from_cid_start, from_cid_end, type);
         this.payload = convertToBytes(this.ocmd);
 
+    }
+
+    public void setOcmdType(int type) throws IOException {
+        this.ocmd.setType(type);
+        this.payload = convertToBytes(this.ocmd);
     }
 
 

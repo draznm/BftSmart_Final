@@ -8,6 +8,7 @@ import bftsmart.reconfiguration.views.ViewStorage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ClusterInfo {
@@ -20,6 +21,13 @@ public class ClusterInfo {
 
 
     public HashMap<Integer, HostsConfig.Config> hm;
+
+
+    public HashMap<Integer, Integer> ClusterNodeCount;
+
+
+    public ArrayList<Integer> FPlusOneArray = new ArrayList<Integer>();
+    public ArrayList<Integer> OwnClusterArray = new ArrayList<Integer>();
 
     public ClusterInfo()
     {
@@ -38,6 +46,11 @@ public class ClusterInfo {
 
         this.nClusters = maxClusterNumber + 1;
 //        System.out.println("----------XXXXXX------nClusters is "+this.nClusters);
+
+
+
+
+
 
     }
 
@@ -71,6 +84,45 @@ public class ClusterInfo {
     {
         return this.hm;
 
+    }
+
+    public ArrayList<Integer> getFPlusOneArray(int cluster_id)
+    {
+        if (FPlusOneArray.isEmpty()) {
+            for (int i : hm.keySet()) {
+                if (hm.get(i).ClusterNumber != cluster_id) {
+                    FPlusOneArray.add(i);
+
+//                    if ClusterNodeCount.containsKey(.get(i).ClusterNumber)
+//                    {
+//                        ClusterNodeCount.put()
+//                    }
+
+                }
+
+
+            }
+        }
+
+
+
+        return FPlusOneArray;
+    }
+
+
+    public ArrayList<Integer> getOwnClusterArray(int cluster_id)
+    {
+        if (OwnClusterArray.isEmpty()) {
+            for (int i : hm.keySet()) {
+                if (hm.get(i).ClusterNumber == cluster_id) {
+                    OwnClusterArray.add(i);
+                }
+
+
+            }
+        }
+
+        return OwnClusterArray;
     }
 
     public int getClusterNumber(int nodeId)

@@ -11,6 +11,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-Permawaiting due to rvc msg received recently
+# Permawaiting due to rvc msg received recently
 #/bin/bash
 java -Dlogback.configurationFile="./config/logback.xml" -cp "lib/*:build/install/library/lib/*" com.yahoo.ycsb.Client -threads 100 -P "./config/workloads/workloada" -p measurementtype=timeseries -p timeseries.granularity=1000 -db bftsmart.demo.ycsb.YCSBClient -p ClientID=${1} -s

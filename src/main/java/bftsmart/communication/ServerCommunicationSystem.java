@@ -155,10 +155,12 @@ public class ServerCommunicationSystem extends Thread {
                 SystemMessage sm = inQueue.poll(MESSAGE_WAIT_TIME, TimeUnit.MILLISECONDS);
 
                 if (sm != null) {
-                    logger.debug("<-- receiving, msg:" + sm);
-
-//                    System.out.wait(this.latency);
-//                    TimeUnit.MICROSECONDS.sleep(this.latency);
+                    logger.info("<-- receiving, msg:" + sm+ " with it being OtherClusterMessage="+
+                            (sm instanceof OtherClusterMessage));
+                    if  (sm instanceof OtherClusterMessage)
+                    {
+                        logger.info("received ocmd: {}", (OtherClusterMessage)sm);
+                    }
 
 
                     try {
@@ -170,7 +172,8 @@ public class ServerCommunicationSystem extends Thread {
                     }
 
                     count++;
-                } else {                
+                } else {
+                    logger.info("<-- receiving, null msg:" + sm);
                     messageHandler.verifyPending();               
                 }
             } catch (InterruptedException e) {
@@ -194,12 +197,12 @@ public class ServerCommunicationSystem extends Thread {
         if (sm instanceof OtherClusterMessage)
         {
 
-//            try {
-//                logger.info("--> 1: sending OtherClusterMessage message from: {} -> {}, from_cid_start, from_cid_end is {}, {}"
-//                        , sm.getSender(), targets, ((OtherClusterMessage) sm).getOcmd().from_cid_start, ((OtherClusterMessage) sm).getOcmd().from_cid_end);
-//            } catch (IOException | ClassNotFoundException e) {
-//                throw new RuntimeException(e);
-//            }
+            try {
+                logger.info("--> 1: sending OtherClusterMessage message from: {} -> {}, from_cid_start, from_cid_end is {}, {}"
+                        , sm.getSender(), targets, ((OtherClusterMessage) sm).getOcmd().from_cid_start, ((OtherClusterMessage) sm).getOcmd().from_cid_end);
+            } catch (IOException | ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
             serversConn.send(targets, (OtherClusterMessage) sm, true);
         }
         else if (sm instanceof TOMMessage) {

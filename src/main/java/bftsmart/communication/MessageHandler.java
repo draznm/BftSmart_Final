@@ -135,7 +135,7 @@ public class MessageHandler {
 
 		if (sm instanceof OtherClusterMessage)
 		{
-//			logger.info("\n\n\n PROCESSING OtherClusterMessage by Server Communication system");
+			logger.info("\n\n\n PROCESSING OtherClusterMessage by Message Handler with type"+ ((OtherClusterMessage) sm).getOcmd().type);
 			tomLayer.requestReceivedOtherClusters((OtherClusterMessage) sm);
 			return;
 		}

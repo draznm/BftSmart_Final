@@ -42,6 +42,7 @@ import org.slf4j.LoggerFactory;
 import javax.print.attribute.standard.MediaSize;
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
@@ -118,19 +119,19 @@ public final class DeliveryThread extends Thread {
 
 	OtherClusterMessage ocmd;
 
-	HashMap<Integer, Decision> LastDecisionSaved = new HashMap<Integer, Decision>();
+	ConcurrentHashMap<Integer, Decision> LastDecisionSaved = new ConcurrentHashMap<Integer, Decision>();
 
 
-	HashMap<Integer, HashMap<Integer, OtherClusterMessage>> SavedMultiClusterMessages =
-			new HashMap<Integer, HashMap<Integer, OtherClusterMessage>>();
+	ConcurrentHashMap<Integer, HashMap<Integer, OtherClusterMessage>> SavedMultiClusterMessages =
+			new ConcurrentHashMap<Integer, HashMap<Integer, OtherClusterMessage>>();
 
 
-	HashMap<Integer, TOMMessage[][]> SavedMessagesForExec =
-			new HashMap<Integer, TOMMessage[][]>();
+	ConcurrentHashMap<Integer, TOMMessage[][]> SavedMessagesForExec =
+			new ConcurrentHashMap<Integer, TOMMessage[][]>();
 
 	Set<Integer> ReceivedOtherClusterMsgs = new HashSet<>();
 
-	HashMap<Integer, OtherClusterMessageData> SavedDecisionsToBeExecuted = new HashMap<Integer, OtherClusterMessageData>();
+	ConcurrentHashMap<Integer, OtherClusterMessageData> SavedDecisionsToBeExecuted = new ConcurrentHashMap<Integer, OtherClusterMessageData>();
 
 	ClusterInfo cinfo;
 

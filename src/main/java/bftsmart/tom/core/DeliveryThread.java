@@ -238,8 +238,8 @@ public final class DeliveryThread extends Thread {
 
 		if ((tid%1000==0) && (tid>0))
 		{
-			logger.info("deleting old info from tid: {} to {}",tid-1000, tid-1);
-			for (int i = tid - 1000; i< tid ; i++)
+			logger.info("deleting old info from tid: {} to {}",tid-1100, tid-100);
+			for (int i = tid - 1100; i< tid-100 ; i++)
 			{
 
 				SavedMessagesForExec.remove(i);

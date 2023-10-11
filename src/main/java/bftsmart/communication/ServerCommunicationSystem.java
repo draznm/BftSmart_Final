@@ -206,11 +206,10 @@ public class ServerCommunicationSystem extends Thread {
             serversConn.send(targets, (OtherClusterMessage) sm, true);
         }
         else if (sm instanceof TOMMessage) {
-//            logger.info("--> 2: sending TOMMessage from: {} -> {}", sm.getSender(), targets);
+            logger.info("--> 2: sending TOMMessage from: {} -> {}", sm.getSender(), targets);
             clientsConn.send(targets, (TOMMessage) sm, false);
         } else {
-//            logger.info("--> 3: sending SystemMessage message from: {} -> {}", sm.getSender(), targets);
-//        	logger.info("zerfqf --> sending message from: {} -> {}" + sm.getSender(), targets);
+            logger.info("--> 3: sending SystemMessage message from: {} -> {}", sm, targets);
             serversConn.send(targets, sm, true);
         }
     }

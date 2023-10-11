@@ -568,12 +568,16 @@ public void sending_other_clusters(int[] consensusIds, int[] regenciesIds, int[]
 
 	tempMap.put(clusterid, this.ocmd);
 
-	SavedMultiClusterMessages.put(this.ocmd.getOcmd().from_cid_start, tempMap);
+
 
 	logger.info("saving msg for execution, with tid: {}, requests: {}",
 			this.ocmd.getOcmd().from_cid_start,	requests);
 
 	SavedMessagesForExec.put(this.ocmd.getOcmd().from_cid_start, requests);
+
+	SavedMultiClusterMessages.put(this.ocmd.getOcmd().from_cid_start, tempMap);
+
+
 
 	TOMMessage[][] requests2 = SavedMessagesForExec.get(this.ocmd.getOcmd().from_cid_start);
 

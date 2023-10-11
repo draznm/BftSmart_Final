@@ -238,11 +238,13 @@ public final class DeliveryThread extends Thread {
 
 		if ((tid%1000==0) && (tid>0))
 		{
+			logger.info("deleting old info from tid: {} to {}",tid-1000, tid-1);
 			for (int i = tid - 1000; i< tid ; i++)
 			{
-				if (SavedMessagesForExec.containsKey(i))	SavedMessagesForExec.remove(i);
-				if (LastDecisionSaved.containsKey(i))	LastDecisionSaved.remove(i);
-				if (SavedMultiClusterMessages.containsKey(i))	SavedMultiClusterMessages.remove(i);
+
+				SavedMessagesForExec.remove(i);
+				LastDecisionSaved.remove(i);
+				SavedMultiClusterMessages.remove(i);
 			}
 
 		}

@@ -235,6 +235,18 @@ public final class DeliveryThread extends Thread {
 		deliverMessages(tempOcmd.consId,tempOcmd.regencies, tempOcmd.leaders,
 				tempOcmd.cDecs, SavedMessagesForExec.get(tid));
 
+
+		if ((tid%1000==0) && (tid>0))
+		{
+			for (int i = tid - 1000; i< tid ; i++)
+			{
+				if (SavedMessagesForExec.containsKey(i))	SavedMessagesForExec.remove(i);
+				if (LastDecisionSaved.containsKey(i))	LastDecisionSaved.remove(i);
+				if (SavedMultiClusterMessages.containsKey(i))	SavedMultiClusterMessages.remove(i);
+			}
+
+		}
+
 		// ******* EDUARDO BEGIN ***********//
 		if (controller.hasUpdates()) {
 			processReconfigMessages(lastDecision.getConsensusId());

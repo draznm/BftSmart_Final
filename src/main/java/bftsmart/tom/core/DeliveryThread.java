@@ -217,7 +217,7 @@ public final class DeliveryThread extends Thread {
 
     public void executeMessages(int tid)
     {
-        logger.debug("executeMessages for tid: " + tid);
+        logger.info("executeMessages for tid: " + tid);
 
         OtherClusterMessageData tempOcmd = null;
         try {
@@ -384,7 +384,7 @@ public final class DeliveryThread extends Thread {
     {
 
         HashMap<Integer, OtherClusterMessage> temp = SavedMultiClusterMessages.get(tid);
-        logger.info("othermsgs_received_mc for tid: {}, is temp size, nclusters is {}, {}",tid, temp.size(), this.cinfo.nClusters);
+        logger.info("othermsgs_received_mc for tid: {}, is temp size, nclusters is {}, {}, temp keyset {}",tid, temp.size(), this.cinfo.nClusters, temp.keySet());
         return temp.size() == this.cinfo.nClusters;
 
     }

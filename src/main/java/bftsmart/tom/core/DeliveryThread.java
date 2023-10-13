@@ -364,8 +364,10 @@ public final class DeliveryThread extends Thread {
 
             if (othermsgs_received_mc(msg.getOcmd().from_cid_start))
             {
+                logger.info("executing for tid: {}", msg.getOcmd().from_cid_start);
                 executeMessages(msg.getOcmd().from_cid_start);
             }
+            else logger.info("Not executing for tid: {}", msg.getOcmd().from_cid_start);
 
 
         }

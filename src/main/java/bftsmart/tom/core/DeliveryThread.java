@@ -617,11 +617,8 @@ public final class DeliveryThread extends Thread {
         }
         else
         {
-            logger.info("clusterid==1 is {}", clusterid==1);
-            if (clusterid==1)
-            {
-                this.tomLayer.getCommunication().send(tgtArray, this.ocmd);
-            }
+            logger.info("Not sending multicluster msg, clusterid==1 is  {}", clusterid==1);
+            //                this.tomLayer.getCommunication().send(tgtArray, this.ocmd);
         }
         logger.info("OtherClusterMessage Sent to {}", tgtArray);
 

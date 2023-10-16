@@ -346,7 +346,7 @@ public class ServiceReplica {
                             }   request.deliveryTime = System.nanoTime();
                             if (executor instanceof BatchExecutable) {
                                 
-                               logger.debug("Batching request from " + request.getSender());
+                               logger.info("Batching request from " + request.getSender());
                                 
                                 // This is used to deliver the content decided by a consensus instance directly to
                                 // a Recoverable object. It is useful to allow the application to create a log and
@@ -359,7 +359,7 @@ public class ServiceReplica {
                                 toBatch.add(request);
                             } else if (executor instanceof SingleExecutable) {
                                 
-                                logger.debug("Delivering request from " + request.getSender() + " via SingleExecutable");
+                                logger.info("Delivering request from " + request.getSender() + " via SingleExecutable");
                                 
                                 // This is used to deliver the content decided by a consensus instance directly to
                                 // a Recoverable object. It is useful to allow the application to create a log and
@@ -465,10 +465,10 @@ public class ServiceReplica {
                 for (TOMMessage reply : replies) {
 
                     if (SVController.getStaticConf().getNumRepliers() > 0) {
-                        logger.debug("Sending reply to " + reply.getSender() + " with sequence number " + reply.getSequence() + " and operation ID " + reply.getOperationId() +" via ReplyManager");
+                        logger.info("Sending reply to " + reply.getSender() + " with sequence number " + reply.getSequence() + " and operation ID " + reply.getOperationId() +" via ReplyManager");
                         repMan.send(reply);
                     } else {
-                        logger.debug("Sending reply to " + reply.getSender() + " with sequence number " + reply.getSequence() + " and operation ID " + reply.getOperationId());
+                        logger.info("Sending reply to " + reply.getSender() + " with sequence number " + reply.getSequence() + " and operation ID " + reply.getOperationId());
                         replier.manageReply(reply, null);
                         //cs.send(new int[]{request.getSender()}, request.reply);
                     }

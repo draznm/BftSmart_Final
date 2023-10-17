@@ -744,7 +744,7 @@ public final class DeliveryThread extends Thread {
                     }
 
 
-                    logger.error("Adding to DoneMainLoopExec, cid: {}", lastcids);
+                    logger.error("Adding to DoneMainLoopExec, cid: {}", lastcid);
                     DoneMainLoopExec.put(lastcid,1);
 
 

@@ -366,7 +366,7 @@ public final class DeliveryThread extends Thread {
             logger.info("DoneMainLoopExec.contains(msg.getOcmd().from_cid_start) for cid: {}, is : {}",
                     msg.getOcmd().from_cid_start, DoneMainLoopExec.contains(msg.getOcmd().from_cid_start));
 
-            if ((othermsgs_received_mc(msg.getOcmd().from_cid_start)) && (DoneMainLoopExec.contains(msg.getOcmd().from_cid_start)))
+            if (othermsgs_received_mc(msg.getOcmd().from_cid_start))
             {
                 logger.info("executing for tid: {}", msg.getOcmd().from_cid_start);
                 executeMessages(msg.getOcmd().from_cid_start);
@@ -568,30 +568,6 @@ public final class DeliveryThread extends Thread {
                 this.ocmd.getOcmd().fromConfig.replaceAll("[^0-9]",
                         ""));
 
-        HashMap<Integer, OtherClusterMessage> tempMap= SavedMultiClusterMessages.get(this.ocmd.getOcmd().from_cid_start);
-
-        if (tempMap==null)	tempMap = new HashMap<Integer, OtherClusterMessage>();
-
-        tempMap.put(clusterid, this.ocmd);
-
-
-
-        logger.info("saving msg for execution, with tid: {}, requests: {}",
-                this.ocmd.getOcmd().from_cid_start,	requests);
-
-        SavedMessagesForExec.put(this.ocmd.getOcmd().from_cid_start, requests);
-
-        SavedMultiClusterMessages.put(this.ocmd.getOcmd().from_cid_start, tempMap);
-
-
-
-        TOMMessage[][] requests2 = SavedMessagesForExec.get(this.ocmd.getOcmd().from_cid_start);
-
-        for (TOMMessage[] requestsFromConsensus : requests2) {
-            for (TOMMessage request : requestsFromConsensus) {
-                logger.info("Checking ReqType4 request.getReqType() is {}", request.getReqType());
-            }
-        }
 
 //	HashMap<Integer, OtherClusterMessage> tempMap2= SavedMultiClusterMessages.get(this.ocmd.getOcmd().from_cid_start);
 //	TOMMessage[][] requests2 = tempMap2.get(clusterid).getOcmd().requests;
@@ -625,6 +601,34 @@ public final class DeliveryThread extends Thread {
             //                this.tomLayer.getCommunication().send(tgtArray, this.ocmd);
         }
         logger.info("OtherClusterMessage Sent to {}", tgtArray);
+
+
+
+
+        HashMap<Integer, OtherClusterMessage> tempMap= SavedMultiClusterMessages.get(this.ocmd.getOcmd().from_cid_start);
+
+        if (tempMap==null)	tempMap = new HashMap<Integer, OtherClusterMessage>();
+
+        tempMap.put(clusterid, this.ocmd);
+
+
+
+        logger.info("saving msg for execution, with tid: {}, requests: {}",
+                this.ocmd.getOcmd().from_cid_start,	requests);
+
+        SavedMessagesForExec.put(this.ocmd.getOcmd().from_cid_start, requests);
+
+        SavedMultiClusterMessages.put(this.ocmd.getOcmd().from_cid_start, tempMap);
+
+
+
+        TOMMessage[][] requests2 = SavedMessagesForExec.get(this.ocmd.getOcmd().from_cid_start);
+
+        for (TOMMessage[] requestsFromConsensus : requests2) {
+            for (TOMMessage request : requestsFromConsensus) {
+                logger.info("Checking ReqType4 request.getReqType() is {}", request.getReqType());
+            }
+        }
 
 
     }
@@ -744,7 +748,7 @@ public final class DeliveryThread extends Thread {
                     }
 
 
-                    logger.error("Adding to DoneMainLoopExec, cid: {}", lastcid);
+                    logger.info("Adding to DoneMainLoopExec, cid: {}", lastcid);
                     DoneMainLoopExec.put(lastcid,1);
 
 

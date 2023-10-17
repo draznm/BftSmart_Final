@@ -114,7 +114,7 @@ public final class DeliveryThread extends Thread {
     private final Condition deliveryPausedCondition = pausingDeliveryLock.newCondition();
     private int isPauseDelivery;
 
-    private int rvc_timeout = 40;
+    private int rvc_timeout = 80;
     private int last_rvc_msg = -1;
 
     OtherClusterMessage ocmd;
@@ -132,6 +132,7 @@ public final class DeliveryThread extends Thread {
     Set<Integer> ReceivedOtherClusterMsgs = new HashSet<>();
 
     ConcurrentHashMap<Integer, OtherClusterMessageData> SavedDecisionsToBeExecuted = new ConcurrentHashMap<Integer, OtherClusterMessageData>();
+    ConcurrentHashMap<Integer, Integer> DoneMainLoopExec = new ConcurrentHashMap<Integer, Integer>();
 
     ClusterInfo cinfo;
 
@@ -246,6 +247,7 @@ public final class DeliveryThread extends Thread {
                 SavedMessagesForExec.remove(i);
                 LastDecisionSaved.remove(i);
                 SavedMultiClusterMessages.remove(i);
+                DoneMainLoopExec.remove(i);
             }
 
         }
@@ -362,7 +364,7 @@ public final class DeliveryThread extends Thread {
 
 
 
-            if (othermsgs_received_mc(msg.getOcmd().from_cid_start))
+            if ((othermsgs_received_mc(msg.getOcmd().from_cid_start)) && (DoneMainLoopExec.contains(msg.getOcmd().from_cid_start)))
             {
                 logger.info("executing for tid: {}", msg.getOcmd().from_cid_start);
                 executeMessages(msg.getOcmd().from_cid_start);
@@ -741,7 +743,7 @@ public final class DeliveryThread extends Thread {
 
 
 
-
+                    DoneMainLoopExec.put(lastcid,1);
 
 
 

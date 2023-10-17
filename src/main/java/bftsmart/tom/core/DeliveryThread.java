@@ -238,7 +238,7 @@ public final class DeliveryThread extends Thread {
                 tempOcmd.cDecs, SavedMessagesForExec.get(tid));
 
 
-        if ((tid%1000==0) && (tid>0))
+        if ((tid%1000==0) && (tid>1100))
         {
             logger.info("deleting old info from tid: {} to {}",tid-1100, tid-100);
             for (int i = tid - 1100; i< tid-100 ; i++)
@@ -363,8 +363,8 @@ public final class DeliveryThread extends Thread {
 
 
 
-            logger.info("DoneMainLoopExec.contains(msg.getOcmd().from_cid_start) is : {}",
-                    DoneMainLoopExec.contains(msg.getOcmd().from_cid_start));
+            logger.info("DoneMainLoopExec.contains(msg.getOcmd().from_cid_start) for cid: {}, is : {}",
+                    msg.getOcmd().from_cid_start, DoneMainLoopExec.contains(msg.getOcmd().from_cid_start));
 
             if ((othermsgs_received_mc(msg.getOcmd().from_cid_start)) && (DoneMainLoopExec.contains(msg.getOcmd().from_cid_start)))
             {
@@ -744,7 +744,7 @@ public final class DeliveryThread extends Thread {
                     }
 
 
-
+                    logger.error("Adding to DoneMainLoopExec, cid: {}", lastcids);
                     DoneMainLoopExec.put(lastcid,1);
 
 

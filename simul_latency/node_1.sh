@@ -36,23 +36,3 @@ tc class add dev eth0 parent 1: classid 1:9 htb rate 1000mbit
 tc filter add dev eth0 parent 1: protocol ip prio 9 u32 flowid 1:9 match ip dst 127.0.0.1/32
 tc qdisc add dev eth0 parent 1:9 handle 90: netem delay 65.0ms
 
-tc class add dev eth0 parent 1: classid 1:10 htb rate 1000mbit
-tc filter add dev eth0 parent 1: protocol ip prio 10 u32 flowid 1:10 match ip dst 127.0.0.1/32
-tc qdisc add dev eth0 parent 1:10 handle 100: netem delay 65.0ms
-
-tc class add dev eth0 parent 1: classid 1:11 htb rate 1000mbit
-tc filter add dev eth0 parent 1: protocol ip prio 11 u32 flowid 1:11 match ip dst 127.0.0.1/32
-tc qdisc add dev eth0 parent 1:11 handle 110: netem delay 65.0ms
-
-tc class add dev eth0 parent 1: classid 1:12 htb rate 1000mbit
-tc filter add dev eth0 parent 1: protocol ip prio 12 u32 flowid 1:12 match ip dst 127.0.0.1/32
-tc qdisc add dev eth0 parent 1:12 handle 120: netem delay 112.0ms
-
-tc class add dev eth0 parent 1: classid 1:13 htb rate 1000mbit
-tc filter add dev eth0 parent 1: protocol ip prio 13 u32 flowid 1:13 match ip dst 127.0.0.1/32
-tc qdisc add dev eth0 parent 1:13 handle 130: netem delay 112.0ms
-
-tc class add dev eth0 parent 1: classid 1:14 htb rate 1000mbit
-tc filter add dev eth0 parent 1: protocol ip prio 14 u32 flowid 1:14 match ip dst 127.0.0.1/32
-tc qdisc add dev eth0 parent 1:14 handle 140: netem delay 112.0ms
-

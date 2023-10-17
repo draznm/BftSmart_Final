@@ -45,9 +45,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.locks.*;
 
 import static bftsmart.tom.core.messages.TOMMessageType.RECONFIG;
 
@@ -133,6 +131,10 @@ public final class DeliveryThread extends Thread {
 
     ConcurrentHashMap<Integer, OtherClusterMessageData> SavedDecisionsToBeExecuted = new ConcurrentHashMap<Integer, OtherClusterMessageData>();
     ConcurrentHashMap<Integer, Integer> DoneMainLoopExec = new ConcurrentHashMap<Integer, Integer>();
+
+
+    ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
+
 
     ClusterInfo cinfo;
 
@@ -284,6 +286,8 @@ public final class DeliveryThread extends Thread {
 
     public void deliveryOtherCluster(OtherClusterMessage msg) throws IOException, ClassNotFoundException
     {
+        readWriteLock.writeLock().lock();
+
 
         if(msg.getOcmd().type==1)
         {
@@ -316,7 +320,6 @@ public final class DeliveryThread extends Thread {
 
         }
 
-
         if (msg.getOcmd().type==2)
         {
 
@@ -337,9 +340,13 @@ public final class DeliveryThread extends Thread {
 
             HashMap<Integer, OtherClusterMessage> tempMap= SavedMultiClusterMessages.get(msg.getOcmd().from_cid_start);
 
+
+
             if (tempMap==null)	tempMap = new HashMap<Integer, OtherClusterMessage>();
 
             tempMap.put(clusterId, msg);
+
+
 
             SavedMultiClusterMessages.put(msg.getOcmd().from_cid_start, tempMap);
 
@@ -353,7 +360,8 @@ public final class DeliveryThread extends Thread {
 
                 for (TOMMessage[] requestsFromConsensus : requests2) {
                     for (TOMMessage request : requestsFromConsensus) {
-                        logger.info("Checking ReqType3 request.getReqType() is {}", request.getReqType());
+                        logger.info("Checking ReqType3 request.getReqType() is {}, with keyset {}",
+                                request.getReqType(), SavedMultiClusterMessages.get(msg.getOcmd().from_cid_start).keySet());
                     }
                 }
             }
@@ -377,6 +385,7 @@ public final class DeliveryThread extends Thread {
         }
 
 
+        readWriteLock.writeLock().unlock();
 
 
     }
@@ -387,9 +396,14 @@ public final class DeliveryThread extends Thread {
     public boolean othermsgs_received_mc(int tid)
     {
 
+
         HashMap<Integer, OtherClusterMessage> temp = SavedMultiClusterMessages.get(tid);
         logger.info("othermsgs_received_mc for tid: {}, is temp size, nclusters is {}, {}, temp keyset {}",tid, temp.size(), this.cinfo.nClusters, temp.keySet());
+
+
+
         return temp.size() == this.cinfo.nClusters;
+
 
     }
 
@@ -607,6 +621,10 @@ public final class DeliveryThread extends Thread {
 
         HashMap<Integer, OtherClusterMessage> tempMap= SavedMultiClusterMessages.get(this.ocmd.getOcmd().from_cid_start);
 
+
+
+
+
         if (tempMap==null)	tempMap = new HashMap<Integer, OtherClusterMessage>();
 
         tempMap.put(clusterid, this.ocmd);
@@ -615,6 +633,9 @@ public final class DeliveryThread extends Thread {
 
         logger.info("saving msg for execution, with tid: {}, requests: {}",
                 this.ocmd.getOcmd().from_cid_start,	requests);
+
+
+
 
         SavedMessagesForExec.put(this.ocmd.getOcmd().from_cid_start, requests);
 
@@ -736,11 +757,13 @@ public final class DeliveryThread extends Thread {
 
 
 
+                    readWriteLock.writeLock().lock();
 
                     sending_other_clusters(consensusIds, regenciesIds, leadersIds,
                             cDecs, requests, decisions, lastDecision);
 
-
+                    HashMap<Integer, OtherClusterMessage> temp = SavedMultiClusterMessages.get(lastcid);
+                    logger.info("Main LOOP othermsgs_received_mc for tid: {}, is temp size, nclusters is {}, {}, temp keyset {}",lastcid, temp.size(), this.cinfo.nClusters, temp.keySet());
 
                     if (othermsgs_received_mc(lastcid))
                     {
@@ -751,6 +774,7 @@ public final class DeliveryThread extends Thread {
                     logger.info("Adding to DoneMainLoopExec, cid: {}", lastcid);
                     DoneMainLoopExec.put(lastcid,1);
 
+                    readWriteLock.writeLock().unlock();
 
 
 

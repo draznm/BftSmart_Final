@@ -710,7 +710,9 @@ public final class TOMLayer extends Thread implements RequestReceiver {
         if (!doWork) return;
 
 
+
         dt.deliveryOtherCluster(msg);
+
     }
 
 

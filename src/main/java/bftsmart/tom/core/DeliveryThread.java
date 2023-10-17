@@ -363,6 +363,8 @@ public final class DeliveryThread extends Thread {
 
 
 
+            logger.info("DoneMainLoopExec.contains(msg.getOcmd().from_cid_start) is : {}",
+                    DoneMainLoopExec.contains(msg.getOcmd().from_cid_start));
 
             if ((othermsgs_received_mc(msg.getOcmd().from_cid_start)) && (DoneMainLoopExec.contains(msg.getOcmd().from_cid_start)))
             {

@@ -494,7 +494,8 @@ public final class TOMLayer extends Thread implements RequestReceiver {
 
             if (!doWork) break;
 
-            logger.info("There are requests to be ordered. I will propose.");
+            logger.info("There are requests to be ordered. I will propose, with lastexec: {}",
+                    getLastExec());
 
 
             if ((execManager.getCurrentLeader() == this.controller.getStaticConf().getProcessId()) && //I'm the leader

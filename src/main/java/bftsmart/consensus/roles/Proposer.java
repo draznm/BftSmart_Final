@@ -55,7 +55,7 @@ public class Proposer {
      */
     public void startConsensus(int cid, byte[] value) {
         //******* EDUARDO BEGIN **************//
-        logger.info("Proposing to {}", this.controller.getCurrentViewAcceptors());
+        logger.info("Proposing to {} for cid {}", this.controller.getCurrentViewAcceptors(), cid);
         communication.send(this.controller.getCurrentViewAcceptors(),
                 factory.createPropose(cid, 0, value));
         //******* EDUARDO END **************//

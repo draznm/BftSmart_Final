@@ -139,6 +139,15 @@ public final class DeliveryThread extends Thread {
     ClusterInfo cinfo;
 
 
+    Runtime runtime;
+    long initialMemory;
+
+    long finalMemory;
+    long memoryUsed ;
+    double memoryUsedInMB;
+
+
+
     public HashMap<Integer, Integer> getHmap()
     {
         return hmap;
@@ -682,6 +691,13 @@ public final class DeliveryThread extends Thread {
                             "\n\t\t###################################"
                                     + "\n\t\t    Ready to process operations    "
                                     + "\n\t\t###################################");
+
+                    runtime = Runtime.getRuntime();
+                    initialMemory = runtime.totalMemory() - runtime.freeMemory();
+
+
+
+
                     init = false;
                 }
             }
@@ -769,6 +785,15 @@ public final class DeliveryThread extends Thread {
                     {
                         executeMessages(lastcid);
                     }
+
+
+                    finalMemory = runtime.totalMemory() - runtime.freeMemory();
+                    memoryUsed = finalMemory - initialMemory;
+                    memoryUsedInMB = memoryUsed / (1024.0 * 1024.0);
+
+                    logger.info(" cid ={}, Memory Used: {} MB",lastcid,
+                memoryUsedInMB);
+
 
 
 //                    logger.info("Adding to DoneMainLoopExec, cid: {}", lastcid);

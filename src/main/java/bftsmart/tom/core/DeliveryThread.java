@@ -771,8 +771,8 @@ public final class DeliveryThread extends Thread {
                     }
 
 
-                    logger.info("Adding to DoneMainLoopExec, cid: {}", lastcid);
-                    DoneMainLoopExec.put(lastcid,1);
+//                    logger.info("Adding to DoneMainLoopExec, cid: {}", lastcid);
+//                    DoneMainLoopExec.put(lastcid,1);
 
                     readWriteLock.writeLock().unlock();
 

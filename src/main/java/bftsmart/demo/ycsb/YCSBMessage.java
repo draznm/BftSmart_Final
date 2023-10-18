@@ -15,6 +15,8 @@
  */
 package bftsmart.demo.ycsb;
 
+import com.yahoo.ycsb.Client;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -24,6 +26,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Set;
 
+
+
 /**
  *
  * @author Marcel Santos
@@ -32,6 +36,9 @@ import java.util.Set;
 public class YCSBMessage implements Serializable {
 
     private static final long serialVersionUID = 6198684730704708506L;
+
+    Client c;
+
 
     public enum Type {
         CREATE, READ, SCAN, UPDATE, DELETE, SIZE, ERROR

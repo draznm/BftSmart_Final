@@ -249,10 +249,10 @@ public final class DeliveryThread extends Thread {
                 tempOcmd.cDecs, SavedMessagesForExec.get(tid));
 
 
-        if (tid%200==0)
+        if (tid%100==0)
         {
             logger.info("deleting old info from tid: {} to {}",tid-1100, tid-100);
-            for (int i = Math.max(tid - 1100, 0); i< tid ; i++)
+            for (int i = Math.max(tid - 100, 0); i< tid ; i++)
             {
 
                 SavedMessagesForExec.remove(i);

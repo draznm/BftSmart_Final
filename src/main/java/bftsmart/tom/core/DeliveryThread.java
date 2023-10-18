@@ -791,8 +791,13 @@ public final class DeliveryThread extends Thread {
                     memoryUsed = finalMemory - initialMemory;
                     memoryUsedInMB = memoryUsed / (1024.0 * 1024.0);
 
-                    logger.info(" cid ={}, Memory Used: {} MB",lastcid,
-                memoryUsedInMB);
+                    logger.info(" cid ={}, Memory Used: {} MB, size of SavedMultiClusterMessages = {}," +
+                                    "Sizeof  SavedDecisionsToBeExecuted {}, " +
+                                    "sizeof  SavedMessagesForExec{}, sizeof decided = {}, " +
+                                    "sizeof LastDecisionSaved {}",lastcid,
+                memoryUsedInMB, SavedMultiClusterMessages.keySet().size(),
+                            SavedDecisionsToBeExecuted.size(), SavedMessagesForExec.size(),
+                            decided.size(), LastDecisionSaved.size() );
 
 
 

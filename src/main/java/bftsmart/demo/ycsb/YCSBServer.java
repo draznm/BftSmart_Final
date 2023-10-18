@@ -71,6 +71,8 @@ public class YCSBServer extends DefaultRecoverable {
     long usedMemory = memoryBean.getHeapMemoryUsage().getUsed();
 
 
+
+
     public static void main(String[] args) throws Exception {
         if (args.length == 1) {
             new YCSBServer(Integer.parseInt(args[0]));

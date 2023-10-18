@@ -15,6 +15,8 @@
  */
 package bftsmart.demo.ycsb;
 
+import java.lang.management.ManagementFactory;
+import java.lang.management.MemoryMXBean;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Properties;
@@ -40,6 +42,13 @@ public class YCSBClient extends DB {
     private int myId;
 
     Client c;
+
+
+    MemoryMXBean memoryBean = ManagementFactory.getMemoryMXBean();
+    long usedMemory = memoryBean.getHeapMemoryUsage().getUsed();
+
+
+
 
     public YCSBClient() {
     }
@@ -103,6 +112,11 @@ public class YCSBClient extends DB {
             map.put(field, values.get(field).toArray());
         }
         YCSBMessage msg = YCSBMessage.newUpdateRequest(table, key, map);
+
+        usedMemory = memoryBean.getHeapMemoryUsage().getUsed();
+        System.out.println("JVM Memory Used by the client: " + usedMemory + " bytes");
+
+
         byte[] reply = proxy.invokeOrdered(msg.getBytes());
         YCSBMessage replyMsg = YCSBMessage.getObject(reply);
         return replyMsg.getResult();

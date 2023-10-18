@@ -41,6 +41,8 @@ import org.slf4j.LoggerFactory;
 
 import javax.print.attribute.standard.MediaSize;
 import java.io.IOException;
+import java.lang.management.ManagementFactory;
+import java.lang.management.MemoryMXBean;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -791,13 +793,18 @@ public final class DeliveryThread extends Thread {
                     memoryUsed = finalMemory - initialMemory;
                     memoryUsedInMB = memoryUsed / (1024.0 * 1024.0);
 
+                    MemoryMXBean memoryBean = ManagementFactory.getMemoryMXBean();
+                    long usedMemory = memoryBean.getHeapMemoryUsage().getUsed();
+
+
+
                     logger.info(" cid ={}, Memory Used: {} MB, size of SavedMultiClusterMessages = {}," +
                                     "Sizeof  SavedDecisionsToBeExecuted {}, " +
                                     "sizeof  SavedMessagesForExec{}, sizeof decided = {}, " +
-                                    "sizeof LastDecisionSaved {}",lastcid,
+                                    "sizeof LastDecisionSaved {}, usedMemory: {}",lastcid,
                 memoryUsedInMB, SavedMultiClusterMessages.keySet().size(),
                             SavedDecisionsToBeExecuted.size(), SavedMessagesForExec.size(),
-                            decided.size(), LastDecisionSaved.size() );
+                            decided.size(), LastDecisionSaved.size(), usedMemory);
 
 
 

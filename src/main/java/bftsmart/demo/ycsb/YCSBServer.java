@@ -22,6 +22,8 @@ import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
+import java.lang.management.ManagementFactory;
+import java.lang.management.MemoryMXBean;
 import java.util.TreeMap;
 import java.util.concurrent.*;
 
@@ -63,6 +65,11 @@ public class YCSBServer extends DefaultRecoverable {
     private long numRequests = 0;
     private double maxThroughput;
     private long startTime = 0;
+
+
+    MemoryMXBean memoryBean = ManagementFactory.getMemoryMXBean();
+    long usedMemory = memoryBean.getHeapMemoryUsage().getUsed();
+
 
     public static void main(String[] args) throws Exception {
         if (args.length == 1) {
@@ -119,6 +126,9 @@ public class YCSBServer extends DefaultRecoverable {
         for (byte[] command : commands) {
             if (msgCtx != null && msgCtx[index] != null && msgCtx[index].getConsensusId() % 1000 == 0 && !logPrinted) {
                 System.out.println("YCSBServer executing CID: " + msgCtx[index].getConsensusId());
+                usedMemory = memoryBean.getHeapMemoryUsage().getUsed();
+                System.out.println("Memory Used by the JVM: " + usedMemory + " bytes");
+
                 logPrinted = true;
             } else {
                 logPrinted = false;

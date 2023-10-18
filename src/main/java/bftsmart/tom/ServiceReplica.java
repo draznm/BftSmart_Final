@@ -346,7 +346,7 @@ public class ServiceReplica {
                             }   request.deliveryTime = System.nanoTime();
                             if (executor instanceof BatchExecutable) {
                                 
-                               logger.info("Batching request from " + request.getSender());
+                               logger.debug("Batching request from " + request.getSender());
                                 
                                 // This is used to deliver the content decided by a consensus instance directly to
                                 // a Recoverable object. It is useful to allow the application to create a log and

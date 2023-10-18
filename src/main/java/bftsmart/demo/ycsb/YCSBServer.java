@@ -155,7 +155,7 @@ public class YCSBServer extends DefaultRecoverable {
                     switch (aRequest.getEntity()) {
                         case RECORD: // ##### entity: record #####
                             if (!mTables.containsKey(aRequest.getTable())) {
-                                mTables.put((String) aRequest.getTable(), new YCSBTable());
+//                                mTables.put((String) aRequest.getTable(), new YCSBTable());
                             }
                             mTables.get(aRequest.getTable()).put(aRequest.getKey(), aRequest.getValues());
                             reply = YCSBMessage.newUpdateResponse(1);

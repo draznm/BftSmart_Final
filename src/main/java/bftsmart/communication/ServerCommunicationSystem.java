@@ -173,7 +173,7 @@ public class ServerCommunicationSystem extends Thread {
 
                     count++;
                 } else {
-                    logger.info("<-- receiving, null msg:" + sm);
+//                    logger.info("<-- receiving, null msg:" + sm);
                     messageHandler.verifyPending();               
                 }
             } catch (InterruptedException e) {

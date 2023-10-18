@@ -249,10 +249,10 @@ public final class DeliveryThread extends Thread {
                 tempOcmd.cDecs, SavedMessagesForExec.get(tid));
 
 
-        if ((tid%1000==0) && (tid>1100))
+        if (tid%200==0)
         {
             logger.info("deleting old info from tid: {} to {}",tid-1100, tid-100);
-            for (int i = tid - 1100; i< tid-100 ; i++)
+            for (int i = Math.max(tid - 1100, 0); i< tid-100 ; i++)
             {
 
                 SavedMessagesForExec.remove(i);
@@ -369,7 +369,7 @@ public final class DeliveryThread extends Thread {
 
                 for (TOMMessage[] requestsFromConsensus : requests2) {
                     for (TOMMessage request : requestsFromConsensus) {
-                        logger.info("Checking ReqType3 request.getReqType() is {}, with keyset {}",
+                        logger.debug("Checking ReqType3 request.getReqType() is {}, with keyset {}",
                                 request.getReqType(), SavedMultiClusterMessages.get(msg.getOcmd().from_cid_start).keySet());
                     }
                 }
@@ -652,13 +652,13 @@ public final class DeliveryThread extends Thread {
 
 
 
-        TOMMessage[][] requests2 = SavedMessagesForExec.get(this.ocmd.getOcmd().from_cid_start);
+//        TOMMessage[][] requests2 = SavedMessagesForExec.get(this.ocmd.getOcmd().from_cid_start);
 
-        for (TOMMessage[] requestsFromConsensus : requests2) {
-            for (TOMMessage request : requestsFromConsensus) {
-                logger.info("Checking ReqType4 request.getReqType() is {}", request.getReqType());
-            }
-        }
+//        for (TOMMessage[] requestsFromConsensus : requests2) {
+//            for (TOMMessage request : requestsFromConsensus) {
+//                logger.info("Checking ReqType4 request.getReqType() is {}", request.getReqType());
+//            }
+//        }
 
 
     }

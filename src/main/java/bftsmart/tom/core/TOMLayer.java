@@ -378,29 +378,29 @@ public final class TOMLayer extends Thread implements RequestReceiver {
         boolean readOnly = (msg.getReqType() == TOMMessageType.UNORDERED_REQUEST
                 || msg.getReqType() == TOMMessageType.UNORDERED_HASHED_REQUEST);
         if (readOnly) {
-            logger.info("Received read-only TOMMessage from client " + msg.getSender() + " with sequence number " + msg.getSequence() + " for session " + msg.getSession());
+            logger.debug("Received read-only TOMMessage from client " + msg.getSender() + " with sequence number " + msg.getSequence() + " for session " + msg.getSession());
 
             dt.deliverUnordered(msg, syncher.getLCManager().getLastReg());
         } else {
-            logger.info("Received TOMMessage from client " + msg.getSender() + " with sequence number " + msg.getSequence() + " for session " + msg.getSession() + " with time = "
+            logger.debug("Received TOMMessage from client " + msg.getSender() + " with sequence number " + msg.getSequence() + " for session " + msg.getSession() + " with time = "
                     +System.currentTimeMillis());
 
             if (clientsManager.requestReceived(msg, fromClient, communication)) {
 
 
                 if(controller.getStaticConf().getBatchTimeout() == -1) {
-                    logger.info("1, getBatchTimeout() == -1: Signalling haveMessages() after receiving TOMMessage from client " + msg.getSender());
+                    logger.debug("1, getBatchTimeout() == -1: Signalling haveMessages() after receiving TOMMessage from client " + msg.getSender());
 
                     haveMessages();
                 } else {
 
                     if (!clientsManager.isNextBatchReady()) {
-                        logger.info("2, getBatchTimeout() != -1, nextbatch not ready: Signalling haveMessages() after receiving TOMMessage from client " + msg.getSender());
+                        logger.debug("2, getBatchTimeout() != -1, nextbatch not ready: Signalling haveMessages() after receiving TOMMessage from client " + msg.getSender());
 
                         lastRequest = System.currentTimeMillis();
 
                     } else {
-                        logger.info("3, getBatchTimeout() != -1, nextbatch is ready:Signalling haveMessages() after receiving TOMMessage from client " + msg.getSender());
+                        logger.debug("3, getBatchTimeout() != -1, nextbatch is ready:Signalling haveMessages() after receiving TOMMessage from client " + msg.getSender());
 
                         haveMessages();
                     }

@@ -314,7 +314,7 @@ public class ServiceReplica {
             noop = true;
             for (TOMMessage request : requestsFromConsensus) {
                 
-                logger.info("Processing TOMMessage from client " + request.getSender() + " with sequence number " + request.getSequence() + " for session " + request.getSession() + " decided in consensus " + consId[consensusCount]);
+                logger.debug("Processing TOMMessage from client " + request.getSender() + " with sequence number " + request.getSequence() + " for session " + request.getSession() + " decided in consensus " + consId[consensusCount]);
 
 //                try {
 //                    System.out.wait(this.cinfo.NodeToLatency.get(this.id));

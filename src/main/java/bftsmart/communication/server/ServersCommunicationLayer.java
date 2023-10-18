@@ -322,14 +322,14 @@ public class ServersCommunicationLayer extends Thread {
         connectionsLock.lock();
 
         ServerConnection ret = this.connections.get(remoteId);
-        logger.info("Getting connection for ret: {}, remoteId: {}",ret, remoteId);
+        logger.debug("Getting connection for ret: {}, remoteId: {}",ret, remoteId);
 
         if (ret == null) {
-            logger.info("Getting connection for remoteId: {}",remoteId);
+            logger.debug("Getting connection for remoteId: {}",remoteId);
             ret = new ServerConnection(controller, null, 
             		remoteId, this.inQueue, this.replica);
             this.connections.put(remoteId, ret);
-            logger.info("After Adding connection, ret: {}",this.connections.get(remoteId));
+            logger.debug("After Adding connection, ret: {}",this.connections.get(remoteId));
         }
         connectionsLock.unlock();
         return ret;

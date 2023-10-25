@@ -150,10 +150,10 @@ public class YCSBServer extends DefaultRecoverable {
                     switch (aRequest.getEntity()) {
                         case RECORD: // ##### entity: record #####
                             if (!mTables.containsKey(aRequest.getTable())) {
-//                                mTables.put((String) aRequest.getTable(), new YCSBTable());
+                                mTables.put((String) aRequest.getTable(), new YCSBTable());
                             }
                             if (!mTables.get(aRequest.getTable()).containsKey(aRequest.getKey())) {
-//                                mTables.get(aRequest.getTable()).put(aRequest.getKey(), aRequest.getValues());
+                                mTables.get(aRequest.getTable()).put(aRequest.getKey(), aRequest.getValues());
                                 reply = YCSBMessage.newInsertResponse(0);
                             }
                             break;
@@ -167,9 +167,9 @@ public class YCSBServer extends DefaultRecoverable {
                     switch (aRequest.getEntity()) {
                         case RECORD: // ##### entity: record #####
                             if (!mTables.containsKey(aRequest.getTable())) {
-//                                mTables.put((String) aRequest.getTable(), new YCSBTable());
+                                mTables.put((String) aRequest.getTable(), new YCSBTable());
                             }
-//                            mTables.get(aRequest.getTable()).put(aRequest.getKey(), aRequest.getValues());
+                            mTables.get(aRequest.getTable()).put(aRequest.getKey(), aRequest.getValues());
                             reply = YCSBMessage.newUpdateResponse(1);
                             break;
                         default: // Only update records

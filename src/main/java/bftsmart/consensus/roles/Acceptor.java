@@ -194,9 +194,14 @@ public final class Acceptor {
 	 */
 	private void executePropose(Epoch epoch, byte[] value) {
 		int cid = epoch.getConsensus().getId();
-		logger.info("Executing propose for cId:{}, Epoch Timestamp:{}", cid, epoch.getTimestamp());
+
 
 		long consensusStartTime = System.nanoTime();
+
+		logger.info("Executing propose for cId:{}, Epoch Timestamp:{}, " +
+						"consensusStartTime: {}",
+				cid, epoch.getTimestamp(), consensusStartTime);
+
 
 		if (epoch.propValue == null) { // only accept one propose per epoch
 			epoch.propValue = value;

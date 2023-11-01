@@ -233,6 +233,9 @@ public final class DeliveryThread extends Thread {
     {
         logger.info("executeMessages for tid: " + tid);
 
+
+        long ExecStartTime = System.nanoTime();
+
         OtherClusterMessageData tempOcmd = null;
         try {
             tempOcmd = SavedMultiClusterMessages.get(tid).get(this.cinfo.getClusterNumber(getNodeId())).getOcmd();
@@ -291,6 +294,17 @@ public final class DeliveryThread extends Thread {
 
             tomLayer.execManager.removeConsensus(stableConsensus);
         }
+
+
+
+
+
+        long ExecEndTime = System.nanoTime();
+
+        logger.info("Ending Exec for cId:{},  " +
+                        "ExecLatency: {}",
+                lastcid , ExecEndTime - ExecStartTime);
+
 
 
     }
@@ -793,12 +807,27 @@ public final class DeliveryThread extends Thread {
 
                     LastDecisionSaved.put(lastcid, lastDecision);
 
+                    long consensusEndTime = System.nanoTime();
 
+                    logger.info("Ending Consensus for cId:{},  " +
+                                    "consensusEndTime: {}",
+                            lastcid , consensusEndTime);
 
                     readWriteLock.writeLock().lock();
 
+
+
+
                     sending_other_clusters(consensusIds, regenciesIds, leadersIds,
                             cDecs, requests, decisions, lastDecision);
+
+
+
+                    long MCEndTime = System.nanoTime();
+
+                    logger.info("Ending MC for cId:{},  " +
+                                    "MCLatency: {}",
+                            lastcid , MCEndTime - consensusEndTime);
 
                     HashMap<Integer, OtherClusterMessage> temp = SavedMultiClusterMessages.get(lastcid);
                     logger.info("Main LOOP othermsgs_received_mc for tid: {}, is temp size, nclusters is {}, {}, temp keyset {}",lastcid, temp.size(), this.cinfo.nClusters, temp.keySet());

@@ -696,7 +696,7 @@ public final class DeliveryThread extends Thread {
 
                     runtime = Runtime.getRuntime();
 
-                    runtime.gc();
+//                    runtime.gc();
 
                     initialMemory = runtime.totalMemory() - runtime.freeMemory();
 

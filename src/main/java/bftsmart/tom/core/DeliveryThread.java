@@ -585,7 +585,7 @@ public final class DeliveryThread extends Thread {
 
         this.ocmd = new OtherClusterMessage(consensusIds, regenciesIds, leadersIds, cDecs, requests,
                 this.receiver.getId(), this.receiver.getConfig(), decisions.get(0).getConsensusId(),
-                lastDecision.getConsensusId(), 2);
+                lastDecision.getConsensusId(), 1);
 
 
 
@@ -625,7 +625,8 @@ public final class DeliveryThread extends Thread {
             logger.info("Not sending multicluster msg, clusterid==1 is  {}", clusterid==1);
             //                this.tomLayer.getCommunication().send(tgtArray, this.ocmd);
         }
-        logger.info("OtherClusterMessage Sent to {}", tgtArray);
+        logger.info("OtherClusterMessage Sent to {}, with type {}",
+                tgtArray, this.ocmd.getOcmd().type);
 
 
 

@@ -116,7 +116,7 @@ public class ClusterInfo {
 
 
             for (Integer key : ClusterNodeCount.keySet()) {
-                ClusterNodeCount.put(key, 1+ (ClusterNodeCount.get(key)-1)/3);
+                ClusterNodeCount.put(key, (ClusterNodeCount.get(key)-1)/3);
             }
 
 

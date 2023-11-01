@@ -313,7 +313,7 @@ public final class DeliveryThread extends Thread {
 //			int clusterid = cinfo.getAllConnectionsMap().get(this.receiver.getId()).ClusterNumber;
 
 
-            if (!othermsgs_received_mc(msg.getOcmd().from_cid_start))
+//            if (!othermsgs_received_mc(msg.getOcmd().from_cid_start))
             {
 
 

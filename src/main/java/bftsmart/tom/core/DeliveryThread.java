@@ -316,20 +316,25 @@ public final class DeliveryThread extends Thread {
             if (!othermsgs_received_mc(msg.getOcmd().from_cid_start))
             {
 
-
-
                 int[] tgtArray = controller.getCurrentViewOtherAcceptors();
 
-                msg.setOcmdType(2);
+//                msg.setOcmdType(2);
 
-                logger.info("Sending type 2 message to {}", tgtArray);
 
-//            logger.info("Sending type 2 message to {}, with msg= {}", tgtArray, newocmd);
+                OtherClusterMessage newocmd = new OtherClusterMessage(msg.getOcmd().consId, msg.getOcmd().regencies, msg.getOcmd().leaders,
+                        msg.getOcmd().cDecs, msg.getOcmd().requests,
+                        this.getNodeId(), msg.getOcmd().fromConfig, msg.getOcmd().from_cid_start,
+                        msg.getOcmd().from_cid_end, 2);
 
-                this.tomLayer.getCommunication().send(tgtArray, msg);
 
-//            logger.info("Sent type 2 message to {} with msg = {}", tgtArray, newocmd);
-//			this.tomLayer.getCommunication().send(tgtArray, this.ocmd);
+
+//                logger.info("Sending type 2 message to {}", tgtArray);
+
+            logger.info("Sending type 2 message to {}, with msg= {}", tgtArray, newocmd);
+
+//                this.tomLayer.getCommunication().send(tgtArray, msg);
+
+			this.tomLayer.getCommunication().send(tgtArray, this.ocmd);
 
 
             }

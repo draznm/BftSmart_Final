@@ -96,51 +96,52 @@ public class ClusterInfo {
             ClusterNodeCount = new HashMap<Integer, Integer>();
             HashMap<Integer, Integer> ClusterSentCount = new HashMap<Integer, Integer>();
 
-
-            for (int i : hm.keySet()) {
-
-                temp_cluster_number = hm.get(i).ClusterNumber;
-                if (temp_cluster_number != cluster_id) {
-                    FPlusOneArray.add(i);
-//
-//                    if (ClusterNodeCount.containsKey(temp_cluster_number))
-//                    {
-//                        ClusterNodeCount.put(temp_cluster_number, 1+ClusterNodeCount.get(temp_cluster_number));
-//                    }
-//                    else
-//                    {
-//                        ClusterNodeCount.put(temp_cluster_number, 1);
-//                    }
-//
-//                    ClusterSentCount.put(temp_cluster_number, 0);
-
-                }
-
-
-            }
-
-//            for (Integer key : ClusterNodeCount.keySet()) {
-//                ClusterNodeCount.put(key, 1+ (ClusterNodeCount.get(key)-1)/3);
-//            }
-
-
 //
 //            for (int i : hm.keySet()) {
 //
 //                temp_cluster_number = hm.get(i).ClusterNumber;
 //                if (temp_cluster_number != cluster_id) {
-//
-//                    if (ClusterSentCount.get(temp_cluster_number) <=ClusterNodeCount.get(temp_cluster_number))
-//                    {
-//                        FPlusOneArray.add(i);
-//                        ClusterSentCount.put(temp_cluster_number, 1+ClusterSentCount.get(temp_cluster_number));
-//
-//                    }
+//                    FPlusOneArray.add(i);
+////
+////                    if (ClusterNodeCount.containsKey(temp_cluster_number))
+////                    {
+////                        ClusterNodeCount.put(temp_cluster_number, 1+ClusterNodeCount.get(temp_cluster_number));
+////                    }
+////                    else
+////                    {
+////                        ClusterNodeCount.put(temp_cluster_number, 1);
+////                    }
+////
+//                    ClusterSentCount.put(temp_cluster_number, 0);
 //
 //                }
 //
 //
 //            }
+
+            for (Integer key : ClusterNodeCount.keySet()) {
+                ClusterNodeCount.put(key, 1+ (ClusterNodeCount.get(key)-1)/3);
+                ClusterSentCount.put(key, 0);
+            }
+
+
+
+            for (int i : hm.keySet()) {
+
+                temp_cluster_number = hm.get(i).ClusterNumber;
+                if (temp_cluster_number != cluster_id) {
+
+                    if (ClusterSentCount.get(temp_cluster_number) <=ClusterNodeCount.get(temp_cluster_number))
+                    {
+                        FPlusOneArray.add(i);
+                        ClusterSentCount.put(temp_cluster_number, 1+ClusterSentCount.get(temp_cluster_number));
+
+                    }
+
+                }
+
+
+            }
 
 
 
@@ -148,7 +149,7 @@ public class ClusterInfo {
 
         }
 
-
+        logger.info("FPlusOneArray is : {}", FPlusOneArray);
 
         return FPlusOneArray;
     }

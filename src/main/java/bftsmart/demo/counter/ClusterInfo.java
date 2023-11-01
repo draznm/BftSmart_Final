@@ -101,7 +101,7 @@ public class ClusterInfo {
 
                 temp_cluster_number = hm.get(i).ClusterNumber;
                 if (temp_cluster_number != cluster_id) {
-//                    FPlusOneArray.add(i);
+                    FPlusOneArray.add(i);
 
                     if (ClusterNodeCount.containsKey(temp_cluster_number)) {
                         ClusterNodeCount.put(temp_cluster_number, 1 + ClusterNodeCount.get(temp_cluster_number));

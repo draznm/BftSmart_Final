@@ -127,7 +127,7 @@ public class ClusterInfo {
 
                     if (ClusterSentCount.get(temp_cluster_number) <=ClusterNodeCount.get(temp_cluster_number))
                     {
-                        FPlusOneArray.add(i);
+//                        FPlusOneArray.add(i);
                         ClusterSentCount.put(temp_cluster_number, 1+ClusterSentCount.get(temp_cluster_number));
 
                     }

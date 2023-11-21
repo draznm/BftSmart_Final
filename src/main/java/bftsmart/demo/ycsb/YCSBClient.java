@@ -103,7 +103,7 @@ public class YCSBClient extends DB {
     }
 
     @Override
-    public int update(String table, String key,
+        public int update(String table, String key,
             HashMap<String, ByteIterator> values) {
         Iterator<String> keys = values.keySet().iterator();
         HashMap<String, byte[]> map = new HashMap<>();
@@ -114,7 +114,8 @@ public class YCSBClient extends DB {
         YCSBMessage msg = YCSBMessage.newUpdateRequest(table, key, map);
 
         usedMemory = memoryBean.getHeapMemoryUsage().getUsed();
-        System.out.println("JVM Memory Used by the client: " + usedMemory + " bytes");
+        System.out.println("table name is "+table+ ", key is "+ key + " values is "+
+                values +" JVM Memory Used by the client: " + usedMemory + " bytes");
 
 
         byte[] reply = proxy.invokeOrdered(msg.getBytes());

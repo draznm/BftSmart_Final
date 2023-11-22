@@ -145,6 +145,9 @@ public class YCSBServer extends DefaultRecoverable {
             if (_debug) {
                 System.out.println("[INFO] Processing an ordered request");
             }
+            System.out.println("[INFO] Processing an ordered request with" +
+                    "aRequest.getType() being "+ aRequest.getType());
+            
             switch (aRequest.getType()) {
                 case CREATE: { // ##### operation: create #####
                     switch (aRequest.getEntity()) {

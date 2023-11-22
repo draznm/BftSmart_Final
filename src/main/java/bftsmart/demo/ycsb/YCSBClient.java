@@ -115,7 +115,7 @@ public class YCSBClient extends DB {
 
         usedMemory = memoryBean.getHeapMemoryUsage().getUsed();
         System.out.println("table name is "+table+ ", key is "+ key + " values is "+
-                values +" JVM Memory Used by the client: " + usedMemory + " bytes");
+                values + "values size, keyset size are "+ values.size() + ", " + values.keySet() + "JVM Memory Used by the client: " + usedMemory + " bytes");
 
 
         byte[] reply = proxy.invokeOrdered(msg.getBytes());

@@ -187,88 +187,13 @@ public class YCSBServer extends DefaultRecoverable {
 
 
 
-//            this.executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(2);
-//
-//            for (int i=0; i < this.cinfo.nClusters;i++)
-//            {
-//
-//                if (i!=this.cinfo.clusterMap.get(this.sid) && this.sid==msgCtx[index].getLeader())
-//                {
-//                    System.out.println("i, this.sid, this.cinfo.clusterMap.get(this.sid), msgCtx[index].getLeader()"+
-//                            i+ ", " +this.sid + ", " + this.cinfo.clusterMap.get(this.sid) + ", "+ msgCtx[index].getLeader());
-//                    this.ServiceTaskArr[i] = new Task(this.sid, "config"+Integer.toString(i));
-//
-//                    this.ServiceTaskArr[i].setMsg(aRequest);
-//                    this.executor.execute(this.ServiceTaskArr[i]);
-//                }
-//            }
-
-//            if (this.cinfo.nClusters > 1)
-//            {
-//
-//                this.tempTasks = new Task[this.cinfo.nClusters];
-//                this.latch = new CountDownLatch(this.cinfo.nClusters-1);
-//                for (int i=0; i < this.cinfo.nClusters;i++)
-//                {
-//
-//                    if (this.cinfo.clusterMap.get(this.sid)==0 && this.sid==msgCtx[index].getLeader())
-//                    {
-//
-//                        this.tempTasks[i] = new Task(this.sid, "config"+Integer.toString(i), latch);
-//                        this.tempTasks[i].setMsg(aRequest);
-//
-//                        this.tempTasks[i].start();
-//
-//                    }
-//                }
-//
-//                new Thread(() -> {
-//                    try {
-//                        latch.await();
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
-//                }).start();
-//            }
-
-
-
-
-//            for (int i=0; i < this.cinfo.nClusters;i++)
-//            {
-//                if (i!=this.cinfo.clusterMap.get(this.sid) && this.sid==msgCtx[index].getLeader())
-//                {
-//                    this.ServiceTaskArr[i].invokeOrderedNoReply(aRequest.getBytes());
-//                }
-//            }
-
-
-
-
-//            this.executor.shutdown();
-//            try {
-//                this.executor.awaitTermination(1000, TimeUnit.SECONDS);
-//            } catch (InterruptedException e) {
-//                throw new RuntimeException(e);
-//            }
-
-
-
 
 
             replies[index++] = reply.getBytes();
 
 
-            //  send message to all other servers here
-
-
-
-
-
 
         }
-//		System.out.println("RETURNING REPLY");
-
 
 
 
@@ -292,6 +217,10 @@ public class YCSBServer extends DefaultRecoverable {
         if (_debug) {
             System.out.println("[INFO] Processing an unordered request");
         }
+
+        System.out.println("[INFO] Processing an ordered request with" +
+                "aRequest.getType() being "+ aRequest.getType());
+
 
         switch (aRequest.getType()) {
             case READ: { // ##### operation: read #####

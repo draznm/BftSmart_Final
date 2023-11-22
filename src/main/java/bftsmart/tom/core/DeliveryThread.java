@@ -905,6 +905,8 @@ public final class DeliveryThread extends Thread {
                 false); // Since the request is unordered,
         // there is no consensus info to pass
 
+        logger.info("deliverUnordered READ ONLY");
+
         msgCtx.readOnly = true;
         receiver.receiveReadonlyMessage(request, msgCtx);
     }

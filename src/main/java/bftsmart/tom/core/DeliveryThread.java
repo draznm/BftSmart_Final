@@ -114,7 +114,7 @@ public final class DeliveryThread extends Thread {
     private final Condition deliveryPausedCondition = pausingDeliveryLock.newCondition();
     private int isPauseDelivery;
 
-    private int rvc_timeout = 80;
+    private int rvc_timeout = 200;
     private int last_rvc_msg = -1;
 
     OtherClusterMessage ocmd;
@@ -1080,7 +1080,7 @@ public final class DeliveryThread extends Thread {
 
         logger.info("reset rvc_timeout");
 
-        this.rvc_timeout = 20;
+        this.rvc_timeout = 200;
 //		decidedLockOtherClusters.unlock();
 
 

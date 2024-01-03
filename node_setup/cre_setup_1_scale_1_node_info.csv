@@ -9,11 +9,12 @@ node_id,region,ServerOrClientregion,cluster_id,key_file,clientID,ServerID, Publi
 7, 'europe-west3-c', 0, 1, 'FKA.pem', -1, 7,
 8, 'europe-west3-c', 0, 1, 'FKA.pem', -1, 8,
 9, 'europe-west3-c', 1, -1, 'FKA.pem', 0, -1,
-10, 'asia-south1-c', 0, 1, 'FKE.pem', -1, 9,
-11, 'asia-south1-c', 0, 1, 'FKE.pem', -1, 10,
-12, 'asia-south1-c', 0, 1, 'FKE.pem', -1, 11,
-13, 'asia-south1-c', 0, 1, 'FKE.pem', -1, 12,
-14, 'asia-south1-c', 0, 1, 'FKE.pem', -1, 13,
-15, 'asia-south1-c', 1, -1, 'FKE.pem', 1, -1,
+10, 'europe-west3-c', 1, -1, 'FKA.pem', 2, -1,
+11, 'asia-south1-c', 0, 1, 'FKE.pem', -1, 9,
+12, 'asia-south1-c', 0, 1, 'FKE.pem', -1, 10,
+13, 'asia-south1-c', 0, 1, 'FKE.pem', -1, 11,
+14, 'asia-south1-c', 0, 1, 'FKE.pem', -1, 12,
+15, 'asia-south1-c', 0, 1, 'FKE.pem', -1, 13,
+16, 'asia-south1-c', 1, -1, 'FKE.pem', 1, -1,
 
 

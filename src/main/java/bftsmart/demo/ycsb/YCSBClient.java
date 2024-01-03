@@ -24,6 +24,7 @@ import java.util.Set;
 import java.util.Vector;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import bftsmart.demo.counter.ClusterInfo;
 import bftsmart.tom.ServiceProxy;
 
 import com.yahoo.ycsb.ByteIterator;
@@ -58,11 +59,15 @@ public class YCSBClient extends DB {
         Properties props = getProperties();
         int initId = Integer.valueOf((String) props.get("smart-initkey"));
         int ClientID = Integer.valueOf((String) props.get("ClientID"));
+        ClusterInfo cinfo = new ClusterInfo();
+
+        int ncls = cinfo.nClusters;
+
         myId = initId +8*ClientID+counter.addAndGet(1);
 
-        proxy = new ServiceProxy(myId, "config"+Integer.toString(ClientID%2));
+        proxy = new ServiceProxy(myId, "config"+Integer.toString(ClientID%ncls));
 
-        System.out.println("YCSBKVClient. Initiated client id, myId: " + ClientID + ", "+ myId);
+        System.out.println("YCSBKVClient. Initiated client id, myId: " + ClientID + ", "+ myId+ " ncls: "+ncls);
     }
 
     @Override

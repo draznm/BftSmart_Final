@@ -58,7 +58,7 @@ public class YCSBClient extends DB {
         Properties props = getProperties();
         int initId = Integer.valueOf((String) props.get("smart-initkey"));
         int ClientID = Integer.valueOf((String) props.get("ClientID"));
-        myId = initId +counter.addAndGet(1);
+        myId = initId +8*ClientID+counter.addAndGet(1);
 
         proxy = new ServiceProxy(myId, "config"+Integer.toString(ClientID%2));
 

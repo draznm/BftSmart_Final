@@ -68,7 +68,7 @@ node_id,region,ServerOrClientregion,cluster_id,key_file,clientID,ServerID, Publi
 61, 'europe-west3-c', 0, 0, 'FKA.pem', -1, 61,
 62, 'europe-west3-c', 0, 0, 'FKA.pem', -1, 62,
 
-62, 'europe-west3-c', 1, -1, 'FKA.pem', 0, -1,
+63, 'europe-west3-c', 1, -1, 'FKA.pem', 0, -1,
 64, 'europe-west3-c', 1, -1, 'FKA.pem', 2, -1,
 
 65, 'asia-south1-c', 0, 1, 'FKE.pem', -1, 63,

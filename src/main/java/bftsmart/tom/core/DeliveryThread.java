@@ -301,6 +301,20 @@ public final class DeliveryThread extends Thread {
             return;
         }
 
+        int last_rvc_time = -21;
+
+        for (int key : rvc_tracker.keySet())
+        {
+            if (rvc_tracker.get(key) > last_rvc_time)
+            {
+                last_rvc_time = rvc_tracker.get(key);
+            }
+        }
+
+        if ((((int) System.currentTimeMillis()/1000) - last_rvc_time) < 20 )
+        {
+            return;
+        }
 
 
         {

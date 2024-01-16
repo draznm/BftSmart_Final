@@ -538,7 +538,7 @@ public class Synchronizer {
 
             int leader = lcManager.getNewLeader();
 
-            logger.info("\n New leader is {}", leader);
+            logger.info("\n 1, New leader is {}", leader);
 
 
             int in = tom.getInExec(); // cid to execute
@@ -550,7 +550,7 @@ public class Synchronizer {
             if (leader != this.controller.getStaticConf().getProcessId()) {
 
 
-                logger.info("\n New leader is {}", leader);
+                logger.info("\n 2, New leader is {}", leader);
 
 
                 try

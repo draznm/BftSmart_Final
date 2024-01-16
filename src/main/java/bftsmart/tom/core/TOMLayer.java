@@ -82,6 +82,8 @@ public final class TOMLayer extends Thread implements RequestReceiver {
      */
     public RequestsTimer requestsTimer;
 
+    public RequestsTimer remoteViewChangeTimer;
+
     private long lastRequest = -1;
 
     /**
@@ -171,6 +173,8 @@ public final class TOMLayer extends Thread implements RequestReceiver {
             this.requestsTimer = null;
         } else {
             this.requestsTimer = new RequestsTimer(this, communication, this.controller); // Create requests timers manager (a thread)
+
+            this.remoteViewChangeTimer = new RequestsTimer(this, communication, this.controller, 20);
         }
 
         try {
@@ -207,7 +211,7 @@ public final class TOMLayer extends Thread implements RequestReceiver {
 
 
         // I have a verifier, now create clients manager
-        this.clientsManager = new ClientsManager(this.controller, requestsTimer, verifier1, receiver.getId(), this.ClusterNumber, execManager);
+        this.clientsManager = new ClientsManager(this.controller, requestsTimer, remoteViewChangeTimer, verifier1, receiver.getId(), this.ClusterNumber, execManager);
 
         this.syncher = new Synchronizer(this); // create synchronizer
 
@@ -707,9 +711,15 @@ public final class TOMLayer extends Thread implements RequestReceiver {
 
     public void requestReceivedOtherClusters(OtherClusterMessage msg) throws IOException, ClassNotFoundException {
 
-        if (!doWork) return;
+
+        if (!doWork)
+        {
+            logger.info("not working, requestReceivedOtherClusters() returning");
+            return;
+        }
 
 
+        logger.info("going to deliveryOtherCluster");
 
         dt.deliveryOtherCluster(msg);
 

@@ -127,7 +127,7 @@ public class YCSBServer extends DefaultRecoverable {
 
         for (byte[] command : commands) {
             if (msgCtx != null && msgCtx[index] != null && msgCtx[index].getConsensusId() % 1000 == 0 && !logPrinted) {
-                System.out.println("YCSBServer executing CID: " + msgCtx[index].getConsensusId());
+                System.out.println(":::::::::::::::::::::::::::::::YCSBServer executing CID: " + msgCtx[index].getConsensusId());
                 usedMemory = memoryBean.getHeapMemoryUsage().getUsed();
                 System.out.println("Memory Used by the JVM: " + usedMemory + " bytes");
 

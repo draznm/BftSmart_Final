@@ -63,7 +63,8 @@ public class YCSBClient extends DB {
 
         int ncls = cinfo.nClusters;
 
-        myId = initId +8*ClientID+counter.addAndGet(1);
+//        myId = initId +8*ClientID+counter.addAndGet(1);
+        myId = initId + counter.addAndGet(1);
 
         proxy = new ServiceProxy(myId, "config"+Integer.toString(ClientID%ncls));
 
@@ -124,7 +125,22 @@ public class YCSBClient extends DB {
 
 
         byte[] reply = proxy.invokeOrdered(msg.getBytes());
-        YCSBMessage replyMsg = YCSBMessage.getObject(reply);
+
+
+        YCSBMessage replyMsg = null;
+
+//        try
+//        {
+            replyMsg = YCSBMessage.getObject(reply);
+//
+//        }
+//        catch (Exception e)
+//        {
+//            return -1;
+//        }
+
+
+
         return replyMsg.getResult();
     }
 

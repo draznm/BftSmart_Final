@@ -344,11 +344,11 @@ public final class DeliveryThread extends Thread {
 
 //                logger.info("Sending type 2 message to {}", tgtArray);
 
-            logger.info("Sending type 2 message to {}, with msg= {}", tgtArray, newocmd);
+                logger.info("Sending type 2 message to {}, with msg= {}", tgtArray, newocmd);
 
 //                this.tomLayer.getCommunication().send(tgtArray, msg);
 
-			this.tomLayer.getCommunication().send(tgtArray, this.ocmd);
+                this.tomLayer.getCommunication().send(tgtArray, this.ocmd);
 
 
             }
@@ -851,7 +851,7 @@ public final class DeliveryThread extends Thread {
                                     "Sizeof  SavedDecisionsToBeExecuted {}, " +
                                     "sizeof  SavedMessagesForExec{}, sizeof decided = {}, " +
                                     "sizeof LastDecisionSaved {}, usedMemory: {}",lastcid,
-                memoryUsedInMB, SavedMultiClusterMessages.keySet().size(),
+                            memoryUsedInMB, SavedMultiClusterMessages.keySet().size(),
                             SavedDecisionsToBeExecuted.size(), SavedMessagesForExec.size(),
                             decided.size(), LastDecisionSaved.size(), usedMemory);
 

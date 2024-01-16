@@ -57,6 +57,8 @@ public class TOMUtil {
     public static final int NEW_NODE_READY = 13;
 
     public static final int REMOTE_VIEW_CHANGE = 14;
+    public static final int REMOTE_VIEW_CHANGE_LCOMPLAIN = 16;
+    public static final int REMOTE_VIEW_CHANGE_RCOMPLAIN = 17;
 
     public static final int REMOTE_NODE_READY = 15;
 

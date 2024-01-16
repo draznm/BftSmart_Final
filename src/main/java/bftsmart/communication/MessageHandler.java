@@ -70,52 +70,6 @@ public class MessageHandler {
 
 	}
 
-//
-//
-//	public void simulate_geodistributed(SystemMessage sm)
-//	{
-//
-//		if ( sm instanceof OtherClusterMessage)
-//		{
-//			OtherClusterMessage ocm = (OtherClusterMessage) sm;
-//			int	currentClusterId = 0;
-//			try {
-//				currentClusterId = Integer.parseInt(ocm.getOcmd().fromConfig.replaceAll("[^0-9]", ""));
-//			} catch (IOException e) {
-//				throw new RuntimeException(e);
-//			} catch (ClassNotFoundException e) {
-//				throw new RuntimeException(e);
-//			}
-////
-//			int wait_time = LatencyInfo[currentClusterId%3][cinfo.getClusterNumber(this.tomLayer.getDeliveryThread().getNodeId())%3];
-//			logger.info("wait time for sender = " + sm.getSender() + " with receiver = " +
-//					this.tomLayer.getDeliveryThread().getNodeId() + " is " + wait_time);
-//
-//
-//			try {
-//				Thread.sleep(wait_time);
-//			} catch (InterruptedException e) {
-//				throw new RuntimeException(e);
-//			}
-//
-//
-//			//                try {
-////                    TimeUnit.MICROSECONDS.sleep(this.cinfo.NodeToLatency.get(this.id));
-////                } catch (InterruptedException e) {
-////                    throw new RuntimeException(e);
-////                }
-//
-//
-//
-//
-//
-//		}
-//
-//
-//
-//
-//
-//	}
 
 	public void setAcceptor(Acceptor acceptor) {
 		this.acceptor = acceptor;
@@ -131,7 +85,6 @@ public class MessageHandler {
 
 //		logger.info("SystemMessage being processed inside processData");
 
-//		simulate_geodistributed(sm);
 
 		if (sm instanceof OtherClusterMessage)
 		{
@@ -239,15 +192,31 @@ public class MessageHandler {
 						tomLayer.getStateManager().currentConsensusIdReceived(smsg);
 						break;
 					case TOMUtil.NEW_NODE_READY:
-							logger.info("SENT RECONFIG");
-							tomLayer.signalReconfigConfirmationNewNode();
-							break;
+						logger.info("SENT RECONFIG");
+						tomLayer.signalReconfigConfirmationNewNode();
+						break;
+					case TOMUtil.REMOTE_VIEW_CHANGE_LCOMPLAIN:
+//                        try {
+////                            tomLayer.getDeliveryThread().receive_lcomplain_send_rcomplain(500);
+//                        } catch (InterruptedException e) {
+//                            throw new RuntimeException(e);
+//                        }
+                        break;
+					case TOMUtil.REMOTE_VIEW_CHANGE_RCOMPLAIN:
+//						try {
+////							tomLayer.getDeliveryThread().remote_view_notify_trigger(500);
+//						} catch (InterruptedException e) {
+//							throw new RuntimeException(e);
+//						}
+						break;
 					case TOMUtil.REMOTE_VIEW_CHANGE:
 						logger.info("REMOTE_VIEW_CHANGE receieved from {} with CID: {}",
 								sm.getSender(), ((SMMessage) sm).getCID());
 						tomLayer.increase_rvc_timeout( ((SMMessage) sm).getCID());
 						tomLayer.StartLeaderChange(sm);
 						break;
+
+						// Once enough local complaints have been received, I also local complaint to rest of the nodes.
 					case TOMUtil.REMOTE_NODE_READY:
 						logger.info("REMOTE_NODE_READY receieved from {} with CID: {}",
 								sm.getSender(), ((SMMessage) sm).getCID());

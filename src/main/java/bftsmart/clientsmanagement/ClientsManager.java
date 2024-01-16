@@ -52,6 +52,8 @@ public class ClientsManager {
     private ServerViewController controller;
 
     private RequestsTimer timer;
+    private RequestsTimer remote_view_change_timer;
+
     private HashMap<Integer, ClientData> clientsData = new HashMap<Integer, ClientData>();
     private RequestVerifier verifier;
 
@@ -71,10 +73,13 @@ public class ClientsManager {
 
 //    private ServiceProxy[] ServiceTaskArr;
 
-    public ClientsManager(ServerViewController controller, RequestsTimer timer, RequestVerifier verifier, int node_id,
+    public ClientsManager(ServerViewController controller, RequestsTimer timer, RequestsTimer remoteViewChangeTimer, RequestVerifier verifier, int node_id,
                           int ClusterNumber, ExecutionManager execManager) {
         this.controller = controller;
         this.timer = timer;
+        this.remote_view_change_timer = remoteViewChangeTimer;
+
+
         this.verifier = verifier;
 
         this.node_id = node_id;
@@ -394,12 +399,6 @@ public class ClientsManager {
 
 
 
-//        if (this.ClusterNumber==1)
-//        {
-//            logger.info("Cluster 2's client is "+clientId);
-//        }
-
-
         boolean accounted = false;
 
         ClientData clientData = getClientData(clientId);
@@ -513,7 +512,12 @@ public class ClientsManager {
 
                 //create a timer for this message
                 if (timer != null) {
+                    logger.info("watching request with id: {}, sequence: {} and " +
+                            "op id: {}", request.getId(), request.getSequence(),
+                            request.getOperationId());
                     timer.watch(request);
+
+//                    remote_view_change_timer.watch(request);
                 }
 
                 accounted = true;
@@ -567,9 +571,12 @@ public class ClientsManager {
     private void clearPendingRequests(ClientData clientData) {
         for(TOMMessage m : clientData.getPendingRequests()) {
             if(timer != null) {
+
+                logger.info("unwatching msg with id: {}", m.getId());
                 //Clear all pending timers before clearing the requests. (For synchronous closed-loop clients there are never pending requests.)
                 //Without clearing the timer a leader change would be triggered, because the removed request will never be processed.
                 timer.unwatch(m);
+//                remote_view_change_timer.unwatch(m);
             }
         }
         clientData.getPendingRequests().clear();
@@ -590,6 +597,7 @@ public class ClientsManager {
         clientsLock.unlock();
     }
 
+
     /**
      * Cleans all state for this request (e.g., removes it from the pending
      * requests queue and stop any timer for it).
@@ -602,6 +610,9 @@ public class ClientsManager {
 
         //stops the timer associated with this message
         if (timer != null) {
+            logger.info("unwatching request with id: {}",request.getId());
+
+
             timer.unwatch(request);
         }
 

@@ -15,6 +15,7 @@ limitations under the License.
 */
 package bftsmart.tom.leaderchange;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
@@ -41,6 +42,8 @@ public class RequestsTimer {
 
     private Timer timer = new Timer("request timer");
     private RequestTimerTask rtTask = null;
+    private RemoteViewChangeTimerTask rvcTask = null;
+
     private TOMLayer tomLayer; // TOM layer
     private long timeout;
     private long shortTimeout;
@@ -56,6 +59,24 @@ public class RequestsTimer {
     
     //private Storage st1 = new Storage(100000);
     //private Storage st2 = new Storage(10000);
+
+
+
+
+    public RequestsTimer(TOMLayer tomLayer, ServerCommunicationSystem communication, ServerViewController controller, int rvc_time) {
+        this.tomLayer = tomLayer;
+
+        this.communication = communication;
+        this.controller = controller;
+
+        this.timeout = rvc_time;
+        this.shortTimeout = -1;
+    }
+
+
+
+
+
     /**
      * Creates a new instance of RequestsTimer
      * @param tomLayer TOM layer
@@ -75,13 +96,20 @@ public class RequestsTimer {
     }
     
     public void startTimer() {
+
         if (rtTask == null) {
             logger.info("shortTimeout, timeout are {}, {}", shortTimeout, timeout);
 //            shortTimeout = 1;
             long t = (shortTimeout > -1 ? shortTimeout : timeout);
             //shortTimeout = -1;
             rtTask = new RequestTimerTask();
-            if (controller.getCurrentViewN() > 1) timer.schedule(rtTask, t);
+            rvcTask = new RemoteViewChangeTimerTask();
+
+            if (controller.getCurrentViewN() > 1)
+            {
+                logger.info("scheduling timer task");
+                timer.schedule(rtTask, t);
+            }
         }
     }
     
@@ -89,6 +117,10 @@ public class RequestsTimer {
         if (rtTask != null) {
             rtTask.cancel();
             rtTask = null;
+
+            rvcTask.cancel();
+            rvcTask = null;
+
         }
     }
     
@@ -106,9 +138,14 @@ public class RequestsTimer {
      * @param request Request to which the timer is being createf for
      */
     public void watch(TOMMessage request) {
+
+
+
         //long startInstant = System.nanoTime();
         rwLock.writeLock().lock();
         watched.add(request);
+
+
         if (watched.size() >= 1 && enabled) startTimer();
         rwLock.writeLock().unlock();
     }
@@ -304,7 +341,39 @@ public class RequestsTimer {
          * message on the watched list.
          */
         public void run() {
-            
+
+            logger.info("SENDING LCMessage locally");
+
+
+            int[] myself = new int[1];
+            myself[0] = controller.getStaticConf().getProcessId();
+
+
+//            try {
+////                tomLayer.getDeliveryThread().remote_view_notify(500);
+//            } catch (IOException | ClassNotFoundException | InterruptedException e) {
+//                throw new RuntimeException(e);
+//            }
+
+//            communication.send(myself, new LCMessage(-1, TOMUtil.TRIGGER_LC_LOCALLY, -1, null));
+
+
+        }
+    }
+
+
+    class RemoteViewChangeTimerTask extends TimerTask {
+
+        @Override
+        /**
+         * This is the code for the TimerTask. It executes the timeout for the first
+         * message on the watched list.
+         */
+        public void run() {
+
+            logger.info("SENDING LCMessage locally");
+
+
             int[] myself = new int[1];
             myself[0] = controller.getStaticConf().getProcessId();
 
@@ -312,6 +381,10 @@ public class RequestsTimer {
 
         }
     }
+
+
+
+
     
     class SendStopTask extends TimerTask {
         

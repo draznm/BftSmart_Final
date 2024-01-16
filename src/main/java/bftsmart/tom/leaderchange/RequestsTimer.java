@@ -349,11 +349,11 @@ public class RequestsTimer {
             myself[0] = controller.getStaticConf().getProcessId();
 
 
-//            try {
-////                tomLayer.getDeliveryThread().remote_view_notify(500);
-//            } catch (IOException | ClassNotFoundException | InterruptedException e) {
-//                throw new RuntimeException(e);
-//            }
+            try {
+                tomLayer.getDeliveryThread().remote_view_notify(5000);
+            } catch (IOException | ClassNotFoundException | InterruptedException e) {
+                throw new RuntimeException(e);
+            }
 
 //            communication.send(myself, new LCMessage(-1, TOMUtil.TRIGGER_LC_LOCALLY, -1, null));
 

@@ -196,18 +196,18 @@ public class MessageHandler {
 						tomLayer.signalReconfigConfirmationNewNode();
 						break;
 					case TOMUtil.REMOTE_VIEW_CHANGE_LCOMPLAIN:
-//                        try {
-////                            tomLayer.getDeliveryThread().receive_lcomplain_send_rcomplain(500);
-//                        } catch (InterruptedException e) {
-//                            throw new RuntimeException(e);
-//                        }
+                        try {
+                            tomLayer.getDeliveryThread().receive_lcomplain_send_rcomplain(5000);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
                         break;
 					case TOMUtil.REMOTE_VIEW_CHANGE_RCOMPLAIN:
-//						try {
-////							tomLayer.getDeliveryThread().remote_view_notify_trigger(500);
-//						} catch (InterruptedException e) {
-//							throw new RuntimeException(e);
-//						}
+						try {
+							tomLayer.getDeliveryThread().remote_view_notify_trigger(5000);
+						} catch (InterruptedException e) {
+							throw new RuntimeException(e);
+						}
 						break;
 					case TOMUtil.REMOTE_VIEW_CHANGE:
 						logger.info("REMOTE_VIEW_CHANGE receieved from {} with CID: {}",

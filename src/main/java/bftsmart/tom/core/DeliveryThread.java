@@ -126,6 +126,18 @@ public final class DeliveryThread extends Thread {
             new ConcurrentHashMap<Integer, HashMap<Integer, OtherClusterMessage>>();
 
 
+
+    ConcurrentHashMap<Integer, Integer> rvc_tracker =
+            new ConcurrentHashMap<Integer, Integer>();
+
+    ConcurrentHashMap<Integer, HashMap<Integer, OtherClusterMessage>> Saved_rvc_l =
+            new ConcurrentHashMap<Integer, HashMap<Integer, OtherClusterMessage>>();
+
+
+    ConcurrentHashMap<Integer, HashMap<Integer, OtherClusterMessage>> Saved_rvc_mc =
+            new ConcurrentHashMap<Integer, HashMap<Integer, OtherClusterMessage>>();
+
+
     ConcurrentHashMap<Integer, TOMMessage[][]> SavedMessagesForExec =
             new ConcurrentHashMap<Integer, TOMMessage[][]>();
 
@@ -190,6 +202,153 @@ public final class DeliveryThread extends Thread {
         return recoverer;
     }
 
+
+
+
+
+    public void remote_view_notify_trigger(int cid) throws IOException, ClassNotFoundException, InterruptedException {
+
+        int clusterid = Integer.parseInt(
+                this.ocmd.getOcmd().fromConfig.replaceAll("[^0-9]",
+                        ""));
+
+
+
+        int[] tgtArray = new int[1];
+
+
+
+        SMMessage smsg = new StandardSMMessage(controller.getStaticConf().getProcessId(),
+                lastcid, TOMUtil.REMOTE_VIEW_CHANGE, 0, null, null, -1, -1);
+
+
+        if (other_rvc_received_mc(cid))
+        {
+            LcLockMC.lock();
+
+            tomLayer.getCommunication().send(tgtArray, smsg);
+
+
+            logger.info("Waiting After Sending Remote View Change message to Leader sent to" +
+                    "{}",tgtArray);
+
+//						this.last_rvc_msg = lastcid;
+            LcLockMCCondition.await();
+
+            LcLockMC.unlock();
+
+        }
+
+
+    }
+
+
+
+
+
+
+
+
+    public void receive_lcomplain_send_rcomplain(int cid) throws IOException, ClassNotFoundException, InterruptedException {
+
+        int clusterid = Integer.parseInt(
+                this.ocmd.getOcmd().fromConfig.replaceAll("[^0-9]",
+                        ""));
+
+
+
+        int[] tgtArray = cinfo.getFPlusOneArray(clusterid).stream().filter(Objects::nonNull).mapToInt(Integer::intValue).toArray();
+
+
+
+        SMMessage smsg = new StandardSMMessage(controller.getStaticConf().getProcessId(),
+                lastcid, TOMUtil.REMOTE_VIEW_CHANGE_RCOMPLAIN, 0, null, null, -1, -1);
+
+
+        if (other_rvc_received_l(cid))
+        {
+            LcLockMC.lock();
+
+            tomLayer.getCommunication().send(tgtArray, smsg);
+
+
+            logger.info("Waiting After Sending Remote View Change message to Leader sent to" +
+                    "{}",tgtArray);
+
+//						this.last_rvc_msg = lastcid;
+            LcLockMCCondition.await();
+
+            LcLockMC.unlock();
+
+        }
+
+
+    }
+
+
+
+
+
+
+
+    public void remote_view_notify(int cid) throws IOException, ClassNotFoundException, InterruptedException {
+
+
+
+        if (rvc_tracker.contains(cid))
+        {
+            logger.info("Already initiated");
+            return;
+        }
+
+
+
+        {
+
+            logger.info("Already initiated");
+
+            rvc_tracker.put(cid, (int) System.currentTimeMillis()/1000);
+
+
+
+
+            int clusterid = Integer.parseInt(
+                    this.ocmd.getOcmd().fromConfig.replaceAll("[^0-9]",
+                            ""));
+
+
+
+//        int[] tgtArray = cinfo.getFPlusOneArray(clusterid).stream().filter(Objects::nonNull).mapToInt(Integer::intValue).toArray();
+            int[] tgtArray = controller.getCurrentViewOtherAcceptors();
+
+
+
+//        SMMessage smsg = new StandardSMMessage(controller.getStaticConf().getProcessId(),
+//                lastcid, TOMUtil.REMOTE_VIEW_CHANGE_LCOMPLAIN, 0, null, null, -1, -1);
+
+
+            SMMessage smsg = new StandardSMMessage(controller.getStaticConf().getProcessId(),
+                    lastcid, TOMUtil.REMOTE_VIEW_CHANGE, 0, null, null, -1, -1);
+
+
+//        if (other_rvc_received_l(lastcid))
+            {
+                tomLayer.getCommunication().send(tgtArray, smsg);
+
+            }
+
+
+
+
+
+        }
+
+        return;
+
+
+
+    }
+
     /**
      * Invoked by the TOM layer, to deliver a decision
      *
@@ -202,8 +361,9 @@ public final class DeliveryThread extends Thread {
             decided.put(dec);
 
             // clean the ordered messages from the pending buffer
-            TOMMessage[] requests = extractMessagesFromDecision(dec);
-            tomLayer.clientsManager.requestsOrdered(requests);
+
+//            TOMMessage[] requests = extractMessagesFromDecision(dec);
+//            tomLayer.clientsManager.requestsOrdered(requests);
             logger.info("Consensus " + dec.getConsensusId() + " finished. Decided size=" + decided.size());
 
         } catch (Exception e) {
@@ -247,6 +407,11 @@ public final class DeliveryThread extends Thread {
 
 
         Decision lastDecision = LastDecisionSaved.get(tid);
+
+
+
+        TOMMessage[] requests = extractMessagesFromDecision(lastDecision);
+        tomLayer.clientsManager.requestsOrdered(requests);
 
         logger.info("Getting lastdecision for cid: {}", tid);
 
@@ -423,6 +588,32 @@ public final class DeliveryThread extends Thread {
 
         readWriteLock.writeLock().unlock();
 
+
+    }
+
+
+
+    public boolean other_rvc_received_l(int tid)
+    {
+
+        HashMap<Integer, OtherClusterMessage> temp = Saved_rvc_l.get(tid);
+        if (temp==null) return false;
+        logger.info("othermsgs_received_mc for tid: {}, is temp size, nclusters is {}, {}, temp keyset {}",tid, temp.size(), this.cinfo.nClusters, temp.keySet());
+
+        return temp.size() >= 2*controller.getCurrentViewF()+1;
+
+    }
+
+    public boolean other_rvc_received_mc(int tid)
+    {
+
+//        HashMap<Integer, OtherClusterMessage> temp = Saved_rvc_mc.get(tid);
+//        if (temp==null) return false;
+//        logger.info("othermsgs_received_mc for tid: {}, is temp size, nclusters is {}, {}, temp keyset {}",tid, temp.size(), this.cinfo.nClusters, temp.keySet());
+//
+//        return temp.size() >= 2*controller.getCurrentViewF()+1;
+
+        return true;
 
     }
 
@@ -644,14 +835,20 @@ public final class DeliveryThread extends Thread {
 
 
 //	if (2>1)
-        if ((lastcid!=-1500) &&  (this.receiver.getId() == tomLayer.execManager.getCurrentLeader()) )
+        if ((lastcid!=5000) &&  (this.receiver.getId() == tomLayer.execManager.getCurrentLeader()) )
         {
-            //									logger.info("\n\n\n\n\n SENDING OTHER CLUSTERS THE DECIDED VALUES");
+            logger.info("\n\n\n\n\n SENDING OTHER CLUSTERS THE DECIDED VALUES");
             this.tomLayer.getCommunication().send(tgtArray, this.ocmd);
-
         }
         else
         {
+            if ((this.receiver.getId() == tomLayer.execManager.getCurrentLeader()) && (clusterid!=0))
+            {
+                logger.info("\n\n\n\n\n SENDING OTHER CLUSTERS THE DECIDED VALUES");
+                this.tomLayer.getCommunication().send(tgtArray, this.ocmd);
+            }
+
+
             logger.info("Not sending multicluster msg, clusterid==1 is  {}", clusterid==1);
             //                this.tomLayer.getCommunication().send(tgtArray, this.ocmd);
         }
@@ -1015,13 +1212,13 @@ public final class DeliveryThread extends Thread {
         if( ((SMMessage) sm).getCID() > lastLCLockMsg)
         {
 
-            try {
-                logger.info("lastcid is {}, last ocmd's cid is {}",lastcid, lastocmd.getOcmd().from_cid_start);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            } catch (ClassNotFoundException e) {
-                throw new RuntimeException(e);
-            }
+//            try {
+//                logger.info("lastcid is {}, last ocmd's cid is {}",lastcid, lastocmd.getOcmd().from_cid_start);
+//            } catch (IOException e) {
+//                throw new RuntimeException(e);
+//            } catch (ClassNotFoundException e) {
+//                throw new RuntimeException(e);
+//            }
 
 
 

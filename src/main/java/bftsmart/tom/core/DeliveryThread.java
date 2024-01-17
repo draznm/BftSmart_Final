@@ -996,6 +996,7 @@ public final class DeliveryThread extends Thread {
                         cDecs[count] = cDec;
 
                         // cons.firstMessageProposed contains the performance counters
+
                         if (requests[count][0].equals(d.firstMessageProposed)) {
                             long time = requests[count][0].timestamp;
                             long seed = requests[count][0].seed;

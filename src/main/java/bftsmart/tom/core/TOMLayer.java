@@ -752,7 +752,10 @@ public final class TOMLayer extends Thread implements RequestReceiver {
         int[] myself = new int[1];
         myself[0] = controller.getStaticConf().getProcessId();
 
-        if (((SMMessage) sm).getCID() > LastLeaderChangeId)
+
+
+
+        if (((SMMessage) sm).getCID() > LastLeaderChangeId+10000)
         {
             logger.info("Non REDUNDANT Leader Change, sending request to myself");
             communication.send(myself, new LCMessage(-1, TOMUtil.TRIGGER_LC_LOCALLY, -1, null));

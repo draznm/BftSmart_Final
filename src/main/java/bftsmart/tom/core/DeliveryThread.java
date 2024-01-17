@@ -977,6 +977,7 @@ public final class DeliveryThread extends Thread {
 
                 if (decisions.size() > 0)
                 {
+
                     TOMMessage[][] requests = new TOMMessage[decisions.size()][];
                     int[] consensusIds = new int[requests.length];
                     int[] leadersIds = new int[requests.length];

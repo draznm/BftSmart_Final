@@ -127,7 +127,7 @@ public final class TOMLayer extends Thread implements RequestReceiver {
     private int id;
     private int ClusterNumber;
 
-    private int LastLeaderChangeId = -1;
+    private int LastLeaderChangeId = -10000;
 
     /**
      * Creates a new instance of TOMulticastLayer
@@ -754,8 +754,8 @@ public final class TOMLayer extends Thread implements RequestReceiver {
 
 
 
-
-        if (((SMMessage) sm).getCID() > LastLeaderChangeId+10000)
+        logger.info("LastLeaderChangeId: {}, msg_cid:{}", LastLeaderChangeId, ((SMMessage) sm).getCID());
+        if ( ((SMMessage) sm).getCID() > LastLeaderChangeId+500)
         {
             logger.info("Non REDUNDANT Leader Change, sending request to myself");
             communication.send(myself, new LCMessage(-1, TOMUtil.TRIGGER_LC_LOCALLY, -1, null));

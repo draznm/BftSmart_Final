@@ -140,7 +140,6 @@ public class RequestsTimer {
     public void watch(TOMMessage request) {
 
 
-
         //long startInstant = System.nanoTime();
         rwLock.writeLock().lock();
         watched.add(request);
@@ -214,9 +213,10 @@ public class RequestsTimer {
                 TOMMessage request = li.next();
                 if (!request.timeout) {
                     
-                    logger.info("Forwarding requests {} to leader with request.getId(): {}, request.getOperationId(): {}"
-                            , request,
+                    logger.info("Forwarding requests {} to leader {},  with request.getId(): {}, request.getOperationId(): {}"
+                            , request, tomLayer.execManager.getCurrentLeader(),
                             request.getId(), request.getOperationId());
+
 
                     request.signed = request.serializedMessageSignature != null;
 
@@ -238,14 +238,47 @@ public class RequestsTimer {
                 tomLayer.getSynchronizer().triggerTimeout(pendingRequests);
             }
             else {
-                logger.info("triggerTimeout for pendingRequests {}", pendingRequests);
+                logger.info("triggerTimeout for pendingRequests {}, " +
+                        "with tomLayer.getDeliveryThread().getLastCID() = {}", pendingRequests, tomLayer.getDeliveryThread().getLastCID());
 
                 tomLayer.getSynchronizer().triggerTimeout(pendingRequests);
 
 
-//                rtTask = new RequestTimerTask();
-////                timer.schedule(rtTask, t);
-//                timer.schedule(rtTask, 0);
+
+                SMMessage smsg = new StandardSMMessage(controller.getStaticConf().getProcessId(),
+                        3000, TOMUtil.REMOTE_NODE_READY, 0, null, null, -1, -1);
+
+
+
+                ClusterInfo cinfo = new ClusterInfo();
+                HashMap<Integer, HostsConfig.Config> hostmap = cinfo.getAllConnectionsMap();
+                int clusterid = hostmap.get(this.tomLayer.getDeliveryThread().getNodeId()).ClusterNumber;
+
+
+                List<Integer> tgtList = new ArrayList<Integer>();
+
+                //						for (int i=0; i < this.cinfo.totalCount; i++)
+                for (int i : hostmap.keySet()) {
+                    if (cinfo.getAllConnectionsMap().get(i).ClusterNumber != clusterid) {
+                        tgtList.add(i);
+                    }
+
+                }
+                //							logger.info("tgtList is {}", tgtList);
+                int[] tgtArray = tgtList.stream().filter(Objects::nonNull).mapToInt(Integer::intValue).toArray();
+
+
+
+                tomLayer.getDeliveryThread().sendLastOcmd();
+
+                logger.info("\n----1, SENDING REMOTE NOTE READY MSG to : {}", tgtArray);
+                tomLayer.getCommunication().send(tgtArray, smsg);
+
+
+
+
+
+
 
             }
         } else {
@@ -256,7 +289,7 @@ public class RequestsTimer {
                     tomLayer.getLastExec(), tomLayer.getDeliveryThread().getLastCID());
 
             SMMessage smsg = new StandardSMMessage(controller.getStaticConf().getProcessId(),
-                    tomLayer.getDeliveryThread().getLastCID(), TOMUtil.REMOTE_NODE_READY, 0, null, null, -1, -1);
+                    3000, TOMUtil.REMOTE_NODE_READY, 0, null, null, -1, -1);
 
 
 
@@ -280,8 +313,12 @@ public class RequestsTimer {
 
 
 
-            logger.info("\n----SENDNING REMOTE NOTE READY MSG to : {}", tgtArray);
+            logger.info("\n----2, SENDNING REMOTE NOTE READY MSG to : {}", tgtArray);
             tomLayer.getCommunication().send(tgtArray, smsg);
+
+
+
+
             tomLayer.getDeliveryThread().sendLastOcmd();
 
 
@@ -342,15 +379,29 @@ public class RequestsTimer {
          */
         public void run() {
 
-            logger.info("SENDING LCMessage locally");
+            logger.info("1, SENDING LCMessage locally");
 
 
             int[] myself = new int[1];
             myself[0] = controller.getStaticConf().getProcessId();
 
+            if (tomLayer.getDeliveryThread().invalid_rvc())
+            {
+                return;
+            }
 
             try {
-                tomLayer.getDeliveryThread().remote_view_notify(5000);
+                ClusterInfo cinfo = new ClusterInfo();
+                HashMap<Integer, HostsConfig.Config> hostmap = cinfo.getAllConnectionsMap();
+                logger.info("inside requesttimertask, clusterid is {} ", tomLayer.getDeliveryThread().getNodeId());
+
+                if (tomLayer.getDeliveryThread().getNodeId() > 3)
+                {
+                    tomLayer.getDeliveryThread().remote_view_notify(3000);
+                    logger.info("sent LCMessage");
+                }
+
+
             } catch (IOException | ClassNotFoundException | InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -371,7 +422,7 @@ public class RequestsTimer {
          */
         public void run() {
 
-            logger.info("SENDING LCMessage locally");
+            logger.info("2, SENDING LCMessage locally");
 
 
             int[] myself = new int[1];

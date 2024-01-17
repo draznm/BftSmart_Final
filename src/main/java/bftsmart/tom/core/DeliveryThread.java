@@ -54,7 +54,6 @@ import static bftsmart.tom.core.messages.TOMMessageType.RECONFIG;
 /**
  * This class implements a thread which will deliver totally ordered requests to
  * the application
- *
  */
 public final class DeliveryThread extends Thread {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -73,15 +72,17 @@ public final class DeliveryThread extends Thread {
     private HashMap<Integer, Integer> hmap = new HashMap<Integer, Integer>();
 
 
-    /** Tejas Code**/
+    /**
+     * Tejas Code
+     **/
 
     private final LinkedBlockingQueue<OtherClusterMessage> decidedOtherClusters;
-    /** Tejas Ends **/
+    /**
+     * Tejas Ends
+     **/
 
     private final TOMLayer tomLayer; // TOM layer
     private final ServiceReplica receiver; // Object that receives requests from clients
-
-
 
 
     private final Recoverable recoverer; // Object that uses state transfer
@@ -90,7 +91,9 @@ public final class DeliveryThread extends Thread {
 
     private final Condition notEmptyQueue = decidedLock.newCondition();
 
-    /** Tejas **/
+    /**
+     * Tejas
+     **/
 
     private final Lock decidedLockOtherClusters = new ReentrantLock();
 
@@ -103,11 +106,12 @@ public final class DeliveryThread extends Thread {
     private final Condition LcLockMCCondition = LcLockMC.newCondition();
 
 
-
     private final Lock decidedLockOtherClustersReconfig = new ReentrantLock();
     private final Condition notEmptyQueueOtherClustersReconfig = decidedLockOtherClustersReconfig.newCondition();
 
-    /** Tejas END **/
+    /**
+     * Tejas END
+     **/
 
     //Variables used to pause/resume decisions delivery
     private final Lock pausingDeliveryLock = new ReentrantLock();
@@ -124,7 +128,6 @@ public final class DeliveryThread extends Thread {
 
     ConcurrentHashMap<Integer, HashMap<Integer, OtherClusterMessage>> SavedMultiClusterMessages =
             new ConcurrentHashMap<Integer, HashMap<Integer, OtherClusterMessage>>();
-
 
 
     ConcurrentHashMap<Integer, Integer> rvc_tracker =
@@ -157,17 +160,15 @@ public final class DeliveryThread extends Thread {
     long initialMemory;
 
     long finalMemory;
-    long memoryUsed ;
+    long memoryUsed;
     double memoryUsedInMB;
 
 
-
-    public HashMap<Integer, Integer> getHmap()
-    {
+    public HashMap<Integer, Integer> getHmap() {
         return hmap;
     }
-    public void setHmap(HashMap<Integer, Integer> hmp)
-    {
+
+    public void setHmap(HashMap<Integer, Integer> hmp) {
         hmap = hmp;
     }
 
@@ -195,15 +196,12 @@ public final class DeliveryThread extends Thread {
 
         this.cinfo = new ClusterInfo();
 
-        for (int i=0; i < cinfo.nClusters;i++) hmap.put(i,-1);
+        for (int i = 0; i < cinfo.nClusters; i++) hmap.put(i, -1);
     }
 
     public Recoverable getRecoverer() {
         return recoverer;
     }
-
-
-
 
 
     public void remote_view_notify_trigger(int cid) throws IOException, ClassNotFoundException, InterruptedException {
@@ -213,24 +211,21 @@ public final class DeliveryThread extends Thread {
                         ""));
 
 
-
         int[] tgtArray = new int[1];
-
 
 
         SMMessage smsg = new StandardSMMessage(controller.getStaticConf().getProcessId(),
                 lastcid, TOMUtil.REMOTE_VIEW_CHANGE, 0, null, null, -1, -1);
 
 
-        if (other_rvc_received_mc(cid))
-        {
+        if (other_rvc_received_mc(cid)) {
             LcLockMC.lock();
 
             tomLayer.getCommunication().send(tgtArray, smsg);
 
 
             logger.info("Waiting After Sending Remote View Change message to Leader sent to" +
-                    "{}",tgtArray);
+                    "{}", tgtArray);
 
 //						this.last_rvc_msg = lastcid;
             LcLockMCCondition.await();
@@ -241,12 +236,6 @@ public final class DeliveryThread extends Thread {
 
 
     }
-
-
-
-
-
-
 
 
     public void receive_lcomplain_send_rcomplain(int cid) throws IOException, ClassNotFoundException, InterruptedException {
@@ -256,24 +245,21 @@ public final class DeliveryThread extends Thread {
                         ""));
 
 
-
         int[] tgtArray = cinfo.getFPlusOneArray(clusterid).stream().filter(Objects::nonNull).mapToInt(Integer::intValue).toArray();
-
 
 
         SMMessage smsg = new StandardSMMessage(controller.getStaticConf().getProcessId(),
                 lastcid, TOMUtil.REMOTE_VIEW_CHANGE_RCOMPLAIN, 0, null, null, -1, -1);
 
 
-        if (other_rvc_received_l(cid))
-        {
+        if (other_rvc_received_l(cid)) {
             LcLockMC.lock();
 
             tomLayer.getCommunication().send(tgtArray, smsg);
 
 
             logger.info("Waiting After Sending Remote View Change message to Leader sent to" +
-                    "{}",tgtArray);
+                    "{}", tgtArray);
 
 //						this.last_rvc_msg = lastcid;
             LcLockMCCondition.await();
@@ -285,34 +271,39 @@ public final class DeliveryThread extends Thread {
 
     }
 
+    public boolean invalid_rvc()
+    {
 
+        int last_rvc_time = -21;
 
+        for (int key : rvc_tracker.keySet()) {
+            if (rvc_tracker.get(key) > last_rvc_time) {
+                last_rvc_time = rvc_tracker.get(key);
+            }
+        }
 
+        return (((int) System.currentTimeMillis() / 1000) - last_rvc_time) < 20;
 
+    }
 
 
     public void remote_view_notify(int cid) throws IOException, ClassNotFoundException, InterruptedException {
 
 
-
-        if (rvc_tracker.contains(cid))
-        {
+        if (rvc_tracker.contains(cid)) {
             logger.info("Already initiated");
             return;
         }
 
         int last_rvc_time = -21;
 
-        for (int key : rvc_tracker.keySet())
-        {
-            if (rvc_tracker.get(key) > last_rvc_time)
-            {
+        for (int key : rvc_tracker.keySet()) {
+            if (rvc_tracker.get(key) > last_rvc_time) {
                 last_rvc_time = rvc_tracker.get(key);
             }
         }
 
-        if ((((int) System.currentTimeMillis()/1000) - last_rvc_time) < 20 )
-        {
+        if ((((int) System.currentTimeMillis() / 1000) - last_rvc_time) < 20) {
             return;
         }
 
@@ -321,9 +312,7 @@ public final class DeliveryThread extends Thread {
 
             logger.info("Already initiated");
 
-            rvc_tracker.put(cid, (int) System.currentTimeMillis()/1000);
-
-
+            rvc_tracker.put(cid, (int) System.currentTimeMillis() / 1000);
 
 
             int clusterid = Integer.parseInt(
@@ -331,10 +320,8 @@ public final class DeliveryThread extends Thread {
                             ""));
 
 
-
-//        int[] tgtArray = cinfo.getFPlusOneArray(clusterid).stream().filter(Objects::nonNull).mapToInt(Integer::intValue).toArray();
-            int[] tgtArray = controller.getCurrentViewOtherAcceptors();
-
+            int[] tgtArray = cinfo.getFPlusOneArray(clusterid).stream().filter(Objects::nonNull).mapToInt(Integer::intValue).toArray();
+//            int[] tgtArray = controller.getCurrentViewOtherAcceptors();
 
 
 //        SMMessage smsg = new StandardSMMessage(controller.getStaticConf().getProcessId(),
@@ -342,23 +329,30 @@ public final class DeliveryThread extends Thread {
 
 
             SMMessage smsg = new StandardSMMessage(controller.getStaticConf().getProcessId(),
-                    lastcid, TOMUtil.REMOTE_VIEW_CHANGE, 0, null, null, -1, -1);
+                    cid, TOMUtil.REMOTE_VIEW_CHANGE, 0, null, null, -1, -1);
 
+            LcLockMC.lock();
 
-//        if (other_rvc_received_l(lastcid))
             {
                 tomLayer.getCommunication().send(tgtArray, smsg);
+
+                logger.info("Waiting After Sending Remote View Change message to Leader sent to" +
+                        "{} for cid:{}", tgtArray, cid);
+
+                LcLockMCCondition.await();
+
+                logger.info("Waiting After Sending Remote View Change message DONE");
+
 
             }
 
 
-
+            LcLockMC.unlock();
 
 
         }
 
         return;
-
 
 
     }
@@ -402,9 +396,7 @@ public final class DeliveryThread extends Thread {
     }
 
 
-
-    public void executeMessages(int tid)
-    {
+    public void executeMessages(int tid) {
         logger.info("executeMessages for tid: " + tid);
 
 
@@ -422,6 +414,7 @@ public final class DeliveryThread extends Thread {
 
         Decision lastDecision = LastDecisionSaved.get(tid);
 
+        lastocmd = SavedMultiClusterMessages.get(tid).get(this.cinfo.getClusterNumber(getNodeId()));
 
 
         TOMMessage[] requests = extractMessagesFromDecision(lastDecision);
@@ -429,15 +422,13 @@ public final class DeliveryThread extends Thread {
 
         logger.info("Getting lastdecision for cid: {}", tid);
 
-        deliverMessages(tempOcmd.consId,tempOcmd.regencies, tempOcmd.leaders,
+        deliverMessages(tempOcmd.consId, tempOcmd.regencies, tempOcmd.leaders,
                 tempOcmd.cDecs, SavedMessagesForExec.get(tid));
 
 
-        if (tid%100==0)
-        {
-            logger.info("deleting old info from tid: {} to {}",tid-1100, tid-100);
-            for (int i = Math.max(tid - 100, 0); i< tid ; i++)
-            {
+        if (tid % 100 == 0) {
+            logger.info("deleting old info from tid: {} to {}", tid - 1100, tid - 100);
+            for (int i = Math.max(tid - 100, 0); i < tid; i++) {
 
                 SavedMessagesForExec.remove(i);
                 LastDecisionSaved.remove(i);
@@ -475,39 +466,33 @@ public final class DeliveryThread extends Thread {
         }
 
 
-
-
-
         long ExecEndTime = System.nanoTime();
 
         logger.info("Ending Exec for cId:{},  " +
-                        "ExecLatency: {}",
-                lastcid , ExecEndTime - ExecStartTime);
+                        "ExecLatency: {}, decided.size(): {}",
+                lastcid, ExecEndTime - ExecStartTime, decided.size());
 
 
 
     }
 
-    public void deliveryOtherCluster(OtherClusterMessage msg) throws IOException, ClassNotFoundException
-    {
+    public void deliveryOtherCluster(OtherClusterMessage msg) throws IOException, ClassNotFoundException {
         readWriteLock.writeLock().lock();
 
 
-        if(msg.getOcmd().type==1)
-        {
+        if (msg.getOcmd().type == 1) {
 
             logger.info("Tejas: reached inside deliveryOtherCluster type 1, from_cid_start, from, fromConfig, msg.getSender()," +
                             " msg instanceof Forwarded are {}, {}, {}, {}, {}, getCurrentViewN: {}", msg.getOcmd().from_cid_start,
                     msg.getOcmd().from
-                    , msg.getOcmd().fromConfig, msg.getSender(),((SystemMessage) msg instanceof ForwardedMessage),
+                    , msg.getOcmd().fromConfig, msg.getSender(), ((SystemMessage) msg instanceof ForwardedMessage),
                     controller.getCurrentViewN());
 
 
 //			int clusterid = cinfo.getAllConnectionsMap().get(this.receiver.getId()).ClusterNumber;
 
 
-            if (!othermsgs_received_mc(msg.getOcmd().from_cid_start))
-            {
+            if (!othermsgs_received_mc(msg.getOcmd().from_cid_start)) {
 
                 int[] tgtArray = controller.getCurrentViewOtherAcceptors();
 
@@ -518,7 +503,6 @@ public final class DeliveryThread extends Thread {
                         msg.getOcmd().cDecs, msg.getOcmd().requests,
                         this.getNodeId(), msg.getOcmd().fromConfig, msg.getOcmd().from_cid_start,
                         msg.getOcmd().from_cid_end, 2);
-
 
 
 //                logger.info("Sending type 2 message to {}", tgtArray);
@@ -535,8 +519,7 @@ public final class DeliveryThread extends Thread {
 
         }
 
-        if (msg.getOcmd().type==2)
-        {
+        if (msg.getOcmd().type == 2) {
 
             logger.info("Tejas: reached inside deliveryOtherCluster type 2, from_cid_start, from, fromConfig, msg.getSender()," +
                             " are {}, {}, {}, {},  getCurrentViewN: {}", msg.getOcmd().from_cid_start,
@@ -549,28 +532,18 @@ public final class DeliveryThread extends Thread {
                             ""));
 
 
+            HashMap<Integer, OtherClusterMessage> tempMap = SavedMultiClusterMessages.get(msg.getOcmd().from_cid_start);
 
 
-
-
-            HashMap<Integer, OtherClusterMessage> tempMap= SavedMultiClusterMessages.get(msg.getOcmd().from_cid_start);
-
-
-
-            if (tempMap==null)	tempMap = new HashMap<Integer, OtherClusterMessage>();
+            if (tempMap == null) tempMap = new HashMap<Integer, OtherClusterMessage>();
 
             tempMap.put(clusterId, msg);
-
 
 
             SavedMultiClusterMessages.put(msg.getOcmd().from_cid_start, tempMap);
 
 
-
-
-
-            if (SavedMessagesForExec.containsKey(msg.getOcmd().from_cid_start))
-            {
+            if (SavedMessagesForExec.containsKey(msg.getOcmd().from_cid_start)) {
                 TOMMessage[][] requests2 = SavedMessagesForExec.get(msg.getOcmd().from_cid_start);
 
                 for (TOMMessage[] requestsFromConsensus : requests2) {
@@ -582,19 +555,13 @@ public final class DeliveryThread extends Thread {
             }
 
 
-
-
-
-
             logger.info("DoneMainLoopExec.contains(msg.getOcmd().from_cid_start) for cid: {}, is : {}",
                     msg.getOcmd().from_cid_start, DoneMainLoopExec.contains(msg.getOcmd().from_cid_start));
 
-            if (othermsgs_received_mc(msg.getOcmd().from_cid_start))
-            {
+            if (othermsgs_received_mc(msg.getOcmd().from_cid_start)) {
                 logger.info("executing for tid: {}", msg.getOcmd().from_cid_start);
                 executeMessages(msg.getOcmd().from_cid_start);
-            }
-            else logger.info("Not executing for tid: {}", msg.getOcmd().from_cid_start);
+            } else logger.info("Not executing for tid: {}", msg.getOcmd().from_cid_start);
 
 
         }
@@ -606,20 +573,17 @@ public final class DeliveryThread extends Thread {
     }
 
 
-
-    public boolean other_rvc_received_l(int tid)
-    {
+    public boolean other_rvc_received_l(int tid) {
 
         HashMap<Integer, OtherClusterMessage> temp = Saved_rvc_l.get(tid);
-        if (temp==null) return false;
-        logger.info("othermsgs_received_mc for tid: {}, is temp size, nclusters is {}, {}, temp keyset {}",tid, temp.size(), this.cinfo.nClusters, temp.keySet());
+        if (temp == null) return false;
+        logger.info("othermsgs_received_mc for tid: {}, is temp size, nclusters is {}, {}, temp keyset {}", tid, temp.size(), this.cinfo.nClusters, temp.keySet());
 
-        return temp.size() >= 2*controller.getCurrentViewF()+1;
+        return temp.size() >= 2 * controller.getCurrentViewF() + 1;
 
     }
 
-    public boolean other_rvc_received_mc(int tid)
-    {
+    public boolean other_rvc_received_mc(int tid) {
 
 //        HashMap<Integer, OtherClusterMessage> temp = Saved_rvc_mc.get(tid);
 //        if (temp==null) return false;
@@ -632,27 +596,20 @@ public final class DeliveryThread extends Thread {
     }
 
 
-
-
-    public boolean othermsgs_received_mc(int tid)
-    {
-
-
+    public boolean othermsgs_received_mc(int tid) {
 
 
         HashMap<Integer, OtherClusterMessage> temp = SavedMultiClusterMessages.get(tid);
 
-        if (temp==null) return false;
+        if (temp == null) return false;
 
-        logger.info("othermsgs_received_mc for tid: {}, is temp size, nclusters is {}, {}, temp keyset {}",tid, temp.size(), this.cinfo.nClusters, temp.keySet());
-
+        logger.info("othermsgs_received_mc for tid: {}, is temp size, nclusters is {}, {}, temp keyset {}", tid, temp.size(), this.cinfo.nClusters, temp.keySet());
 
 
         return temp.size() == this.cinfo.nClusters;
 
 
     }
-
 
 
     private boolean containsReconfig(Decision dec) {
@@ -666,7 +623,10 @@ public final class DeliveryThread extends Thread {
         }
         return false;
     }
-    /** THIS IS JOAO'S CODE, TO HANDLE STATE TRANSFER */
+
+    /**
+     * THIS IS JOAO'S CODE, TO HANDLE STATE TRANSFER
+     */
     private final ReentrantLock deliverLock = new ReentrantLock();
     private final Condition canDeliver = deliverLock.newCondition();
 
@@ -734,13 +694,10 @@ public final class DeliveryThread extends Thread {
 
         logger.info("Setting last CID to " + lastCID);
 
-        if ( lastCID >0 )
-        {
+        if (lastCID > 0) {
             tomLayer.setLastExec(lastCID + 1);
 
-        }
-        else
-        {
+        } else {
             tomLayer.setLastExec(lastCID);
 
         }
@@ -769,7 +726,7 @@ public final class DeliveryThread extends Thread {
 
     public void resendocmd() throws IOException, ClassNotFoundException {
 
-        if (2>1) {
+        if (2 > 1) {
 
             HashMap<Integer, HostsConfig.Config> hostmap = cinfo.getAllConnectionsMap();
             int clusterid = hostmap.get(this.receiver.getId()).ClusterNumber;
@@ -788,10 +745,9 @@ public final class DeliveryThread extends Thread {
             int[] tgtArray = tgtList.stream().filter(i -> i != null).mapToInt(Integer::intValue).toArray();
 
 
-
             try {
                 logger.info("\n\n\n\n\n SENDING AFTER RECONFIG to {} with ocmd from_cid_start: {}",
-                        tgtArray,lastocmd.getOcmd().from_cid_start);
+                        tgtArray, lastocmd.getOcmd().from_cid_start);
             } catch (IOException | ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
@@ -800,17 +756,13 @@ public final class DeliveryThread extends Thread {
             this.tomLayer.getCommunication().send(tgtArray, this.ocmd);
 
 
-
-
         }
     }
 
 
     public void sending_other_clusters(int[] consensusIds, int[] regenciesIds, int[] leadersIds,
                                        CertifiedDecision[] cDecs, TOMMessage[][] requests,
-                                       ArrayList<Decision> decisions, Decision lastDecision) throws InterruptedException, IOException, ClassNotFoundException
-    {
-
+                                       ArrayList<Decision> decisions, Decision lastDecision) throws InterruptedException, IOException, ClassNotFoundException {
 
 
         logger.info("-XOXOXOXOX---- {}, {}, {}, {}, {}, {}, {} are with currentViewID: {} and time = {}",
@@ -821,7 +773,6 @@ public final class DeliveryThread extends Thread {
         this.ocmd = new OtherClusterMessage(consensusIds, regenciesIds, leadersIds, cDecs, requests,
                 this.receiver.getId(), this.receiver.getConfig(), decisions.get(0).getConsensusId(),
                 lastDecision.getConsensusId(), 2);
-
 
 
         int clusterid = Integer.parseInt(
@@ -840,60 +791,45 @@ public final class DeliveryThread extends Thread {
 //	}
 
 
-
         int[] tgtArray = cinfo.getFPlusOneArray(clusterid).stream().filter(Objects::nonNull).mapToInt(Integer::intValue).toArray();
 
         logger.info("\n\n\n\n\n\n\n\n tgtArray, consensusIds, consensusIds[0], lastcid is {}, {}, {}, {}, ocmd = {}", tgtArray,
                 consensusIds, consensusIds[0], lastcid, this.ocmd);
 
 
-
 //	if (2>1)
-        if ((lastcid!=5000) &&  (this.receiver.getId() == tomLayer.execManager.getCurrentLeader()) )
-        {
+        if ((lastcid != 3000) && (this.receiver.getId() == tomLayer.execManager.getCurrentLeader())) {
             logger.info("\n\n\n\n\n SENDING OTHER CLUSTERS THE DECIDED VALUES");
             this.tomLayer.getCommunication().send(tgtArray, this.ocmd);
-        }
-        else
-        {
-            if ((this.receiver.getId() == tomLayer.execManager.getCurrentLeader()) && (clusterid!=0))
-            {
+        } else {
+            if ((this.receiver.getId() == tomLayer.execManager.getCurrentLeader()) && (clusterid != 0)) {
                 logger.info("\n\n\n\n\n SENDING OTHER CLUSTERS THE DECIDED VALUES");
                 this.tomLayer.getCommunication().send(tgtArray, this.ocmd);
             }
 
 
-            logger.info("Not sending multicluster msg, clusterid==1 is  {}", clusterid==1);
+            logger.info("Not sending multicluster msg, clusterid==1 is  {}", clusterid == 1);
             //                this.tomLayer.getCommunication().send(tgtArray, this.ocmd);
         }
         logger.info("OtherClusterMessage Sent to {}, with type {}",
                 tgtArray, this.ocmd.getOcmd().type);
 
 
+        HashMap<Integer, OtherClusterMessage> tempMap = SavedMultiClusterMessages.get(this.ocmd.getOcmd().from_cid_start);
 
 
-        HashMap<Integer, OtherClusterMessage> tempMap= SavedMultiClusterMessages.get(this.ocmd.getOcmd().from_cid_start);
-
-
-
-
-
-        if (tempMap==null)	tempMap = new HashMap<Integer, OtherClusterMessage>();
+        if (tempMap == null) tempMap = new HashMap<Integer, OtherClusterMessage>();
 
         tempMap.put(clusterid, this.ocmd);
 
 
-
         logger.info("saving msg for execution, with tid: {}, requests: {}",
-                this.ocmd.getOcmd().from_cid_start,	requests);
-
-
+                this.ocmd.getOcmd().from_cid_start, requests);
 
 
         SavedMessagesForExec.put(this.ocmd.getOcmd().from_cid_start, requests);
 
         SavedMultiClusterMessages.put(this.ocmd.getOcmd().from_cid_start, tempMap);
-
 
 
 //        TOMMessage[][] requests2 = SavedMessagesForExec.get(this.ocmd.getOcmd().from_cid_start);
@@ -943,14 +879,11 @@ public final class DeliveryThread extends Thread {
                     initialMemory = runtime.totalMemory() - runtime.freeMemory();
 
 
-
-
                     init = false;
                 }
             }
 
             try {
-
 
 
                 logger.info("zsdqwd Before the prewait");
@@ -975,8 +908,7 @@ public final class DeliveryThread extends Thread {
                 if (!doWork)
                     break;
 
-                if (decisions.size() > 0)
-                {
+                if (decisions.size() > 0) {
 
                     TOMMessage[][] requests = new TOMMessage[decisions.size()][];
                     int[] consensusIds = new int[requests.length];
@@ -1024,29 +956,25 @@ public final class DeliveryThread extends Thread {
 
                     logger.info("Ending Consensus for cId:{},  " +
                                     "consensusEndTime: {}",
-                            lastcid , consensusEndTime);
+                            lastcid, consensusEndTime);
 
                     readWriteLock.writeLock().lock();
-
-
 
 
                     sending_other_clusters(consensusIds, regenciesIds, leadersIds,
                             cDecs, requests, decisions, lastDecision);
 
 
-
                     long MCEndTime = System.nanoTime();
 
                     logger.info("Ending MC for cId:{},  " +
                                     "MCLatency: {}",
-                            lastcid , MCEndTime - consensusEndTime);
+                            lastcid, MCEndTime - consensusEndTime);
 
                     HashMap<Integer, OtherClusterMessage> temp = SavedMultiClusterMessages.get(lastcid);
-                    logger.info("Main LOOP othermsgs_received_mc for tid: {}, is temp size, nclusters is {}, {}, temp keyset {}",lastcid, temp.size(), this.cinfo.nClusters, temp.keySet());
+                    logger.info("Main LOOP othermsgs_received_mc for tid: {}, is temp size, nclusters is {}, {}, temp keyset {}", lastcid, temp.size(), this.cinfo.nClusters, temp.keySet());
 
-                    if (othermsgs_received_mc(lastcid))
-                    {
+                    if (othermsgs_received_mc(lastcid)) {
                         executeMessages(lastcid);
                     }
 
@@ -1059,22 +987,19 @@ public final class DeliveryThread extends Thread {
                     long usedMemory = memoryBean.getHeapMemoryUsage().getUsed();
 
 
-
                     logger.info(" cid ={}, Memory Used: {} MB, size of SavedMultiClusterMessages = {}," +
                                     "Sizeof  SavedDecisionsToBeExecuted {}, " +
                                     "sizeof  SavedMessagesForExec{}, sizeof decided = {}, " +
-                                    "sizeof LastDecisionSaved {}, usedMemory: {}",lastcid,
+                                    "sizeof LastDecisionSaved {}, usedMemory: {}", lastcid,
                             memoryUsedInMB, SavedMultiClusterMessages.keySet().size(),
                             SavedDecisionsToBeExecuted.size(), SavedMessagesForExec.size(),
                             decided.size(), LastDecisionSaved.size(), usedMemory);
-
 
 
 //                    logger.info("Adding to DoneMainLoopExec, cid: {}", lastcid);
 //                    DoneMainLoopExec.put(lastcid,1);
 
                     readWriteLock.writeLock().unlock();
-
 
 
                 }
@@ -1131,8 +1056,7 @@ public final class DeliveryThread extends Thread {
 
 
     private void deliverMessages(int[] consId, int[] regencies, int[] leaders, CertifiedDecision[] cDecs,
-                                 TOMMessage[][] requests, ArrayList<OtherClusterMessage> ocmArray) throws IOException, ClassNotFoundException
-    {
+                                 TOMMessage[][] requests, ArrayList<OtherClusterMessage> ocmArray) throws IOException, ClassNotFoundException {
         receiver.receiveMessages(consId, regencies, leaders, cDecs, requests, ocmArray);
     }
 
@@ -1169,15 +1093,13 @@ public final class DeliveryThread extends Thread {
         decidedLock.unlock();
     }
 
-    public void DTsignalWaitingForLCMessageOCReply()
-    {
+    public void DTsignalWaitingForLCMessageOCReply() {
         decidedLockOtherClustersReconfig.lock();
         this.notEmptyQueueOtherClustersReconfig.signalAll();
         decidedLockOtherClustersReconfig.unlock();
     }
 
-    public int getNodeIdDT()
-    {
+    public int getNodeIdDT() {
         return this.receiver.getId();
     }
 
@@ -1186,8 +1108,7 @@ public final class DeliveryThread extends Thread {
     }
 
 
-    public int getNodeId()
-    {
+    public int getNodeId() {
         return this.receiver.getId();
     }
 
@@ -1206,8 +1127,7 @@ public final class DeliveryThread extends Thread {
     public void setDecidedOtherClusters(LinkedBlockingQueue<OtherClusterMessage> DOC) {
         decidedLockOtherClusters.lock();
 
-        for (OtherClusterMessage ocm:DOC)
-        {
+        for (OtherClusterMessage ocm : DOC) {
             try {
                 this.decidedOtherClusters.put(ocm);
             } catch (InterruptedException e) {
@@ -1225,8 +1145,7 @@ public final class DeliveryThread extends Thread {
     }
 
     public void signalRemoteChange(SystemMessage sm) {
-        if( ((SMMessage) sm).getCID() > lastLCLockMsg)
-        {
+        if (((SMMessage) sm).getCID() > lastLCLockMsg) {
 
 //            try {
 //                logger.info("lastcid is {}, last ocmd's cid is {}",lastcid, lastocmd.getOcmd().from_cid_start);
@@ -1235,9 +1154,6 @@ public final class DeliveryThread extends Thread {
 //            } catch (ClassNotFoundException e) {
 //                throw new RuntimeException(e);
 //            }
-
-
-
 
 
             logger.info("Signalling LcLockMCCondition to proceed with msg CID: {}, lastLCLockMsg: {} ",
@@ -1251,10 +1167,18 @@ public final class DeliveryThread extends Thread {
     }
 
 
-    public void sendLastOcmd()
-    {
+    public void sendLastOcmd() {
+
+        logger.info("sending last ocmd");
         HashMap<Integer, HostsConfig.Config> hostmap = cinfo.getAllConnectionsMap();
         int clusterid = hostmap.get(this.receiver.getId()).ClusterNumber;
+
+//        try {
+//            this.ocmd.getOcmd().from_cid_start = 3000;
+//            this.ocmd.getOcmd().from_cid_end = 3000;
+//        } catch (IOException | ClassNotFoundException e) {
+//            throw new RuntimeException(e);
+//        }
 
 
         List<Integer> tgtList = new ArrayList<Integer>();
@@ -1269,7 +1193,10 @@ public final class DeliveryThread extends Thread {
         //							logger.info("tgtList is {}", tgtList);
         int[] tgtArray = tgtList.stream().filter(Objects::nonNull).mapToInt(Integer::intValue).toArray();
 
-        this.tomLayer.getCommunication().send(tgtArray, this.ocmd);
+        this.tomLayer.getCommunication().send(tgtArray, this.lastocmd);
+
+        logger.info("SENT last ocmd");
+
 
     }
 

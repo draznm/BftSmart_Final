@@ -363,6 +363,8 @@ public final class DeliveryThread extends Thread {
      * @param dec Decision established from the consensus
      */
     public void delivery(Decision dec) {
+
+
         decidedLock.lock();
 
         try {
@@ -960,6 +962,15 @@ public final class DeliveryThread extends Thread {
 
                     readWriteLock.writeLock().lock();
 
+
+
+                    TOMMessage[] reqs = extractMessagesFromDecision(lastDecision);
+                    for (TOMMessage request : reqs) {
+
+                        logger.info("proving cid for request: {}, with cid:{}", request, lastcid);
+
+                        tomLayer.clientsManager.provideCIDForRequest(request, lastcid);
+                    }
 
                     sending_other_clusters(consensusIds, regenciesIds, leadersIds,
                             cDecs, requests, decisions, lastDecision);

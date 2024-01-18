@@ -52,6 +52,9 @@ public class ClientsManager {
     private ServerViewController controller;
 
     private RequestsTimer timer;
+
+    private HashMap< TOMMessage, Integer> reqToCID = new HashMap<TOMMessage, Integer>();
+
     private RequestsTimer remote_view_change_timer;
 
     private HashMap<Integer, ClientData> clientsData = new HashMap<Integer, ClientData>();
@@ -596,6 +599,20 @@ public class ClientsManager {
         logger.debug("Finished updating client manager");
         clientsLock.unlock();
     }
+
+
+    public void provideCIDForRequest(TOMMessage req, int cid)
+    {
+        reqToCID.put(req, cid);
+    }
+
+
+    public int getCIDForRequest(TOMMessage req)
+    {
+        logger.info("getting cid for request: {}", req);
+        return reqToCID.get(req);
+    }
+
 
 
     /**

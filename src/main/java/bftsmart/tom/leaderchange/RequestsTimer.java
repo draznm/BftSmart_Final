@@ -42,12 +42,13 @@ public class RequestsTimer {
 
     private Timer timer = new Timer("request timer");
     private RequestTimerTask rtTask = null;
-    private RemoteViewChangeTimerTask rvcTask = null;
+//    private RemoteViewChangeTimerTask rvcTask = null;
 
     private TOMLayer tomLayer; // TOM layer
     private long timeout;
     private long shortTimeout;
     private TreeSet<TOMMessage> watched = new TreeSet<TOMMessage>();
+
     private ReentrantReadWriteLock rwLock = new ReentrantReadWriteLock();
     
     private boolean enabled = true;
@@ -98,12 +99,29 @@ public class RequestsTimer {
     public void startTimer() {
 
         if (rtTask == null) {
-            logger.info("shortTimeout, timeout are {}, {}", shortTimeout, timeout);
+            logger.info("NO ARGS, shortTimeout, timeout are {}, {}", shortTimeout, timeout);
 //            shortTimeout = 1;
             long t = (shortTimeout > -1 ? shortTimeout : timeout);
             //shortTimeout = -1;
             rtTask = new RequestTimerTask();
-            rvcTask = new RemoteViewChangeTimerTask();
+
+            if (controller.getCurrentViewN() > 1)
+            {
+                logger.info("scheduling timer task");
+                timer.schedule(rtTask, t);
+            }
+        }
+    }
+
+
+    public void startTimer(TOMMessage req) {
+
+        if (rtTask == null) {
+            logger.info("Args, shortTimeout, timeout are {}, {}", shortTimeout, timeout);
+//            shortTimeout = 1;
+            long t = (shortTimeout > -1 ? shortTimeout : timeout);
+            //shortTimeout = -1;
+            rtTask = new RequestTimerTask(req);
 
             if (controller.getCurrentViewN() > 1)
             {
@@ -118,8 +136,8 @@ public class RequestsTimer {
             rtTask.cancel();
             rtTask = null;
 
-            rvcTask.cancel();
-            rvcTask = null;
+//            rvcTask.cancel();
+//            rvcTask = null;
 
         }
     }
@@ -145,7 +163,7 @@ public class RequestsTimer {
         watched.add(request);
 
 
-        if (watched.size() >= 1 && enabled) startTimer();
+        if (watched.size() >= 1 && enabled) startTimer(request);
         rwLock.writeLock().unlock();
     }
 
@@ -323,8 +341,6 @@ public class RequestsTimer {
 
 
 
-//            rtTask = new RequestTimerTask();
-//            timer.schedule(rtTask, t);
 //
         }
         
@@ -372,6 +388,15 @@ public class RequestsTimer {
     
     class RequestTimerTask extends TimerTask {
 
+        TOMMessage Myreq = null;
+
+        public RequestTimerTask(TOMMessage req) {
+            Myreq = req;
+        }
+
+        public RequestTimerTask() {
+        }
+
         @Override
         /**
          * This is the code for the TimerTask. It executes the timeout for the first
@@ -393,12 +418,24 @@ public class RequestsTimer {
             try {
                 ClusterInfo cinfo = new ClusterInfo();
                 HashMap<Integer, HostsConfig.Config> hostmap = cinfo.getAllConnectionsMap();
-                logger.info("inside requesttimertask, clusterid is {} ", tomLayer.getDeliveryThread().getNodeId());
+                logger.info("inside requesttimertask, clusterid is {}, " +
+                        "tomLayer.clientsManager.getCIDForRequest(Myreq): {}, request: {Myreq} ",
+                        tomLayer.getDeliveryThread().getNodeId(), tomLayer.clientsManager.getCIDForRequest(Myreq));
 
-                if (tomLayer.getDeliveryThread().getNodeId() > 3)
+
+
+                int cidForRVC = 3000;
+
+                if (this.Myreq!=null)
                 {
-                    tomLayer.getDeliveryThread().remote_view_notify(3000);
-                    logger.info("sent LCMessage");
+                    cidForRVC = tomLayer.clientsManager.getCIDForRequest(Myreq);
+                }
+
+
+                if ((tomLayer.getDeliveryThread().getNodeId() > 3) && (cidForRVC > 0))
+                {
+                    tomLayer.getDeliveryThread().remote_view_notify(cidForRVC);
+                    logger.info("sent LCMessage for cid: {}", cidForRVC);
                 }
 
 
@@ -412,26 +449,26 @@ public class RequestsTimer {
         }
     }
 
-
-    class RemoteViewChangeTimerTask extends TimerTask {
-
-        @Override
-        /**
-         * This is the code for the TimerTask. It executes the timeout for the first
-         * message on the watched list.
-         */
-        public void run() {
-
-            logger.info("2, SENDING LCMessage locally");
-
-
-            int[] myself = new int[1];
-            myself[0] = controller.getStaticConf().getProcessId();
-
-            communication.send(myself, new LCMessage(-1, TOMUtil.TRIGGER_LC_LOCALLY, -1, null));
-
-        }
-    }
+//
+//    class RemoteViewChangeTimerTask extends TimerTask {
+//
+//        @Override
+//        /**
+//         * This is the code for the TimerTask. It executes the timeout for the first
+//         * message on the watched list.
+//         */
+//        public void run() {
+//
+//            logger.info("2, SENDING LCMessage locally");
+//
+//
+//            int[] myself = new int[1];
+//            myself[0] = controller.getStaticConf().getProcessId();
+//
+//            communication.send(myself, new LCMessage(-1, TOMUtil.TRIGGER_LC_LOCALLY, -1, null));
+//
+//        }
+//    }
 
 
 

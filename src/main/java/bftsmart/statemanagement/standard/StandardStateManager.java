@@ -360,24 +360,24 @@ public class StandardStateManager extends StateManager {
 
                         tomLayer.getCommunication().send(SVController.getCurrentViewOtherAcceptors(), smsg);
 
-                        logger.info("obtained hmap from nodes is state.getStateHmap() is {}", msg.getState().getStateHmap());
+//                        logger.info("obtained hmap from nodes is state.getStateHmap() is {}", msg.getState().getStateHmap());
 
 
-                        HashMap<Integer, Integer> tmpMap = msg.getState().getStateHmap();
+//                        HashMap<Integer, Integer> tmpMap = msg.getState().getStateHmap();
+//
+//                        for(Integer iter_clusters: tmpMap.keySet())
+//                        {
+//                            if (cinfo.getClusterNumber(dt.getNodeId())!=tmpMap.get(iter_clusters)
+//                                    && tmpMap.get(iter_clusters) > 0)
+//                            {
+//                                tmpMap.put(iter_clusters,tmpMap.get(iter_clusters)+1);
+//                            }
+//                        }
+//                        logger.info("processed hmap from nodes is state.getStateHmap() is {}", tmpMap);
+//
+//                        logger.info("processed DecidedOtherClusters from nodes is state.getDecidedOtherClusters() is {}", msg.getState().getDecidedOtherClusters());
 
-                        for(Integer iter_clusters: tmpMap.keySet())
-                        {
-                            if (cinfo.getClusterNumber(dt.getNodeId())!=tmpMap.get(iter_clusters)
-                                    && tmpMap.get(iter_clusters) > 0)
-                            {
-                                tmpMap.put(iter_clusters,tmpMap.get(iter_clusters)+1);
-                            }
-                        }
-                        logger.info("processed hmap from nodes is state.getStateHmap() is {}", tmpMap);
-
-                        logger.info("processed DecidedOtherClusters from nodes is state.getDecidedOtherClusters() is {}", msg.getState().getDecidedOtherClusters());
-
-                        dt.setHmap(tmpMap);
+//                        dt.setHmap(tmpMap);
 //                        dt.setDecidedOtherClusters(msg.getState().getDecidedOtherClusters());
 
 

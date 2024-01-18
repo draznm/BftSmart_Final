@@ -149,9 +149,9 @@ public class MessageHandler {
 					
 					if (lcMsg.TRIGGER_LC_LOCALLY)
 					{
-						logger.info("Supposed to do Leader change");
+						logger.info("Supposed to do Leader change for cid: {}", lcMsg.getReg());
 
-						tomLayer.requestsTimer.run_lc_protocol();
+						tomLayer.requestsTimer.run_lc_protocol(lcMsg.getReg());
 						logger.info("------Leader Change Protocol DONE???");
 					}
 					else

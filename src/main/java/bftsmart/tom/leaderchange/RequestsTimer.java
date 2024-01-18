@@ -196,7 +196,7 @@ public class RequestsTimer {
         rwLock.writeLock().unlock();
     }
     
-    public void run_lc_protocol() {
+    public void run_lc_protocol(int lc_cid) {
         logger.info("\n\n\n RUNNING LC PROTOCOL\n\n\n" + System.currentTimeMillis());
         
         long t = (shortTimeout > -1 ? shortTimeout : timeout);
@@ -257,14 +257,15 @@ public class RequestsTimer {
             }
             else {
                 logger.info("triggerTimeout for pendingRequests {}, " +
-                        "with tomLayer.getDeliveryThread().getLastCID() = {}", pendingRequests, tomLayer.getDeliveryThread().getLastCID());
+                        "with tomLayer.getDeliveryThread().getLastCID() = {}, lc_cid: {}",
+                        pendingRequests, tomLayer.getDeliveryThread().getLastCID(), lc_cid);
 
                 tomLayer.getSynchronizer().triggerTimeout(pendingRequests);
 
-
+//                tomLayer.clientsManager.getCIDForRequest();
 
                 SMMessage smsg = new StandardSMMessage(controller.getStaticConf().getProcessId(),
-                        3000, TOMUtil.REMOTE_NODE_READY, 0, null, null, -1, -1);
+                        lc_cid, TOMUtil.REMOTE_NODE_READY, 0, null, null, -1, -1);
 
 
 
@@ -303,11 +304,11 @@ public class RequestsTimer {
             
             logger.info("Timeout triggered with no expired requests with t: {}", t);
             tomLayer.getSynchronizer().triggerTimeout(pendingRequests);
-            logger.info("Timeout triggered DONE, sending REMOTE_NODE_READY msg with cid: {} and lastcid: {}",
-                    tomLayer.getLastExec(), tomLayer.getDeliveryThread().getLastCID());
+            logger.info("Timeout triggered DONE, sending REMOTE_NODE_READY msg with cid: {} and lastcid: {}, lc_cid: {}",
+                    tomLayer.getLastExec(), tomLayer.getDeliveryThread().getLastCID(), lc_cid);
 
             SMMessage smsg = new StandardSMMessage(controller.getStaticConf().getProcessId(),
-                    3000, TOMUtil.REMOTE_NODE_READY, 0, null, null, -1, -1);
+                    lc_cid, TOMUtil.REMOTE_NODE_READY, 0, null, null, -1, -1);
 
 
 
@@ -424,7 +425,7 @@ public class RequestsTimer {
 
 
 
-                int cidForRVC = 3000;
+                int cidForRVC = -3000;
 
                 if (this.Myreq!=null)
                 {

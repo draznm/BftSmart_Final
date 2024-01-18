@@ -75,6 +75,8 @@ public class LCMessage extends SystemMessage {
         return ts;
     }
 
+
+
     /**
      * Obter data of the message
      * @return data of the message

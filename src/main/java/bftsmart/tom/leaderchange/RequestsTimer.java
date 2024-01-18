@@ -419,8 +419,8 @@ public class RequestsTimer {
                 ClusterInfo cinfo = new ClusterInfo();
                 HashMap<Integer, HostsConfig.Config> hostmap = cinfo.getAllConnectionsMap();
                 logger.info("inside requesttimertask, clusterid is {}, " +
-                        "tomLayer.clientsManager.getCIDForRequest(Myreq): {}, request: {Myreq} ",
-                        tomLayer.getDeliveryThread().getNodeId(), tomLayer.clientsManager.getCIDForRequest(Myreq));
+                        "tomLayer.clientsManager.getCIDForRequest(Myreq): {}, request: {} ",
+                        tomLayer.getDeliveryThread().getNodeId(), Myreq, tomLayer.clientsManager.getCIDForRequest(Myreq));
 
 
 

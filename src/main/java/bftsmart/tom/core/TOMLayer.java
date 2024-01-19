@@ -753,7 +753,6 @@ public final class TOMLayer extends Thread implements RequestReceiver {
         myself[0] = controller.getStaticConf().getProcessId();
 
 
-
         logger.info("LastLeaderChangeId: {}, msg_cid:{}", LastLeaderChangeId, ((SMMessage) sm).getCID());
         if ( ((SMMessage) sm).getCID() > LastLeaderChangeId+500)
         {

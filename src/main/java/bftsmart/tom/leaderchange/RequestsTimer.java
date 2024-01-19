@@ -132,7 +132,12 @@ public class RequestsTimer {
     }
     
     public void stopTimer() {
+
+        logger.info("Stopping timer");
         if (rtTask != null) {
+
+            logger.info("rtTask not null");
+
             rtTask.cancel();
             rtTask = null;
 
@@ -163,7 +168,14 @@ public class RequestsTimer {
         watched.add(request);
 
 
-        if (watched.size() >= 1 && enabled) startTimer(request);
+        if (watched.size() >= 1 && enabled)
+        {
+            startTimer(request);
+            logger.info("starting timer for request: {}, with reqid: {}, opid:{}, sequence: {}, " +
+                            "session:{}, replyserver:{}, req_view_id:{}",
+                    request, request.getId(), request.getOperationId(), request.getSequence(),
+                    request.getSession(), request.getReplyServer(), request.getViewID());
+        }
         rwLock.writeLock().unlock();
     }
 
@@ -172,9 +184,13 @@ public class RequestsTimer {
      * @param request Request whose timer is to be canceled
      */
     public void unwatch(TOMMessage request) {
-        //long startInstant = System.nanoTime();
+        logger.info("unwatching request: {}, with watched.size() :{} ", request, watched.size());
         rwLock.writeLock().lock();
-        if (watched.remove(request) && watched.isEmpty()) stopTimer();
+        if (watched.remove(request) && watched.isEmpty())
+        {
+            logger.info("going to stop timer with watched.isempty: {}", watched.isEmpty());
+            stopTimer();
+        }
         rwLock.writeLock().unlock();
     }
 
@@ -405,7 +421,7 @@ public class RequestsTimer {
          */
         public void run() {
 
-            logger.info("1, SENDING LCMessage locally");
+            logger.info("1, timeout, trigger, Remote View Notify");
 
 
             int[] myself = new int[1];
@@ -420,8 +436,10 @@ public class RequestsTimer {
                 ClusterInfo cinfo = new ClusterInfo();
                 HashMap<Integer, HostsConfig.Config> hostmap = cinfo.getAllConnectionsMap();
                 logger.info("inside requesttimertask, clusterid is {}, " +
-                        "tomLayer.clientsManager.getCIDForRequest(Myreq): {}, request: {} ",
-                        tomLayer.getDeliveryThread().getNodeId(), Myreq, tomLayer.clientsManager.getCIDForRequest(Myreq));
+                        "Myreq: {}, storedCIDforMyreq: {}, opid: {}, seq: {}, getID: {},  session:{}",
+                        tomLayer.getDeliveryThread().getNodeId(),
+                        Myreq, tomLayer.clientsManager.getCIDForRequest(Myreq)
+                , Myreq.getOperationId(), Myreq.getSequence(), Myreq.getId(), Myreq.getSession());
 
 
 

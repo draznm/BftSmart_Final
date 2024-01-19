@@ -53,7 +53,7 @@ public class ClientsManager {
 
     private RequestsTimer timer;
 
-    private HashMap< TOMMessage, Integer> reqToCID = new HashMap<TOMMessage, Integer>();
+    private HashMap<Integer, Integer> reqToCID = new HashMap<Integer, Integer>();
 
     private RequestsTimer remote_view_change_timer;
 
@@ -603,14 +603,14 @@ public class ClientsManager {
 
     public void provideCIDForRequest(TOMMessage req, int cid)
     {
-        reqToCID.put(req, cid);
+        reqToCID.put(req.getId(), cid);
     }
 
 
     public int getCIDForRequest(TOMMessage req)
     {
         logger.info("getting cid for request: {}", req);
-        return reqToCID.get(req);
+        return reqToCID.get(req.getId());
     }
 
 
@@ -627,7 +627,9 @@ public class ClientsManager {
 
         //stops the timer associated with this message
         if (timer != null) {
-            logger.info("unwatching request with id: {}",request.getId());
+            logger.info("unwatching request with id: {}, req:{}, sequence:{}" +
+                            ", op_id:{}",request.getId(),
+                    request, request.getSequence(), request.getOperationId() );
 
 
             timer.unwatch(request);

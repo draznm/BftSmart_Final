@@ -800,7 +800,7 @@ public final class DeliveryThread extends Thread {
 
 
 //	if (2>1)
-        if ((lastcid != -5000) && (this.receiver.getId() == tomLayer.execManager.getCurrentLeader())) {
+        if ((lastcid != 3000) && (this.receiver.getId() == tomLayer.execManager.getCurrentLeader())) {
             logger.info("\n\n\n\n\n SENDING OTHER CLUSTERS THE DECIDED VALUES");
             this.tomLayer.getCommunication().send(tgtArray, this.ocmd);
         } else {
@@ -832,16 +832,6 @@ public final class DeliveryThread extends Thread {
         SavedMessagesForExec.put(this.ocmd.getOcmd().from_cid_start, requests);
 
         SavedMultiClusterMessages.put(this.ocmd.getOcmd().from_cid_start, tempMap);
-
-
-//        TOMMessage[][] requests2 = SavedMessagesForExec.get(this.ocmd.getOcmd().from_cid_start);
-
-//        for (TOMMessage[] requestsFromConsensus : requests2) {
-//            for (TOMMessage request : requestsFromConsensus) {
-//                logger.info("Checking ReqType4 request.getReqType() is {}", request.getReqType());
-//            }
-//        }
-
 
     }
 
@@ -913,6 +903,16 @@ public final class DeliveryThread extends Thread {
                 if (decisions.size() > 0) {
 
                     TOMMessage[][] requests = new TOMMessage[decisions.size()][];
+
+
+
+
+
+
+
+
+
+
                     int[] consensusIds = new int[requests.length];
                     int[] leadersIds = new int[requests.length];
                     int[] regenciesIds = new int[requests.length];
@@ -921,6 +921,23 @@ public final class DeliveryThread extends Thread {
                     int count = 0;
                     for (Decision d : decisions) {
                         requests[count] = extractMessagesFromDecision(d);
+
+
+
+
+                        TOMMessage[] reqs = extractMessagesFromDecision(d);
+                        for (TOMMessage req : reqs) {
+
+
+                            logger.info("proving cid for request: {}, with cid:{}", req, d.getConsensusId());
+
+                            tomLayer.clientsManager.provideCIDForRequest(req, d.getConsensusId());
+                        }
+
+
+
+
+
                         consensusIds[count] = d.getConsensusId();
                         leadersIds[count] = d.getLeader();
                         regenciesIds[count] = d.getRegency();
@@ -964,13 +981,6 @@ public final class DeliveryThread extends Thread {
 
 
 
-                    TOMMessage[] reqs = extractMessagesFromDecision(lastDecision);
-                    for (TOMMessage request : reqs) {
-
-                        logger.info("proving cid for request: {}, with cid:{}", request, lastcid);
-
-                        tomLayer.clientsManager.provideCIDForRequest(request, lastcid);
-                    }
 
                     sending_other_clusters(consensusIds, regenciesIds, leadersIds,
                             cDecs, requests, decisions, lastDecision);

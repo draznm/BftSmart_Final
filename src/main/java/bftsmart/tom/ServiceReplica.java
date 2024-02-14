@@ -314,7 +314,7 @@ public class ServiceReplica {
             noop = true;
             for (TOMMessage request : requestsFromConsensus) {
                 
-                logger.debug("Processing TOMMessage from client " + request.getSender() + " with sequence number " + request.getSequence() + " for session " + request.getSession() + " decided in consensus " + consId[consensusCount]);
+//                logger.debug("Processing TOMMessage from client " + request.getSender() + " with sequence number " + request.getSequence() + " for session " + request.getSession() + " decided in consensus " + consId[consensusCount]);
 
 //                try {
 //                    System.out.wait(this.cinfo.NodeToLatency.get(this.id));
@@ -359,7 +359,7 @@ public class ServiceReplica {
                                 toBatch.add(request);
                             } else if (executor instanceof SingleExecutable) {
                                 
-                                logger.info("Delivering request from " + request.getSender() + " via SingleExecutable");
+                                logger.debug("Delivering request from " + request.getSender() + " via SingleExecutable");
                                 
                                 // This is used to deliver the content decided by a consensus instance directly to
                                 // a Recoverable object. It is useful to allow the application to create a log and
@@ -403,7 +403,7 @@ public class ServiceReplica {
                 
                 logger.debug("Delivering a no-op to the recoverer");
 
-                logger.info("A consensus instance finished, but there were no commands to deliver to the application.");
+                logger.debug("A consensus instance finished, but there were no commands to deliver to the application.");
                 logger.info("Notifying recoverable about a blank consensus.");
 
                 byte[][] batch = null;
@@ -465,10 +465,10 @@ public class ServiceReplica {
                 for (TOMMessage reply : replies) {
 
                     if (SVController.getStaticConf().getNumRepliers() > 0) {
-                        logger.info("Sending reply to " + reply.getSender() + " with sequence number " + reply.getSequence() + " and operation ID " + reply.getOperationId() +" via ReplyManager");
+                        logger.debug("Sending reply to " + reply.getSender() + " with sequence number " + reply.getSequence() + " and operation ID " + reply.getOperationId() +" via ReplyManager");
                         repMan.send(reply);
                     } else {
-                        logger.info("Sending reply to " + reply.getSender() + " with sequence number " + reply.getSequence() + " and operation ID " + reply.getOperationId());
+                        logger.debug("Sending reply to " + reply.getSender() + " with sequence number " + reply.getSequence() + " and operation ID " + reply.getOperationId());
                         replier.manageReply(reply, null);
                         //cs.send(new int[]{request.getSender()}, request.reply);
                     }
@@ -675,7 +675,7 @@ public class ServiceReplica {
 
                 logger.debug("Delivering a no-op to the recoverer");
 
-                logger.info("A consensus instance finished, but there were no commands to deliver to the application.");
+                logger.debug("A consensus instance finished, but there were no commands to deliver to the application.");
                 logger.info("Notifying recoverable about a blank consensus.");
 
                 byte[][] batch = null;

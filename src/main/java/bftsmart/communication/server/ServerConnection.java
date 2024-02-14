@@ -416,7 +416,7 @@ public class ServerConnection {
 
 						byte hasMAC = socketInStream.readByte();
 
-						logger.trace("Read: {}, HasMAC: {}", read, hasMAC);
+						logger.debug("Read: {}, HasMAC: {}", read, hasMAC);
 
 						SystemMessage sm = (SystemMessage) (new ObjectInputStream(new ByteArrayInputStream(data))
 								.readObject());
@@ -426,13 +426,13 @@ public class ServerConnection {
 
 						if (sm.getSender() == remoteId) {
 							if (!inQueue.offer(sm)) {
-								logger.warn("Inqueue full (message from " + remoteId + " discarded).");
+								logger.debug("Inqueue full (message from " + remoteId + " discarded).");
 							}/* else {
 								logger.trace("Message: {} queued, remoteId: {}", sm.toString(), sm.getSender());
 							}*/
 						}
 					} catch (ClassNotFoundException ex) {
-						logger.info("Invalid message received. Ignoring!");
+						logger.debug("Invalid message received. Ignoring!");
 					} catch (IOException ex) {
 						if (doWork) {
 							logger.debug("Closing socket and reconnecting");
@@ -440,7 +440,7 @@ public class ServerConnection {
 							waitAndConnect();
 						}
 					} catch (Exception ex) {
-						logger.info("Processing message failed. Ignoring!");
+						logger.debug("Processing message failed. Ignoring!");
 					}
 				} else {
 					waitAndConnect();

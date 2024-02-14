@@ -366,7 +366,7 @@ public class ServersCommunicationLayer extends Thread {
 //                    logger.info("Queueing (delivering) my own message, me:{}", target);
 
                 } else {
-					logger.info("Sending message from:{} -> to:{}.", me,  target);
+					logger.debug("Sending message from:{} -> to:{}.", me,  target);
 //                    logger.info("fasf Sending message from:{} -> to:{}.", me,  target);
 
                     getConnection(target).send(data);

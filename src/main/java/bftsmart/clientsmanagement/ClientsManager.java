@@ -610,7 +610,23 @@ public class ClientsManager {
     public int getCIDForRequest(TOMMessage req)
     {
         logger.info("getting cid for request: {}", req);
-        return reqToCID.get(req.getId());
+        if (req==null)
+        {
+            return -1;
+        }
+
+        if (req.getId() == -1)
+        {
+            return -1;
+        }
+
+
+        if (reqToCID.containsKey(req.getId()) )
+        {
+            return reqToCID.get(req.getId());
+
+        }
+        return -1;
     }
 
 

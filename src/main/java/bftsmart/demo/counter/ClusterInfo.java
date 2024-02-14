@@ -23,9 +23,6 @@ public class ClusterInfo {
     public HashMap<Integer, HostsConfig.Config> hm;
 
 
-    public HashMap<Integer, Integer> ClusterNodeCount = new HashMap<Integer, Integer>();
-
-
     public ArrayList<Integer> FPlusOneArray = new ArrayList<Integer>();
     public ArrayList<Integer> OwnClusterArray = new ArrayList<Integer>();
 
@@ -90,60 +87,41 @@ public class ClusterInfo {
     {
         int temp_cluster_number = -1;
 
-
         if (FPlusOneArray.isEmpty()) {
 
-            ClusterNodeCount = new HashMap<Integer, Integer>();
-            HashMap<Integer, Integer> ClusterSentCount = new HashMap<Integer, Integer>();
+            HashMap<Integer, ArrayList<Integer>> clusterNoToNodes = new HashMap<Integer, ArrayList<Integer>>();
 
-
-            for (int i : hm.keySet()) {
-
+            for (int i : hm.keySet())
+            {
                 temp_cluster_number = hm.get(i).ClusterNumber;
-                if (temp_cluster_number != cluster_id) {
-                    FPlusOneArray.add(i);
 
-                    if (ClusterNodeCount.containsKey(temp_cluster_number)) {
-                        ClusterNodeCount.put(temp_cluster_number, 1 + ClusterNodeCount.get(temp_cluster_number));
-                    } else {
-                        ClusterNodeCount.put(temp_cluster_number, 1);
-                    }
-
-                    ClusterSentCount.put(temp_cluster_number, 0);
-
-                }
-            }
-
-
-            for (Integer key : ClusterNodeCount.keySet()) {
-                ClusterNodeCount.put(key, (ClusterNodeCount.get(key)-1)/3);
-            }
-
-
-            for (int i : hm.keySet()) {
-
-                temp_cluster_number = hm.get(i).ClusterNumber;
-                if (temp_cluster_number != cluster_id) {
-
-                    if (ClusterSentCount.get(temp_cluster_number) <=ClusterNodeCount.get(temp_cluster_number))
+                if (temp_cluster_number != cluster_id)
+                {
+                    ArrayList<Integer> temp_arrList;
+                    if (clusterNoToNodes.containsKey(temp_cluster_number))
                     {
-//                        FPlusOneArray.add(i);
-                        ClusterSentCount.put(temp_cluster_number, 1+ClusterSentCount.get(temp_cluster_number));
-
+                        temp_arrList = clusterNoToNodes.get(temp_cluster_number);
                     }
-
+                    else
+                    {
+                        temp_arrList = new ArrayList<Integer>();
+                    }
+                    temp_arrList.add(i);
+                    clusterNoToNodes.put(temp_cluster_number, temp_arrList);
                 }
-
-
             }
 
-
-
-
-
+            for (int i : clusterNoToNodes.keySet())
+            {
+                ArrayList<Integer> temp_arrList = clusterNoToNodes.get(i);
+                for(int j = 0; j <= (temp_arrList.size()-1)/3; j++)
+                {
+                    FPlusOneArray.add(temp_arrList.get(j));
+                }
+            }
         }
 
-        logger.info("FPlusOneArray is : {}", FPlusOneArray);
+        logger.debug("FPlusOneArray is : {}", FPlusOneArray);
 
         return FPlusOneArray;
     }

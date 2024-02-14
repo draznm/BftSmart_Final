@@ -47,7 +47,7 @@ public class TOMMessage extends SystemMessage implements Externalizable, Compara
 	private byte[] content = null; // Content of the message
 
 	//the fields bellow are not serialized!!!
-	private transient int id; // ID for this message. It should be unique
+	private transient int id = -1; // ID for this message. It should be unique
 
 	public transient long timestamp = 0; // timestamp to be used by the application
 

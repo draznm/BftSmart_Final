@@ -19,15 +19,9 @@ import bftsmart.consensus.Consensus;
 import bftsmart.consensus.Epoch;
 import bftsmart.consensus.TimestampValuePair;
 import bftsmart.tom.core.TOMLayer;
-
-import java.io.FileWriter;
-import java.io.IOException;
 import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 import org.slf4j.LoggerFactory;
 
 /**
@@ -45,29 +39,6 @@ public class ShutdownHookThread extends Thread {
         this.md = this.tomLayer.md;
     }
 
-
-
-    private static String convertToJson(ConcurrentHashMap<Integer, long[]> map) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("{");
-        for (Map.Entry<Integer, long[]> entry : map.entrySet()) {
-            sb.append("\"").append(entry.getKey()).append("\":[");
-            long[] values = entry.getValue();
-            for (int i = 0; i < values.length; i++) {
-                sb.append(values[i]);
-                if (i < values.length - 1) {
-                    sb.append(",");
-                }
-            }
-            sb.append("],");
-        }
-        if (!map.isEmpty()) {
-            sb.deleteCharAt(sb.length() - 1); // Remove the last comma
-        }
-        sb.append("}");
-        return sb.toString();
-    }
-
     @Override
     public void run() {
         
@@ -77,21 +48,6 @@ public class ShutdownHookThread extends Thread {
         int currentCons = tomLayer.getInExec();
         Consensus c = null;
         Epoch e = null;
-
-
-        ConcurrentHashMap<Integer, long[]> temp = tomLayer.getTimes_tracker();
-
-        String jsonString = convertToJson(temp);
-
-        // Write the JSON string to a file
-
-        try (FileWriter fileWriter = new FileWriter("data.json")) {
-            fileWriter.write(jsonString);
-        } catch (IOException f) {
-            f.printStackTrace();
-        }
-
-
 
         buffer.append("\n---------- DEBUG INFO ----------\n");
         buffer.append("\nCurrent time: " + sdf.format(new Date()));

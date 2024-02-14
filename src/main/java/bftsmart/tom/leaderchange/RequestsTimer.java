@@ -105,24 +105,11 @@ public class RequestsTimer {
             //shortTimeout = -1;
             rtTask = new RequestTimerTask();
 
-            if (timer==null)
+            if (controller.getCurrentViewN() > 1)
             {
-                timer = new Timer("new timer due to timer being null");
+                logger.info("scheduling timer task");
+                timer.schedule(rtTask, t);
             }
-
-            try
-            {
-                if (controller.getCurrentViewN() > 1)
-                {
-                    logger.info("scheduling timer task");
-                    timer.schedule(rtTask, t);
-                }
-            }
-            catch (IllegalStateException e)
-            {
-                logger.info("IllegalStateException caught: {}", e.getMessage());
-            }
-
         }
     }
 
@@ -442,13 +429,10 @@ public class RequestsTimer {
 
             if (tomLayer.getDeliveryThread().invalid_rvc())
             {
-                logger.info("Invalid Remote View Notify");
-
                 return;
             }
 
-            try
-            {
+            try {
                 ClusterInfo cinfo = new ClusterInfo();
                 HashMap<Integer, HostsConfig.Config> hostmap = cinfo.getAllConnectionsMap();
                 logger.info("inside requesttimertask, clusterid is {}, " +
@@ -459,19 +443,13 @@ public class RequestsTimer {
 
 
 
-                int cidForRVC = 8000;
+                int cidForRVC = -3000;
 
                 if (this.Myreq!=null)
                 {
                     cidForRVC = tomLayer.clientsManager.getCIDForRequest(Myreq);
                 }
 
-                if (cidForRVC == -1)
-                {
-                    logger.info("Invalid Remote View Notify");
-
-                    return;
-                }
 
                 if ((tomLayer.getDeliveryThread().getNodeId() > 3) && (cidForRVC > 0))
                 {
@@ -480,14 +458,9 @@ public class RequestsTimer {
                 }
 
 
-            }
-            catch (IOException | ClassNotFoundException | InterruptedException e) {
-
+            } catch (IOException | ClassNotFoundException | InterruptedException e) {
                 throw new RuntimeException(e);
             }
-
-            logger.info("Completed Remote View Notify");
-
 
 //            communication.send(myself, new LCMessage(-1, TOMUtil.TRIGGER_LC_LOCALLY, -1, null));
 

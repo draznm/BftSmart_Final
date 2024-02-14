@@ -222,8 +222,8 @@ public final class ExecutionManager {
         
         int inExec = tomLayer.getInExec();
         
-        logger.debug("Received message  " + msg);
-        logger.debug("I'm at consensus " +
+        logger.info("Received message  " + msg);
+        logger.info("I'm at consensus " +
                 inExec + " and my last consensus is " + lastConsId);
         
         boolean isRetrievingState = tomLayer.isRetrievingState();
@@ -245,7 +245,7 @@ public final class ExecutionManager {
             if (stopped) {//just an optimization to avoid calling the lock in normal case
                 stoppedMsgsLock.lock();
                 if (stopped) {
-                    logger.debug("Adding message for consensus " + msg.getNumber() + " to stoopped");
+                    logger.info("Adding message for consensus " + msg.getNumber() + " to stoopped");
                     //the execution manager was stopped, the messages should be stored
                     //for later processing (when the consensus is restarted)
                     stoppedMsgs.add(msg);
@@ -256,7 +256,7 @@ public final class ExecutionManager {
                         msg.getNumber() > (lastConsId + 1) || 
                         (inExec != -1 && inExec < msg.getNumber()) || 
                         (inExec == -1 && msg.getType() != MessageFactory.PROPOSE)) { //not propose message for the next consensus
-                    logger.debug("Message for consensus " +
+                    logger.info("Message for consensus " +
                             msg.getNumber() + " is out of context, adding it to out of context set");
                     
 
@@ -267,11 +267,11 @@ public final class ExecutionManager {
                     addOutOfContextMessage(msg);
                 } else if(getConsensus(msg.getNumber()).getEpoch(msg.getEpoch(), controller).deserializedPropValue == null &&
                         msg.getType() == MessageFactory.ACCEPT) { //if the propose message has not been processed yet, and a ACCEPT message is received -> out of context
-                    logger.debug("ACCEPT-Message for consensus " +
+                    logger.info("ACCEPT-Message for consensus " +
                             msg.getNumber() + " received before PROPOSE, adding it to out of context set");
                     addOutOfContextMessage(msg);
                 }else { //can process!
-                    logger.debug("Message for consensus " +
+                    logger.info("Message for consensus " +
                             msg.getNumber() + " can be processed");
             
                     //Logger.debug = false;
@@ -285,7 +285,7 @@ public final class ExecutionManager {
 
             //Start state transfer
             /** THIS IS JOAO'S CODE, FOR HANLDING THE STATE TRANSFER */
-            logger.debug("Message for consensus "
+            logger.info("Message for consensus "
                     + msg.getNumber() + " is beyond the paxos highmark, adding it to out of context set");
             addOutOfContextMessage(msg);
 

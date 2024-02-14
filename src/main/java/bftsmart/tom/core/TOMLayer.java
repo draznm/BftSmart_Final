@@ -50,7 +50,6 @@ import java.security.*;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -536,8 +535,6 @@ public final class TOMLayer extends Thread implements RequestReceiver {
                     continue;
 
                 }
-
-                dt.store_start_consensus_time(dec.getConsensusId());
                 execManager.getProposer().startConsensus(execId, createPropose(dec));
             }
         }
@@ -722,7 +719,7 @@ public final class TOMLayer extends Thread implements RequestReceiver {
         }
 
 
-        logger.debug("going to deliveryOtherCluster");
+        logger.info("going to deliveryOtherCluster");
 
         dt.deliveryOtherCluster(msg);
 
@@ -770,13 +767,6 @@ public final class TOMLayer extends Thread implements RequestReceiver {
     public void increase_rvc_timeout(int cid)
     {
         dt.increase_rvc_timeout(cid);
-    }
-
-
-
-    public ConcurrentHashMap<Integer, long[]> getTimes_tracker()
-    {
-        return dt.getTimes_tracker();
     }
 
     public void signalRemoteChange(SystemMessage sm) {

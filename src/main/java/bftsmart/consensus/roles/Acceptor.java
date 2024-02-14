@@ -122,17 +122,17 @@ public final class Acceptor {
 	 */
 	public final void deliver(ConsensusMessage msg) {
 
-		logger.debug("Delivering ConsensusMessage from: {}, type: {}, " +
+		logger.info("Delivering ConsensusMessage from: {}, type: {}, " +
 						"propose, write, accept: {}, {}, {}", msg.getSender(), msg.getType(),
 				MessageFactory.PROPOSE,MessageFactory.WRITE, MessageFactory.ACCEPT);
 
-		logger.debug("------CHECKING LIMITS----------");
+		logger.info("------CHECKING LIMITS----------");
 
 		if (executionManager.checkLimits(msg)) {
-			logger.debug("Processing paxos msg with id " + msg.getNumber());
+			logger.info("Processing paxos msg with id " + msg.getNumber());
 			processMessage(msg);
 		} else {
-			logger.debug("Out of context msg with id " + msg.getNumber() + ", type: " + msg.getNumber());
+			logger.info("Out of context msg with id " + msg.getNumber() + ", type: " + msg.getNumber());
 			tomLayer.processOutOfContext();
 		}
 	}
@@ -427,7 +427,7 @@ public final class Acceptor {
 	 * @param value Value sent in the message
 	 */
 	private void computeAccept(int cid, Epoch epoch, byte[] value) {
-		logger.debug("I have {} ACCEPTs for cId:{}, Timestamp:{} ", epoch.countAccept(value), cid,
+		logger.info("I have {} ACCEPTs for cId:{}, Timestamp:{} ", epoch.countAccept(value), cid,
 				epoch.getTimestamp());
 
 		if (epoch.countAccept(value) > controller.getQuorum() && !epoch.getConsensus().isDecided()) {

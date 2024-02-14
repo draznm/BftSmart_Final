@@ -88,7 +88,7 @@ public class MessageHandler {
 
 		if (sm instanceof OtherClusterMessage)
 		{
-			logger.debug("\n\n\n PROCESSING OtherClusterMessage by Message Handler with type"+ ((OtherClusterMessage) sm).getOcmd().type);
+			logger.info("\n\n\n PROCESSING OtherClusterMessage by Message Handler with type"+ ((OtherClusterMessage) sm).getOcmd().type);
 			tomLayer.requestReceivedOtherClusters((OtherClusterMessage) sm);
 			return;
 		}
@@ -101,7 +101,7 @@ public class MessageHandler {
 
 
 		if (sm instanceof ConsensusMessage) {
-			logger.debug("ConsensusMessage being processed MessageHandler");
+			logger.info("ConsensusMessage being processed MessageHandler");
 
 			int myId = tomLayer.controller.getStaticConf().getProcessId();
 
@@ -122,7 +122,7 @@ public class MessageHandler {
 				if (sm instanceof LCMessage) {
 
 					LCMessage lcMsg = (LCMessage) sm;
-					logger.debug("LCMessage being processed inside processData: lcMsg.getSender(), lcMsg.getType(), lcMsg.TRIGGER_LC_LOCALLY are {}, {} and {}",
+					logger.info("LCMessage being processed inside processData: lcMsg.getSender(), lcMsg.getType(), lcMsg.TRIGGER_LC_LOCALLY are {}, {} and {}",
 							lcMsg.getSender(), lcMsg.getType(), lcMsg.TRIGGER_LC_LOCALLY);
 					String type = null;
 					switch (lcMsg.getType()) {
@@ -172,22 +172,22 @@ public class MessageHandler {
 					SMMessage smsg = (SMMessage) sm;
 					switch (smsg.getType()) {
 					case TOMUtil.SM_REQUEST:
-						logger.debug("SMRequestDeliver activated");
+						logger.info("SMRequestDeliver activated");
 						tomLayer.getStateManager().SMRequestDeliver(smsg, tomLayer.controller.getStaticConf().isBFT());
 //						tomLayer.resendOCMD();
 						break;
 					case TOMUtil.SM_REPLY:
-						logger.debug("SMReplyDeliver activated with state: {}", smsg.getState());
+						logger.info("SMReplyDeliver activated with state: {}", smsg.getState());
 
 						tomLayer.getStateManager().SMReplyDeliver(smsg, tomLayer.controller.getStaticConf().isBFT());
 						break;
 					case TOMUtil.SM_ASK_INITIAL:
-						logger.debug("currentConsensusIdAsked activated");
+						logger.info("currentConsensusIdAsked activated");
 
 						tomLayer.getStateManager().currentConsensusIdAsked(smsg.getSender(), smsg.getCID());
 						break;
 					case TOMUtil.SM_REPLY_INITIAL:
-						logger.debug("currentConsensusIdReceived activated");
+						logger.info("currentConsensusIdReceived activated");
 
 						tomLayer.getStateManager().currentConsensusIdReceived(smsg);
 						break;

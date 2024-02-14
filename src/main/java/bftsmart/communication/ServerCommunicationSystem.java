@@ -155,11 +155,11 @@ public class ServerCommunicationSystem extends Thread {
                 SystemMessage sm = inQueue.poll(MESSAGE_WAIT_TIME, TimeUnit.MILLISECONDS);
 
                 if (sm != null) {
-                    logger.debug("<-- receiving, msg:" + sm+ " with it being OtherClusterMessage="+
+                    logger.info("<-- receiving, msg:" + sm+ " with it being OtherClusterMessage="+
                             (sm instanceof OtherClusterMessage));
                     if  (sm instanceof OtherClusterMessage)
                     {
-                        logger.debug("received ocmd: {}", (OtherClusterMessage)sm);
+                        logger.info("received ocmd: {}", (OtherClusterMessage)sm);
                     }
 
 
@@ -198,7 +198,7 @@ public class ServerCommunicationSystem extends Thread {
         {
 
             try {
-                logger.debug("--> 1: sending OtherClusterMessage message from: {} -> {}, from_cid_start, from_cid_end is {}, {}"
+                logger.info("--> 1: sending OtherClusterMessage message from: {} -> {}, from_cid_start, from_cid_end is {}, {}"
                         , sm.getSender(), targets, ((OtherClusterMessage) sm).getOcmd().from_cid_start, ((OtherClusterMessage) sm).getOcmd().from_cid_end);
             } catch (IOException | ClassNotFoundException e) {
                 throw new RuntimeException(e);
@@ -206,10 +206,10 @@ public class ServerCommunicationSystem extends Thread {
             serversConn.send(targets, (OtherClusterMessage) sm, true);
         }
         else if (sm instanceof TOMMessage) {
-            logger.debug("--> 2: sending TOMMessage from: {} -> {}", sm.getSender(), targets);
+            logger.info("--> 2: sending TOMMessage from: {} -> {}", sm.getSender(), targets);
             clientsConn.send(targets, (TOMMessage) sm, false);
         } else {
-            logger.debug("--> 3: sending SystemMessage message from: {} -> {}", sm, targets);
+            logger.info("--> 3: sending SystemMessage message from: {} -> {}", sm, targets);
             serversConn.send(targets, sm, true);
         }
     }

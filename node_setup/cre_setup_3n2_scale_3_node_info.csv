@@ -40,7 +40,6 @@ node_id,region,ServerOrClientregion,cluster_id,key_file,clientID,ServerID, Publi
 38, 'europe-west3-c', 1, -1, 'FKA.pem', 16, -1,
 39, 'europe-west3-c', 1, -1, 'FKA.pem', 18, -1,
 40, 'europe-west3-c', 1, -1, 'FKA.pem', 19, -1,
-
 41, 'asia-south1-c', 0, 2, 'FKE.pem', -1, 27,
 42, 'asia-south1-c', 0, 2, 'FKE.pem', -1, 28,
 43, 'asia-south1-c', 0, 2, 'FKE.pem', -1, 29,

@@ -23,3 +23,5 @@ node_id,region,ServerOrClientregion,cluster_id,key_file,clientID,ServerID, Publi
 21, 'europe-west3-c', 1, -1, 'FKA.pem', 13, -1,
 22, 'europe-west3-c', 1, -1, 'FKA.pem', 14, -1,
 23, 'europe-west3-c', 1, -1, 'FKA.pem', 15, -1,
+24, 'europe-west3-c', 1, -1, 'FKA.pem', 16, -1,
+25, 'europe-west3-c', 1, -1, 'FKA.pem', 17, -1,

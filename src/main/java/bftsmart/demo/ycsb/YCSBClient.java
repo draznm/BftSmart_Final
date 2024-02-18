@@ -63,7 +63,7 @@ public class YCSBClient extends DB {
 
         int ncls = cinfo.nClusters;
 
-        myId = initId +10* ( (int) (ClientID/ncls) )*ClientID+counter.addAndGet(1);
+        myId = initId +20* ( (int) (ClientID/ncls) )*ClientID+counter.addAndGet(1);
 //        myId = initId + counter.addAndGet(1);
 
         proxy = new ServiceProxy(myId, "config"+Integer.toString(ClientID%ncls));

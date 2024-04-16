@@ -126,8 +126,9 @@ public final class DeliveryThread extends Thread {
     ConcurrentHashMap<Integer, Decision> LastDecisionSaved = new ConcurrentHashMap<Integer, Decision>();
 
 
-    ConcurrentHashMap<Integer, HashMap<Integer, OtherClusterMessage>> SavedMultiClusterMessages =
-            new ConcurrentHashMap<Integer, HashMap<Integer, OtherClusterMessage>>();
+    ConcurrentHashMap<Integer, OtherClusterMessage[]> SavedMultiClusterMessages =
+            new ConcurrentHashMap<Integer,OtherClusterMessage[]>();
+
 
 
 
@@ -426,7 +427,11 @@ public final class DeliveryThread extends Thread {
 
         OtherClusterMessageData tempOcmd = null;
         try {
-            tempOcmd = SavedMultiClusterMessages.get(tid).get(this.cinfo.getClusterNumber(getNodeId())).getOcmd();
+            //            tempOcmd = SavedMultiClusterMessages.get(tid).get(this.cinfo.getClusterNumber(getNodeId())).getOcmd();
+            tempOcmd = SavedMultiClusterMessages.get(tid)[this.cinfo.getClusterNumber(getNodeId())].getOcmd();
+
+
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (ClassNotFoundException e) {
@@ -436,7 +441,8 @@ public final class DeliveryThread extends Thread {
 
         Decision lastDecision = LastDecisionSaved.get(tid);
 
-        lastocmd = SavedMultiClusterMessages.get(tid).get(this.cinfo.getClusterNumber(getNodeId()));
+//        lastocmd = SavedMultiClusterMessages.get(tid).get(this.cinfo.getClusterNumber(getNodeId()));
+        lastocmd = SavedMultiClusterMessages.get(tid)[this.cinfo.getClusterNumber(getNodeId())];
 
 
         TOMMessage[] requests = extractMessagesFromDecision(lastDecision);
@@ -554,13 +560,15 @@ public final class DeliveryThread extends Thread {
                             ""));
 
 
-            HashMap<Integer, OtherClusterMessage> tempMap = SavedMultiClusterMessages.get(msg.getOcmd().from_cid_start);
+//            HashMap<Integer, OtherClusterMessage> tempMap = SavedMultiClusterMessages.get(msg.getOcmd().from_cid_start);
+            OtherClusterMessage[] tempMap = SavedMultiClusterMessages.get(msg.getOcmd().from_cid_start);
 
 
-            if (tempMap == null) tempMap = new HashMap<Integer, OtherClusterMessage>();
+//            if (tempMap == null) tempMap = new HashMap<Integer, OtherClusterMessage>();
+            if (tempMap == null) tempMap = new OtherClusterMessage[this.cinfo.nClusters];
 
-            tempMap.put(clusterId, msg);
-
+//            tempMap.put(clusterId, msg);
+            tempMap[clusterId]  = msg;
 
             SavedMultiClusterMessages.put(msg.getOcmd().from_cid_start, tempMap);
 
@@ -643,14 +651,27 @@ public final class DeliveryThread extends Thread {
     public boolean othermsgs_received_mc(int tid) {
 
 
-        HashMap<Integer, OtherClusterMessage> temp = SavedMultiClusterMessages.get(tid);
+//        HashMap<Integer, OtherClusterMessage> temp = SavedMultiClusterMessages.get(tid);
+        OtherClusterMessage[] temp = SavedMultiClusterMessages.get(tid);
+
+
+
+
+//        if (temp == null) return false;
+
 
         if (temp == null) return false;
 
-//        logger.info("othermsgs_received_mc for tid: {}, is temp size, nclusters is {}, {}, temp keyset {}", tid, temp.size(), this.cinfo.nClusters, temp.keySet());
 
 
-        return temp.size() == this.cinfo.nClusters;
+
+        for (OtherClusterMessage element : temp) {
+            if (element == null) {
+                return false;
+            }
+        }
+
+        return true;
 
 
     }
@@ -869,12 +890,15 @@ public final class DeliveryThread extends Thread {
                 tgtArray, this.ocmd.getOcmd().type);
 
 
-        HashMap<Integer, OtherClusterMessage> tempMap = SavedMultiClusterMessages.get(this.ocmd.getOcmd().from_cid_start);
+//        HashMap<Integer, OtherClusterMessage> tempMap = SavedMultiClusterMessages.get(this.ocmd.getOcmd().from_cid_start);
+        OtherClusterMessage[] tempMap = SavedMultiClusterMessages.get(this.ocmd.getOcmd().from_cid_start);
 
 
-        if (tempMap == null) tempMap = new HashMap<Integer, OtherClusterMessage>();
+//        if (tempMap == null) tempMap = new HashMap<Integer, OtherClusterMessage>();
+        if (tempMap == null) tempMap = new OtherClusterMessage[this.cinfo.nClusters];
 
-        tempMap.put(clusterid, completeOcmd);
+//        tempMap.put(clusterid, completeOcmd);
+        tempMap[clusterid] = completeOcmd;
 
 
         logger.debug("saving msg for execution, with tid: {}, requests: {}",
@@ -1008,18 +1032,20 @@ public final class DeliveryThread extends Thread {
                     Decision lastDecision = decisions.get(decisions.size() - 1);
 
 
-                    lastcid = lastDecision.getConsensusId();
+//                    lastcid = lastDecision.getConsensusId();
+                    int lastcid_temp= lastDecision.getConsensusId();
+
 
                     logger.debug("saving lastdecision for cid: {} with consid {}",
-                            lastcid, lastDecision.getConsensusId());
+                            lastcid_temp, lastDecision.getConsensusId());
 
-                    LastDecisionSaved.put(lastcid, lastDecision);
+                    LastDecisionSaved.put(lastcid_temp, lastDecision);
 
                     long consensusEndTime = System.nanoTime();
 
                     logger.debug("Ending Consensus for cId:{},  " +
                                     "consensusEndTime: {}",
-                            lastcid, consensusEndTime);
+                            lastcid_temp, consensusEndTime);
 
 
 
@@ -1039,16 +1065,18 @@ public final class DeliveryThread extends Thread {
 
                     logger.debug("Ending MC for cId:{},  " +
                                     "MCLatency: {}",
-                            lastcid, MCEndTime - consensusEndTime);
+                            lastcid_temp, MCEndTime - consensusEndTime);
 
-                    HashMap<Integer, OtherClusterMessage> temp = SavedMultiClusterMessages.get(lastcid);
-                    logger.debug("Main LOOP othermsgs_received_mc for tid: {}, is temp size, nclusters is {}, {}, temp keyset {}", lastcid, temp.size(), this.cinfo.nClusters, temp.keySet());
+//                    HashMap<Integer, OtherClusterMessage> temp = SavedMultiClusterMessages.get(lastcid);
+                    OtherClusterMessage[] temp = SavedMultiClusterMessages.get(lastcid_temp);
+                    logger.debug("Main LOOP othermsgs_received_mc for tid: {}, is temp size, nclusters is {}, {}, temp keyset {}", lastcid_temp,
+                            temp.length, this.cinfo.nClusters, temp);
 
-                    if (othermsgs_received_mc(lastcid)) {
+                    if (othermsgs_received_mc(lastcid_temp)) {
 
-                        Integer temp_cid = lastcid;
+                        Integer temp_cid = lastcid_temp;
 
-                        if (times_tracker.containsKey(lastcid))
+                        if (times_tracker.containsKey(lastcid_temp))
                         {
 
 
@@ -1058,9 +1086,9 @@ public final class DeliveryThread extends Thread {
                         }
 
 
-                        executeMessages(lastcid);
+                        executeMessages(lastcid_temp);
 
-                        if (times_tracker.containsKey(lastcid))
+                        if (times_tracker.containsKey(lastcid_temp))
                         {
 
 

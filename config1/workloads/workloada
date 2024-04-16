@@ -24,7 +24,7 @@
 
 
 fieldcount=1
-fieldlength=1
+fieldlength=1024
 
 recordcount=20000
 operationcount=0

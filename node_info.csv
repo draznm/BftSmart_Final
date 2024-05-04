@@ -1,4 +1,4 @@
-node_id,region,ServerOrClientregion,cluster_id,key_file,clientID,ServerID,join_col,PublicIp
+node_id,region,ServerOrClientregion,cluster_id,key_file,clientID,ServerID,join_col,PublicIP
 0, 'us-west1-b', 0, 0, 'FKA.pem', -1, 0, 0,
 1, 'us-west1-b', 0, 0, 'FKA.pem', -1, 1, 0,
 2, 'us-west1-b', 0, 0, 'FKA.pem', -1, 2, 0,

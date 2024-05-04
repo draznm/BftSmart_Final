@@ -232,7 +232,7 @@ public class NettyClientServerCommunicationSystemServerSide extends SimpleChanne
 
 		// delivers message to TOMLayer
 		if (requestReceiver == null)
-			logger.warn("Request receiver is still null!");
+			logger.debug("Request receiver is still null!");
 		else
 		{
 

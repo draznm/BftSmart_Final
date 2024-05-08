@@ -117,11 +117,18 @@ public class ViewManager {
 
 
         VMMessage msg = new VMMessage(id, r);
+        
+        
+        Integer[] addIds_array = new Integer[addIds.size()];
+        for (int i = 0; i < addIds.size(); i++) {
+            addIds_array[i] = addIds.get(i);
+        }
+
 
         if (addIds.size() > 0) { 
             
-            logger.info("addIds.toArray(new Integer[1]) is "+ addIds.toArray(new Integer[1]));
-            sendResponse(addIds.toArray(new Integer[1]), msg);
+            logger.info("addIds.toArray(new Integer[1]) is "+ addIds_array);
+            sendResponse(addIds_array, msg);
             addIds.clear();
         }
     }

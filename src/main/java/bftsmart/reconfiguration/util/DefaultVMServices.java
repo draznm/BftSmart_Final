@@ -36,16 +36,30 @@ public class DefaultVMServices extends VMServices {
             (new DefaultVMServices()).removeServer(smartId);
             
                 
-        }else if(args.length == 5){
+        }else if(args.length > 5){
             System.out.println("####Tpp Service[Join]####");
+            int nnodes = Integer.parseInt(args[0]);
+            
+            
+            int[] smartIds = new int[nnodes];
+            String[] ipAddresses = new String[nnodes];
 
-            int smartId = Integer.parseInt(args[0]);
-            String ipAddress = args[1];
-            int port = Integer.parseInt(args[2]);
-            int portRR = Integer.parseInt(args[3]);
-            String config_id = args[4];
+            for (int i = 0; i < nnodes;i++)
+            {
+                
+                smartIds[i] = Integer.parseInt(args[1+i*5]);
+                ipAddresses[i] = args[2+i*5];
 
-            (new DefaultVMServices(null, config_id)).addServer(smartId, ipAddress, port, portRR);
+            }
+            
+            int port = Integer.parseInt(args[3]);
+            int portRR = Integer.parseInt(args[4]);
+            String config_id = args[5];
+
+
+//            (new DefaultVMServices(null, config_id)).addServer(smartId, ipAddress, port, portRR);
+            (new DefaultVMServices(null, config_id)).addServerMultiple(smartIds, ipAddresses, port, portRR);
+
 //            (new DefaultVMServices()).addServer(smartId, ipAddress, port, portRR);
 
         }else{

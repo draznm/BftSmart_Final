@@ -65,6 +65,26 @@ public class VMServices {
 
     }
     
+    
+        public void addServerMultiple(int[] ids, String[] ipAddresss, int port, int portRR) {
+            
+            
+            ViewManager viewManager = new ViewManager(configDir, keyLoader);
+
+            for(int i=0; i < ids.length;i++)
+            {
+                int id = ids[i];
+                String ipAddress = ipAddresss[i];
+                        
+                viewManager.addServer(id, ipAddress, port, portRR);
+                
+            }
+
+        
+        execute(viewManager);
+
+    }
+    
     /**
      * Removes a server from the group
      * 

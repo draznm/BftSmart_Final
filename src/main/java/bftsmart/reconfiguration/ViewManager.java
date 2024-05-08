@@ -108,11 +108,13 @@ public class ViewManager {
     }
 
     public void executeUpdates() {
+        
+        logger.info("addIds: " + addIds);
         connect();
         ReconfigureReply r = rec.execute();
         View v = r.getView();
         logger.info("New view f: " + v.getF());
-        logger.info("addIds: " + addIds);
+
 
         VMMessage msg = new VMMessage(id, r);
 

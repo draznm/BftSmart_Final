@@ -119,6 +119,8 @@ public class ViewManager {
         VMMessage msg = new VMMessage(id, r);
 
         if (addIds.size() > 0) { 
+            
+            logger.info("addIds.toArray(new Integer[1]) is "+ addIds.toArray(new Integer[1]));
             sendResponse(addIds.toArray(new Integer[1]), msg);
             addIds.clear();
         }

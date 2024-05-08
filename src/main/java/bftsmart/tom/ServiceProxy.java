@@ -570,7 +570,7 @@ public class ServiceProxy extends TOMSender {
                     
 
 
-                    replyQuorum = getReplyQuorum();
+                    replyQuorum = 2;// getReplyQuorum();
 
 
                     // Send the request to the replicas, and get its ID
@@ -599,7 +599,7 @@ public class ServiceProxy extends TOMSender {
                             TOMulticast(request, reqId, operationId, reqType);
                     }
 
-                    logger.info("Sending request (" + reqType + ") with reqId=" + reqId);
+                    logger.info("Sending special request (" + reqType + ") with reqId=" + reqId);
                     logger.info("Expected number of matching replies: " + replyQuorum);
 
 

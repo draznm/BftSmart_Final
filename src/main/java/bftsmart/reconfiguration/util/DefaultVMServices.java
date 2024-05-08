@@ -58,6 +58,9 @@ public class DefaultVMServices extends VMServices {
 
 
 //            (new DefaultVMServices(null, config_id)).addServer(smartId, ipAddress, port, portRR);
+
+            System.out.println("####Tpp Service[Join]####"+smartIds +", "+ipAddresses);
+
             (new DefaultVMServices(null, config_id)).addServerMultiple(smartIds, ipAddresses, port, portRR);
 
 //            (new DefaultVMServices()).addServer(smartId, ipAddress, port, portRR);

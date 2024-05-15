@@ -292,8 +292,8 @@ public abstract class DefaultRecoverable implements Recoverable, BatchExecutable
             for (int cid = lastCheckpointCID + 1; cid <= lastCID; cid++) {
                 try {
 
-                    logger.info("Processing and verifying batched requests for cid " + cid
-                    + ", lastCID = "+lastCID+", starting CID= "+(lastCheckpointCID+1));
+//                    logger.info("Processing and verifying batched requests for cid " + cid
+//                    + ", lastCID = "+lastCID+", starting CID= "+(lastCheckpointCID+1));
                     if (state.getMessageBatch(cid) == null) {
                         logger.info("Consensus " + cid + " is null!");
                     }

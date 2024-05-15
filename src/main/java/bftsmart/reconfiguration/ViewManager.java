@@ -114,11 +114,13 @@ public class ViewManager {
         
         boolean successful_reconfig = false;
         
+        ReconfigureReply r = new ReconfigureReply();
+        
         while(successful_reconfig!=true)
         {
             try
                 {
-                    ReconfigureReply r = rec.execute();
+                    r = rec.execute();
                     successful_reconfig = true;
                 }
             catch (Exception e) 

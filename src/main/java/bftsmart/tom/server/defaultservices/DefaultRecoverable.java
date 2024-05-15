@@ -289,7 +289,9 @@ public abstract class DefaultRecoverable implements Recoverable, BatchExecutable
                 installSnapshot(state.getSerializedState());
             }
 
-            for (int cid = lastCheckpointCID + 1; cid <= lastCID; cid++) {
+//            for (int cid = lastCheckpointCID + 1; cid <= lastCID; cid++) {
+            for (int cid = lastCID-1; cid <= lastCID; cid++) {
+
                 try {
 
 //                    logger.info("Processing and verifying batched requests for cid " + cid

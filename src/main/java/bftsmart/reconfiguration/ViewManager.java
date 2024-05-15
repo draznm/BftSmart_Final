@@ -111,7 +111,23 @@ public class ViewManager {
         
         logger.info("addIds: " + addIds);
         connect();
-        ReconfigureReply r = rec.execute();
+        
+        boolean successful_reconfig = false;
+        
+        while(successful_reconfig!=true)
+        {
+            try
+                {
+                    ReconfigureReply r = rec.execute();
+                    successful_reconfig = true;
+                }
+            catch (Exception e) 
+                {
+                    logger.info("Exception caught" );
+                }
+        
+        }
+
         View v = r.getView();
         logger.info("New view f: " + v.getF());
 

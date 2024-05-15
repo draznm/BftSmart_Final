@@ -398,7 +398,8 @@ public class ServiceProxy extends TOMSender {
 		}
 
 		logger.info("Sending request (" + reqType + ") with reqId=" + reqId);
-		logger.info("Expected number of matching replies: " + replyQuorum);
+		logger.info("Expected number of matching replies: " + replyQuorum+ ", invokeTimeout = "
+                        +invokeTimeout);
 
 		// This instruction blocks the thread, until a response is obtained.
 		// The thread will be unblocked when the method replyReceived is invoked

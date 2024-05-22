@@ -174,9 +174,11 @@ public class DefaultApplicationState implements ApplicationState {
         }
         else
         {
-            logger.info("=========NULL PROOF returned");
+            logger.info("=========NULL PROOF returned, Modded return");
+            
+            return new CertifiedDecision(pid, getLastCID(), null, null);
 
-            return null; // there was no proof for the consensus
+//            return null; // there was no proof for the consensus
         }
 
 

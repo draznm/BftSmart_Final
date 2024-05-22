@@ -461,6 +461,7 @@ public final class TOMLayer extends Thread implements RequestReceiver {
 
             //******* EDUARDO BEGIN **************//
             if (execManager.getCurrentLeader() != this.controller.getStaticConf().getProcessId()) {
+                logger.info("WAITING FOR LEADER");
                 iAmLeader.awaitUninterruptibly();
                 //waitForPaxosToFinish();
             }

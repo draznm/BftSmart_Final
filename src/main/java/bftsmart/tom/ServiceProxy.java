@@ -382,7 +382,7 @@ public class ServiceProxy extends TOMSender {
 		if(requestType == TOMMessageType.UNORDERED_HASHED_REQUEST){
 
 			replyServer = getRandomlyServerId();
-			logger.debug("["+this.getClass().getName()+"] replyServerId("+replyServer+") "
+			logger.info("["+this.getClass().getName()+"] replyServerId("+replyServer+") "
 					+ "pos("+getViewManager().getCurrentViewPos(replyServer)+")");
 
 			hashResponseController = new HashResponseController(getViewManager().getCurrentViewPos(replyServer),

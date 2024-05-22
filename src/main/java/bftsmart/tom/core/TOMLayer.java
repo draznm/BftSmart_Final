@@ -659,6 +659,8 @@ public final class TOMLayer extends Thread implements RequestReceiver {
         //ot.addUpdate();
         canPropose.signalAll();
         proposeLock.unlock();
+        logger.info("SetNoExec Done");
+
     }
 
     public void processOutOfContext() {

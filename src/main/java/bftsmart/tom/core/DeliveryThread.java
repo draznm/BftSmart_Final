@@ -1233,9 +1233,9 @@ public final class DeliveryThread extends Thread {
     }
 
     public void signalReconfigConfirmationNewNode() {
-        ReconfigLockMC.lock();
+//        ReconfigLockMC.lock();
 //		ReconfigLockMCCondition.signalAll();
-        ReconfigLockMC.unlock();
+//        ReconfigLockMC.unlock();
     }
 
     public void signalRemoteChange(SystemMessage sm) {

@@ -351,7 +351,7 @@ public abstract class StateManager {
 
 
                 
-                if (cids.get(cid) > SVController.getQuorum()) {
+                if (cids.get(cid) >= SVController.getQuorum()) {
                     
                     logger.info("There is a quorum for CID {} with lastCID {}",cid, lastCID);
                     

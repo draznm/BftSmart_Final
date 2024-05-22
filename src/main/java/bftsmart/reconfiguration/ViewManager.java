@@ -123,9 +123,9 @@ public class ViewManager {
             try
                 {
                     r = rec.execute();
-                    successful_reconfig = true;
                     v = r.getView();
                     logger.info("New view f: " + v.getF());
+                    successful_reconfig = true;
 
 
                 }

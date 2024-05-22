@@ -305,8 +305,8 @@ public abstract class StateManager {
                         " smsg.getCID() {} (expecting queryID {}),  waitingCID {}, isInitializing {}",
                 smsg.getSender(), smsg.getCID(), queryID, waitingCID, isInitializing);
         
-//        if (!isInitializing || waitingCID > -1 || queryID != smsg.getCID()) {
-            if (waitingCID > -1 || queryID != smsg.getCID()) {
+        if (!isInitializing || waitingCID > -1 || queryID != smsg.getCID()) {
+//            if (waitingCID > -1 || queryID != smsg.getCID()) {
 
             logger.info("Ignoring CID query from {} with ID {}, waitingCID {}, queryID {},  " +
                             "smsg.getCID() {}, isInitializing {}",

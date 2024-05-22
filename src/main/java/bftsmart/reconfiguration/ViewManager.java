@@ -116,12 +116,18 @@ public class ViewManager {
         
         ReconfigureReply r = new ReconfigureReply();
         
+        View v;
+        
         while(successful_reconfig!=true)
         {
             try
                 {
                     r = rec.execute();
                     successful_reconfig = true;
+                    v = r.getView();
+                    logger.info("New view f: " + v.getF());
+
+
                 }
             catch (Exception e) 
                 {
@@ -130,8 +136,6 @@ public class ViewManager {
         
         }
 
-        View v = r.getView();
-        logger.info("New view f: " + v.getF());
 
 
         VMMessage msg = new VMMessage(id, r);

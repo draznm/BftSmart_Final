@@ -442,7 +442,7 @@ public class RequestsTimer {
 
             if (tomLayer.getDeliveryThread().invalid_rvc())
             {
-                logger.info("1, Invalid Remote View Notify");
+                logger.info("Invalid Remote View Notify");
 
                 return;
             }
@@ -468,7 +468,7 @@ public class RequestsTimer {
 
                 if (cidForRVC == -1)
                 {
-                    logger.info("2, Invalid Remote View Notify");
+                    logger.info("Invalid Remote View Notify");
 
                     return;
                 }

@@ -207,8 +207,7 @@ public class StateLog {
         int lastCID = -1;
        
         if (cid >= lastCheckpointCID && cid <= this.lastCID) {
-//        if (cid >= this.lastCID-5 && cid <= this.lastCID) {
-
+            
     	logger.info("Constructing ApplicationState up until CID " + cid);
 
             int size = cid - lastCheckpointCID ;

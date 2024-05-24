@@ -305,8 +305,6 @@ public class ServerViewController extends ViewController {
                     otherProcesses[c++] = currentView.getProcesses()[i];
                 }
             }
-            logger.info("this.currentView.getN(): {},  this.currentView.getF(): {}", 
-                    this.currentView.getN(), this.currentView.getF());
 
             this.quorumBFT = (int) Math.ceil((this.currentView.getN() + this.currentView.getF()) / 2);
             this.quorumCFT = (int) Math.ceil(this.currentView.getN() / 2);

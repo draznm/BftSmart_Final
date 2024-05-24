@@ -461,7 +461,6 @@ public final class TOMLayer extends Thread implements RequestReceiver {
 
             //******* EDUARDO BEGIN **************//
             if (execManager.getCurrentLeader() != this.controller.getStaticConf().getProcessId()) {
-                logger.info("WAITING FOR LEADER");
                 iAmLeader.awaitUninterruptibly();
                 //waitForPaxosToFinish();
             }
@@ -660,8 +659,6 @@ public final class TOMLayer extends Thread implements RequestReceiver {
         //ot.addUpdate();
         canPropose.signalAll();
         proposeLock.unlock();
-        logger.info("SetNoExec Done");
-
     }
 
     public void processOutOfContext() {

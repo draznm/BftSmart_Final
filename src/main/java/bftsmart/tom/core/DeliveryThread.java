@@ -502,12 +502,12 @@ public final class DeliveryThread extends Thread {
         readWriteLock.writeLock().lock();
 
         if (msg.getOcmd().type == 1) {
-
-            logger.info("Tejas: reached inside deliveryOtherCluster type 1, from_cid_start, from, fromConfig, msg.getSender()," +
-                            " msg instanceof Forwarded are {}, {}, {}, {}, {}, getCurrentViewN: {}", msg.getOcmd().from_cid_start,
-                    msg.getOcmd().from
-                    , msg.getOcmd().fromConfig, msg.getSender(), ((SystemMessage) msg instanceof ForwardedMessage),
-                    controller.getCurrentViewN());
+//
+//            logger.info("Tejas: reached inside deliveryOtherCluster type 1, from_cid_start, from, fromConfig, msg.getSender()," +
+//                            " msg instanceof Forwarded are {}, {}, {}, {}, {}, getCurrentViewN: {}", msg.getOcmd().from_cid_start,
+//                    msg.getOcmd().from
+//                    , msg.getOcmd().fromConfig, msg.getSender(), ((SystemMessage) msg instanceof ForwardedMessage),
+//                    controller.getCurrentViewN());
 
 
 //			int clusterid = cinfo.getAllConnectionsMap().get(this.receiver.getId()).ClusterNumber;
@@ -543,11 +543,11 @@ public final class DeliveryThread extends Thread {
 
         if (msg.getOcmd().type == 2) {
 //
-            logger.info("Tejas: reached inside deliveryOtherCluster type 2, from_cid_start, from, fromConfig, msg.getSender()," +
-                            " are {}, {}, {}, {},  getCurrentViewN: {}", msg.getOcmd().from_cid_start,
-                    msg.getOcmd().from
-                    , msg.getOcmd().fromConfig, msg.getSender(),
-                    controller.getCurrentViewN());
+//            logger.info("Tejas: reached inside deliveryOtherCluster type 2, from_cid_start, from, fromConfig, msg.getSender()," +
+//                            " are {}, {}, {}, {},  getCurrentViewN: {}", msg.getOcmd().from_cid_start,
+//                    msg.getOcmd().from
+//                    , msg.getOcmd().fromConfig, msg.getSender(),
+//                    controller.getCurrentViewN());
 
             int clusterId = Integer.parseInt(
                     msg.getOcmd().fromConfig.replaceAll("[^0-9]",
@@ -1233,9 +1233,9 @@ public final class DeliveryThread extends Thread {
     }
 
     public void signalReconfigConfirmationNewNode() {
-//        ReconfigLockMC.lock();
+        ReconfigLockMC.lock();
 //		ReconfigLockMCCondition.signalAll();
-//        ReconfigLockMC.unlock();
+        ReconfigLockMC.unlock();
     }
 
     public void signalRemoteChange(SystemMessage sm) {

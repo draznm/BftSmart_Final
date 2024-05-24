@@ -111,31 +111,9 @@ public class ViewManager {
         
         logger.info("addIds: " + addIds);
         connect();
-        
-        boolean successful_reconfig = false;
-        
-        ReconfigureReply r = new ReconfigureReply();
-        
-        View v;
-        
-        while(successful_reconfig!=true)
-        {
-            try
-                {
-                    r = rec.execute();
-                    v = r.getView();
-                    logger.info("New view f: " + v.getF());
-                    successful_reconfig = true;
-
-
-                }
-            catch (Exception e) 
-                {
-                    logger.info("Exception caught" );
-                }
-        
-        }
-
+        ReconfigureReply r = rec.execute();
+        View v = r.getView();
+        logger.info("New view f: " + v.getF());
 
 
         VMMessage msg = new VMMessage(id, r);

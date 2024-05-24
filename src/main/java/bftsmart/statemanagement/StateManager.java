@@ -326,9 +326,10 @@ public abstract class StateManager {
         replies.put(smsg.getSender(), smsg.getState().getLastCID());
         logger.info("smsg.getSender() {}, smsg.getState().getLastCID() {}",smsg.getSender(),smsg.getState().getLastCID());
 
-        logger.info("Received {} replies for query ID {}",replies.size(),queryID);
+        logger.info("Received {} replies for query ID {} with quorum {}",
+                replies.size(),queryID, SVController.getQuorum());
         
-        if (replies.size() > SVController.getQuorum()) {
+        if (replies.size() >= SVController.getQuorum()) {
             
             logger.info("Received quorum of replies for query ID {}, replies.size(): {}", queryID, replies.size());
 
@@ -351,7 +352,7 @@ public abstract class StateManager {
 
 
                 
-                if (cids.get(cid) > SVController.getQuorum()) {
+                if (cids.get(cid) >= SVController.getQuorum()) {
                     
                     logger.info("There is a quorum for CID {} with lastCID {}",cid, lastCID);
                     

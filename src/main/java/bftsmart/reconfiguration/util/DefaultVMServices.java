@@ -44,7 +44,7 @@ public class DefaultVMServices extends VMServices {
             
             (new DefaultVMServices()).removeServers(smartIds);
                 
-        }else if(args.length > 5){
+        }else if(args.length >= 5){
             System.out.println("####Tpp Service[Join]####");
             int nnodes = Integer.parseInt(args[0]);
             

@@ -35,7 +35,7 @@ public class DefaultVMServices extends VMServices {
             
             int[] smartIds = new int[args.length];
 
-            for(int iter = 0; iter < args.length;i++)
+            for(int iter = 0; iter < args.length;iter++)
             {
                 smartIds[iter] = Integer.parseInt(args[iter]);
             }

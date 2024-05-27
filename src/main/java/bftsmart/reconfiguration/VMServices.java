@@ -99,6 +99,28 @@ public class VMServices {
         execute(viewManager);
 
     }
+    
+        /**
+     * Removes a server from the group
+     * 
+     * @param ids
+     */
+    public void removeServers (int[] ids) {
+        
+        ViewManager viewManager = new ViewManager(keyLoader);
+        
+        for (int id:ids)
+        {
+            viewManager.removeServer(id);
+
+        }
+        
+        
+        execute(viewManager);
+
+    }
+    
+    
 
     public void updateClusters() {
 

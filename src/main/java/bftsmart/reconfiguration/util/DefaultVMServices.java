@@ -28,13 +28,21 @@ public class DefaultVMServices extends VMServices {
 
         System.out.println("args.length is "+args.length);
 
-        if(args.length == 1){
+        if(args.length < 5){
             System.out.println("####Tpp Service[Disjoint]####");
 
-            int smartId = Integer.parseInt(args[0]);
+//            int smartId = Integer.parseInt(args[0]);
             
-            (new DefaultVMServices()).removeServer(smartId);
+            int[] smartIds = new int[args.length];
+
+            for(int iter = 0; iter < args.length;i++)
+            {
+                smartIds[iter] = Integer.parseInt(args[iter]);
+            }
             
+//            (new DefaultVMServices()).removeServer(smartId);
+            
+            (new DefaultVMServices()).removeServers(smartIds);
                 
         }else if(args.length > 5){
             System.out.println("####Tpp Service[Join]####");
@@ -75,4 +83,6 @@ public class DefaultVMServices extends VMServices {
 
         System.exit(0);
     }
+
+
 }

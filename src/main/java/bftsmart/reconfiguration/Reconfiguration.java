@@ -76,7 +76,9 @@ public class Reconfiguration {
         byte[] signature = TOMUtil.signMessage(proxy.getViewManager().getStaticConf().getPrivateKey(),
                 request.toString().getBytes());
         request.setSignature(signature);
-        byte[] reply = proxy.invoke(TOMUtil.getBytes(request), TOMMessageType.RECONFIG);
+//        byte[] reply = proxy.invoke(TOMUtil.getBytes(request), TOMMessageType.RECONFIG);
+        byte[] reply = proxy.invokeWithTimeout(TOMUtil.getBytes(request), TOMMessageType.RECONFIG, 15);
+
         request = null;
         return (ReconfigureReply)TOMUtil.getObject(reply);
     }

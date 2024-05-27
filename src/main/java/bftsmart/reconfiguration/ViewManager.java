@@ -106,19 +106,42 @@ public class ViewManager {
     public void setF(int f) {
         rec.setF(f);
     }
+    
 
     public void executeUpdates() {
-        
+
         logger.info("addIds: " + addIds);
         connect();
-        ReconfigureReply r = rec.execute();
-        View v = r.getView();
-        logger.info("New view f: " + v.getF());
+
+        boolean successful_reconfig = false;
+
+        ReconfigureReply r = new ReconfigureReply();
+
+        View v;
+
+        while(successful_reconfig!=true)
+        {
+            try
+                {
+                    r = rec.execute();
+                    v = r.getView();
+                    logger.info("New view f: " + v.getF());
+                    successful_reconfig = true;
+
+
+                }
+            catch (Exception e) 
+                {
+                    logger.info("Exception caught" );
+                }
+
+        }
+
 
 
         VMMessage msg = new VMMessage(id, r);
-        
-        
+
+
         Integer[] addIds_array = new Integer[addIds.size()];
         for (int i = 0; i < addIds.size(); i++) {
             addIds_array[i] = addIds.get(i);
@@ -126,7 +149,7 @@ public class ViewManager {
 
 
         if (addIds.size() > 0) { 
-            
+
             logger.info("addIds.toArray(new Integer[1]) is "+ addIds_array);
             sendResponse(addIds_array, msg);
             addIds.clear();

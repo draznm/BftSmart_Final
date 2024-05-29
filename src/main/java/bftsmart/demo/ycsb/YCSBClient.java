@@ -25,6 +25,7 @@ import java.util.Vector;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import bftsmart.demo.counter.ClusterInfo;
+import bftsmart.reconfiguration.VMServices;
 import bftsmart.tom.ServiceProxy;
 
 import com.yahoo.ycsb.ByteIterator;
@@ -41,6 +42,10 @@ public class YCSBClient extends DB {
     private static AtomicInteger counter = new AtomicInteger();
     private ServiceProxy proxy = null;
     private int myId;
+    
+    VMServices vms;
+    
+    public int TxnCounter = 0;
 
     Client c;
 
@@ -67,6 +72,11 @@ public class YCSBClient extends DB {
 //        myId = initId + counter.addAndGet(1);
 
         proxy = new ServiceProxy(myId, "config"+Integer.toString(ClientID%ncls));
+        
+        
+        vms = new VMServices(null,"config"+Integer.toString(ClientID%ncls));
+        
+        
 
         System.out.println("YCSBKVClient. Initiated client id, myId: " + ClientID + ", "+ myId+ " ncls: "+ncls);
     }
@@ -118,10 +128,14 @@ public class YCSBClient extends DB {
             map.put(field, values.get(field).toArray());
         }
         YCSBMessage msg = YCSBMessage.newUpdateRequest(table, key, map);
+        
+        TxnCounter = TxnCounter + 1;
 
         usedMemory = memoryBean.getHeapMemoryUsage().getUsed();
         System.out.println("table name is "+table+ ", key is "+ key + " values is "+
-                values + "values size, keyset size are "+ values.size() + ", " + values.keySet() + "JVM Memory Used by the client: " + usedMemory + " bytes");
+                values + "values size, keyset size are "+ values.size() + ", " + 
+                values.keySet() + "JVM Memory Used by the client: " + usedMemory 
+                + " bytes"+ ", TxnCounter = "+ TxnCounter);
 
 
         byte[] reply = proxy.invokeOrdered(msg.getBytes());

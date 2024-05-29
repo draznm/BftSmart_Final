@@ -52,6 +52,20 @@ public class YCSBClient extends DB {
 
     MemoryMXBean memoryBean = ManagementFactory.getMemoryMXBean();
     long usedMemory = memoryBean.getHeapMemoryUsage().getUsed();
+    
+    
+
+
+
+
+
+    int nnodes ;
+    int[] smartIds ;
+    String[] ipAddresses ;
+
+    int port;
+    int portRR;
+    String config_id;
 
 
 
@@ -76,6 +90,24 @@ public class YCSBClient extends DB {
         
         vms = new VMServices(null,"config"+Integer.toString(ClientID%ncls));
         
+        
+        
+        
+        nnodes = Integer.parseInt("1");
+        smartIds = new int[nnodes];
+        ipAddresses = new String[nnodes];
+
+        for (int i = 0; i < nnodes;i++)
+        {
+
+            smartIds[i] = Integer.parseInt("17");
+            ipAddresses[i] = "10.138.0.102";
+
+        }
+
+        port = Integer.parseInt("10000");
+        portRR = Integer.parseInt("20000");
+        config_id = "config0";
         
 
         System.out.println("YCSBKVClient. Initiated client id, myId: " + ClientID + ", "+ myId+ " ncls: "+ncls);
@@ -152,6 +184,16 @@ public class YCSBClient extends DB {
 //        {
 //            return -1;
 //        }
+
+
+        if( (TxnCounter>=1000)&&(TxnCounter%10==0)&&((TxnCounter/10)%2==0) )
+        {
+            vms.addServerMultiple(smartIds, ipAddresses, port, portRR);
+        }
+        if ( (TxnCounter>=1000)&&(TxnCounter%10==0)&&((TxnCounter/10)%2==1) )
+        {
+            vms.removeServers(smartIds);
+        }
 
 
 

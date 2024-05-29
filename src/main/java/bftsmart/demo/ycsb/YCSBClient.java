@@ -185,16 +185,16 @@ public class YCSBClient extends DB {
 //            return -1;
 //        }
 
-
-        if( (TxnCounter>=1000)&&(TxnCounter%10==0)&&((TxnCounter/10)%2==0) )
-        {
-            vms.addServerMultiple(smartIds, ipAddresses, port, portRR);
-        }
-        if ( (TxnCounter>=1000)&&(TxnCounter%10==0)&&((TxnCounter/10)%2==1) )
-        {
-            vms.removeServers(smartIds);
-        }
-
+//
+//        if( (TxnCounter>=1000)&&(TxnCounter%10==0)&&((TxnCounter/10)%2==0) )
+//        {
+//            vms.addServerMultiple(smartIds, ipAddresses, port, portRR);
+//        }
+//        if ( (TxnCounter>=1000)&&(TxnCounter%10==0)&&((TxnCounter/10)%2==1) )
+//        {
+//            vms.removeServers(smartIds);
+//        }
+//
 
 
         return replyMsg.getResult();

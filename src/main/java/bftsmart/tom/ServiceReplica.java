@@ -52,6 +52,8 @@ import bftsmart.tom.server.defaultservices.DefaultReplier;
 import bftsmart.tom.util.KeyLoader;
 import bftsmart.tom.util.ShutdownHookThread;
 import bftsmart.tom.util.TOMUtil;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.security.Provider;
 import java.util.stream.Stream;
 
@@ -191,6 +193,9 @@ public class ServiceReplica {
             logger.info("Not in current view: " + this.SVController.getCurrentView());
             
             //Not in the initial view, just waiting for the view where the join has been executed
+            
+            long startTime = System.nanoTime();
+
             logger.info("Waiting for the TTP: " + this.SVController.getCurrentView());
             waitTTPJoinMsgLock.lock();
             try {
@@ -198,6 +203,27 @@ public class ServiceReplica {
             } finally {
                 waitTTPJoinMsgLock.unlock();
             }
+            
+            long endTime = System.nanoTime();
+            
+            double timeBetweenLinesSeconds = (endTime - startTime) / 1_000_000_000.0;
+            
+            logger.info("Joining latency Time: " + timeBetweenLinesSeconds);
+            
+            
+            
+                    try (PrintWriter writer = new PrintWriter(new FileWriter("output"+
+                            Double.toString(timeBetweenLinesSeconds)+".txt"))) 
+                    {
+            writer.println(timeBetweenLinesSeconds);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+            
+            
+            
+
+
             
         }
         initReplica();

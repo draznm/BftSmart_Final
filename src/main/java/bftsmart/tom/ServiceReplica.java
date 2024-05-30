@@ -215,10 +215,12 @@ public class ServiceReplica {
                     try (PrintWriter writer = new PrintWriter(new FileWriter("output"+
                             Double.toString(timeBetweenLinesSeconds)+".txt"))) 
                     {
-            writer.println(timeBetweenLinesSeconds);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+                        writer.println(timeBetweenLinesSeconds);
+                    } 
+                    catch (IOException e) 
+                    {
+                        e.printStackTrace();
+                    }
             
             
             

@@ -292,6 +292,10 @@ public abstract class DefaultRecoverable implements Recoverable, BatchExecutable
                 log.update(state);
                 installSnapshot(state.getSerializedState());
             }
+            else
+            {
+                logger.info("The state is null.");
+            }
 //            for (int cid = lastCheckpointCID + 1; cid <= lastCID; cid++) {
             for (int cid = lastCID - 1; cid <= lastCID; cid++) {
                 try {
@@ -418,6 +422,7 @@ public abstract class DefaultRecoverable implements Recoverable, BatchExecutable
 
                 ApplicationState storedState = ((DiskStateLog) log).loadDurableState();
                 if (storedState.getLastCID() > 0) {
+                    logger.info("initLog()");
                     setState(storedState);
                     getStateManager().setLastCID(storedState.getLastCID());
                 }

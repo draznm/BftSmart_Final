@@ -311,13 +311,13 @@ public class ServiceReplica {
                         }
                         
                         logger.info("Supposed to restart: joining threads 1");
-//                        if (cs!=null)
-//                        {                        
-//                            if (cs.getServersConn()!=null)
-//                            {
-//                                cs.getServersConn().join();
-//                            }
-//                        }
+                        if (cs!=null)
+                        {                        
+                            if (cs.getServersConn()!=null)
+                            {
+                                cs.getServersConn().join();
+                            }
+                        }
 
                         
                         

@@ -301,68 +301,71 @@ public class ServiceReplica {
             @Override
             public void run() {
                 if (tomLayer != null && cs != null) {   
-                    tomLayer.shutdown();
-
-                    try {
-                        logger.info("Supposed to restart: joining threads");
-                        if (cs!=null)
-                        {
-                            cs.join();
-                        }
-                        
-                        logger.info("Supposed to restart: joining threads 1");
-                        if (cs!=null)
-                        {                        
-                            if (cs.getServersConn()!=null)
-                            {
-                                logger.info("Supposed to restart: joining threads 1.5");
-
-                                cs.getServersConn().join();
-                            }
-                        }
-
-                        
-                        
-                        logger.info("Supposed to restart: joining threads 2");
-                        
-                        
-                        if (tomLayer!=null)
-                        {
-                            tomLayer.join();
-                        }
-
-
-                        logger.info("Supposed to restart: joining threads 3");
-                        
-                        
-                        if (tomLayer!=null)
-                        {                        
-                            if (tomLayer.getDeliveryThread()!=null)
-                            {
-                                tomLayer.getDeliveryThread().join();
-                            }
-                        
-                            
-                        }
-                        
-                        logger.info("Supposed to restart: end joining threads 4");
-
-
-                    } catch (InterruptedException ex) {
-                        logger.error("Interruption while joining threads", ex);
-                    }
-
-                    tomStackCreated = false;
-                    tomLayer = null;
-                    cs = null;
-
-                    logger.info("Supposed to restart: Did it 1");
-
                     
-                    init();
-                    recoverer.setReplicaContext(replicaCtx);
-                    replier.setReplicaContext(replicaCtx);
-                    logger.info("Supposed to restart: Did it 2");
+//                    
+//                    
+//                    tomLayer.shutdown();
+//
+//                    try {
+//                        logger.info("Supposed to restart: joining threads");
+//                        if (cs!=null)
+//                        {
+//                            cs.join();
+//                        }
+//                        
+//                        logger.info("Supposed to restart: joining threads 1");
+//                        if (cs!=null)
+//                        {                        
+//                            if (cs.getServersConn()!=null)
+//                            {
+//                                logger.info("Supposed to restart: joining threads 1.5");
+//
+//                                cs.getServersConn().join();
+//                            }
+//                        }
+//
+//                        
+//                        
+//                        logger.info("Supposed to restart: joining threads 2");
+//                        
+//                        
+//                        if (tomLayer!=null)
+//                        {
+//                            tomLayer.join();
+//                        }
+//
+//
+//                        logger.info("Supposed to restart: joining threads 3");
+//                        
+//                        
+//                        if (tomLayer!=null)
+//                        {                        
+//                            if (tomLayer.getDeliveryThread()!=null)
+//                            {
+//                                tomLayer.getDeliveryThread().join();
+//                            }
+//                        
+//                            
+//                        }
+//                        
+//                        logger.info("Supposed to restart: end joining threads 4");
+//
+//
+//                    } catch (InterruptedException ex) {
+//                        logger.error("Interruption while joining threads", ex);
+//                    }
+//
+//                    tomStackCreated = false;
+//                    tomLayer = null;
+//                    cs = null;
+//
+//                    logger.info("Supposed to restart: Did it 1");
+//
+//                    
+//                    init();
+//                    recoverer.setReplicaContext(replicaCtx);
+//                    replier.setReplicaContext(replicaCtx);
+//                    logger.info("Supposed to restart: Did it 2");
 
                 }     
             }

@@ -296,8 +296,15 @@ public class StandardStateManager extends StateManager {
                                 e.propValue = currentProof.getDecision();
                                 e.deserializedPropValue = tomLayer.checkProposedValue(currentProof.getDecision(), false);
                                 cons.decided(e, false);
+                                
+                                
+                                long startTime = System.nanoTime();
+                                double st = (startTime) / 1_000_000_000.0;
 
-                                logger.info("Successfully installed proof for consensus " + waitingCID);
+                                logger.info("Successfully installed proof for consensus " + waitingCID+ 
+                                        ", with time = ", st);
+                                
+
 
                             } else {
 

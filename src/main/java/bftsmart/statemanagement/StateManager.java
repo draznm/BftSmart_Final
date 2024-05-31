@@ -370,7 +370,15 @@ public abstract class StateManager {
                         break;
                     } else {
                         //ask for state
-                        logger.info("Requesting state from other replicas, with cid, lastCID being {}, {}", cid, lastCID);
+                        long startTime = System.nanoTime();
+                        double st = (startTime) / 1_000_000_000.0;
+
+                        
+                        logger.info("requesting state time(sec): {}", st);
+                        logger.info("Requesting state from other replicas, with cid, lastCID being {}, {} ", cid, lastCID);
+                        
+
+                        
                         lastCID = cid+1;
 
                         if (waitingCID == -1) {

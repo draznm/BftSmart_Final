@@ -103,7 +103,8 @@ public class Decision {
      */
     public byte[] getValue() {
         while (value == null) {
-            waitForPropose(); // Eduardo: should have a separate waitForDecision  (works for now, because it is just a sleep)
+            waitForPropose(); // Eduardo: should have a separate waitForDecision  (works for now, 
+            //because it is just a sleep)
             value = decisionEpoch.propValue;
         }
         return value;

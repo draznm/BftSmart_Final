@@ -229,11 +229,13 @@ public class ServerCommunicationSystem extends Thread {
     
     public void shutdown() {
         
-        logger.info("Shutting down communication layer");
+        logger.info("Shutting down communication System");
         
         this.doWork = false;        
         clientsConn.shutdown();
         serversConn.shutdown();
+        logger.info("Shut down communication System complete");
+
     }
     
     public SecretKey getSecretKey(int id) {

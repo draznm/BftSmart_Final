@@ -317,7 +317,7 @@ public class ServiceReplica {
                             {
                                 logger.info("Supposed to restart: joining threads 1.5");
 
-                                cs.getServersConn().join();
+//                                cs.getServersConn().join();
                             }
                         }
 

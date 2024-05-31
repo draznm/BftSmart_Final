@@ -393,6 +393,9 @@ public class ServersCommunicationLayer extends Thread {
                 getConnection(activeServers[i]).shutdown();
             }
         }
+        
+        logger.info("Shut down replica sockets complete");
+
     }
 
     //******* EDUARDO BEGIN **************//
@@ -452,11 +455,8 @@ public class ServersCommunicationLayer extends Thread {
         }
 
         try {
-            if (serverSocket!=null)
-            {
-                serverSocket.close();
-            }
-        } catch (IOException ex ) {
+            serverSocket.close();
+        } catch (IOException ex) {
             logger.error("Failed to close server socket", ex);
         }
 

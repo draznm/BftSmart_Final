@@ -275,7 +275,7 @@ public class StandardStateManager extends StateManager {
                                 e = cons.getEpoch(cm.getEpoch(), true, SVController);
                                 if (e.getTimestamp() != cm.getEpoch()) {
 
-                                    logger.warn("Strange... proof contains messages from more than just one epoch");
+                                    logger.info("Strange... proof contains messages from more than just one epoch");
                                     e = cons.getEpoch(cm.getEpoch(), true, SVController);
                                 }
                                 e.addToProof(cm);
@@ -302,7 +302,7 @@ public class StandardStateManager extends StateManager {
                                 double st = (startTime) / 1_000_000_000.0;
 
                                 logger.info("Successfully installed proof for consensus " + waitingCID+ 
-                                        ", with time = ", st);
+                                        ", with time(sec) = "+ st);
                                 
 
 

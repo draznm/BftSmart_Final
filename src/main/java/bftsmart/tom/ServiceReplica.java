@@ -305,8 +305,9 @@ public class ServiceReplica {
 
                     try {
                         logger.info("Supposed to restart: joining threads");
-                        cs.join();
                         cs.getServersConn().join();
+
+                        cs.join();
                         tomLayer.join();
                         tomLayer.getDeliveryThread().join();
                         

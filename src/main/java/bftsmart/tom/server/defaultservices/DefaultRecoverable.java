@@ -251,7 +251,8 @@ public abstract class DefaultRecoverable implements Recoverable, BatchExecutable
 //
 //        }
 
-        if (ret == null || (config.isBFT() && ret.getCertifiedDecision(this.controller) == null)) ret = new DefaultApplicationState();
+        if (ret == null || (config.isBFT() && ret.getCertifiedDecision(this.controller) == null)) ret = 
+                new DefaultApplicationState();
         
         logLock.unlock();
 
@@ -278,8 +279,11 @@ public abstract class DefaultRecoverable implements Recoverable, BatchExecutable
                 lastCID = state.getLastCID();
 
             }
+//            logger.info("I'm going to update myself from CID "
+//                    + lastCheckpointCID + " to CID " + lastCID);
+            
             logger.info("I'm going to update myself from CID "
-                    + lastCheckpointCID + " to CID " + lastCID);
+        + (lastCID-1) + " to CID " + lastCID);
            
             stateLock.lock();
             if (state.getSerializedState() != null) {
@@ -288,8 +292,8 @@ public abstract class DefaultRecoverable implements Recoverable, BatchExecutable
                 log.update(state);
                 installSnapshot(state.getSerializedState());
             }
-
-            for (int cid = lastCheckpointCID + 1; cid <= lastCID; cid++) {
+//            for (int cid = lastCheckpointCID + 1; cid <= lastCID; cid++) {
+            for (int cid = lastCID - 1; cid <= lastCID; cid++) {
                 try {
 
                     logger.info("Processing and verifying batched requests for cid " + cid);

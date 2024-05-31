@@ -389,7 +389,10 @@ public class ServersCommunicationLayer extends Thread {
         int[] activeServers = controller.getCurrentViewAcceptors();
 
         for (int i = 0; i < activeServers.length; i++) {
+            logger.info("me: {}, activeServers[i]: {}",me,activeServers[i]);
+
             if (me != activeServers[i]) {
+                logger.info("getConnection(activeServers[i]).shutdown()");
                 getConnection(activeServers[i]).shutdown();
             }
         }

@@ -291,7 +291,8 @@ public final class ExecutionManager {
 
             if (controller.getStaticConf().isStateTransferEnabled()) {
                 //Logger.debug = true;
-                tomLayer.getStateManager().analyzeState(msg.getNumber());
+//                tomLayer.getStateManager().analyzeState(msg.getNumber());
+                canProcessTheMessage = true;
             }
             else {
                 logger.info("##################################################################################");

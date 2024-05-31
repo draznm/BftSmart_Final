@@ -209,7 +209,7 @@ public class StateLog {
 //        if (cid >= lastCheckpointCID && cid <= this.lastCID) {
         if (cid >= this.lastCID-1 && cid <= this.lastCID) {
 
-    	logger.info("Constructing ApplicationState up until CID " + cid);
+    	logger.info("Constructing ApplicationState up until CID " + cid+ ", setState = "+ setState);
 
             int size = cid - lastCheckpointCID ;
 

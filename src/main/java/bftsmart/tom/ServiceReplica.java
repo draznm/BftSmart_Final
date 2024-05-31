@@ -305,12 +305,47 @@ public class ServiceReplica {
 
                     try {
                         logger.info("Supposed to restart: joining threads");
-                        cs.join();
-                        cs.getServersConn().join();
-                        tomLayer.join();
-                        tomLayer.getDeliveryThread().join();
+                        if (cs!=null)
+                        {
+                            cs.join();
+                        }
                         
-                        logger.info("Supposed to restart: end joining threads");
+                        logger.info("Supposed to restart: joining threads 1");
+                        if (cs!=null)
+                        {                        
+                            if (cs.getServersConn()!=null)
+                            {
+                                cs.getServersConn().join();
+                            }
+                        
+                            
+                        }
+
+                        
+                        
+                        logger.info("Supposed to restart: joining threads 2");
+                        
+                        
+                        if (tomLayer!=null)
+                        {
+                            tomLayer.join();
+                        }
+
+
+                        logger.info("Supposed to restart: joining threads 3");
+                        
+                        
+                        if (tomLayer!=null)
+                        {                        
+                            if (tomLayer.getDeliveryThread()!=null)
+                            {
+                                tomLayer.getDeliveryThread().join();
+                            }
+                        
+                            
+                        }
+                        
+                        logger.info("Supposed to restart: end joining threads 4");
 
 
                     } catch (InterruptedException ex) {

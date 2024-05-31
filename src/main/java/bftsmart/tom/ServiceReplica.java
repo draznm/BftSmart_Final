@@ -304,10 +304,14 @@ public class ServiceReplica {
                     tomLayer.shutdown();
 
                     try {
+                        logger.info("Supposed to restart: joining threads");
                         cs.join();
                         cs.getServersConn().join();
                         tomLayer.join();
                         tomLayer.getDeliveryThread().join();
+                        
+                        logger.info("Supposed to restart: end joining threads");
+
 
                     } catch (InterruptedException ex) {
                         logger.error("Interruption while joining threads", ex);
@@ -320,7 +324,8 @@ public class ServiceReplica {
                     init();
                     recoverer.setReplicaContext(replicaCtx);
                     replier.setReplicaContext(replicaCtx);
-                
+                    logger.info("Supposed to restart: Did it?");
+
                 }     
             }
         };

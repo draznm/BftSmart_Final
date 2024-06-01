@@ -111,7 +111,9 @@ public class StandardStateManager extends StateManager {
         };
 
         stateTimer = new Timer("state timer");
-        timeout = timeout * 2;
+        
+        
+        timeout = timeout + 20;
         logger.info("timeout is {}",timeout);
 
         stateTimer.schedule(stateTask, timeout);

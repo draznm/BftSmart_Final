@@ -123,7 +123,7 @@ public final class DeliveryThread extends Thread {
 
     OtherClusterMessage ocmd;
 
-    ConcurrentHashMap<Integer, Decision> LastDecisionSaved = new ConcurrentHashMap<Integer, Decision>();
+    HashMap<Integer, Decision> LastDecisionSaved = new HashMap<Integer, Decision>();
 
 
     ConcurrentHashMap<Integer, HashMap<Integer, OtherClusterMessage>> SavedMultiClusterMessages =

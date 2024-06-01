@@ -233,6 +233,7 @@ public class ServiceReplica {
 
     public void joinMsgReceived(VMMessage msg) {
         ReconfigureReply r = msg.getReply();
+        logger.info("Join Msg Received,  from node id: {}",msg.getSender());
 
         if (r.getView().isMember(id)) {
             this.SVController.processJoinResult(r);

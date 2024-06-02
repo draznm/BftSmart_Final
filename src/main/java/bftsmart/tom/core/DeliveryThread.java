@@ -1016,6 +1016,10 @@ public final class DeliveryThread extends Thread {
 
                     logger.debug("saving lastdecision for cid: {} with consid {}",
                             lastcid, lastDecision.getConsensusId());
+                    
+                    
+                    readWriteLock.writeLock().lock();
+
 
                     LastDecisionSaved.put(lastcid, lastDecision);
 
@@ -1029,7 +1033,6 @@ public final class DeliveryThread extends Thread {
 
 
 
-                    readWriteLock.writeLock().lock();
 
 
 
@@ -1159,9 +1162,11 @@ public final class DeliveryThread extends Thread {
     }
 
     private void processReconfigMessages(int consId) {
+        
+        
         byte[] response = controller.executeUpdates(consId);
         TOMMessage[] dests = controller.clearUpdates();
-//		logger.info("dests are {}", dests);
+		logger.info("processReconfigMessages are {}", dests);
 
         if (controller.getCurrentView().isMember(receiver.getId())) {
             for (TOMMessage dest : dests) {
@@ -1176,8 +1181,8 @@ public final class DeliveryThread extends Thread {
             tomLayer.getCommunication().updateServersConnections();
 
         } else {
-            logger.info("Restarting receiver");
-            receiver.restart();
+            logger.info("Supposed to Restarting receiver");
+//            receiver.restart();
         }
     }
 

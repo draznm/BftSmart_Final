@@ -1181,8 +1181,8 @@ public final class DeliveryThread extends Thread {
             tomLayer.getCommunication().updateServersConnections();
 
         } else {
-            logger.info("Supposed to Restarting receiver");
-//            receiver.restart();
+            logger.info("Supposed to Restarting receiver normally");
+            receiver.restart();
         }
     }
 

@@ -268,7 +268,8 @@ public class ServersCommunicationLayer extends Thread {
                 }
                 else {
 
-                    if (!this.controller.isCurrentViewMember(rm) && cinfo.getClusterNumber(rm)==cinfo.getClusterNumber(me) ) {
+                    if (!this.controller.isCurrentViewMember(rm) && 
+                            cinfo.getClusterNumber(rm)==cinfo.getClusterNumber(me) ) {
                         logger.info("Adding to Remove connection List, rm: {} ", rm);
                         toRemove.add(rm);
                     }
@@ -279,24 +280,27 @@ public class ServersCommunicationLayer extends Thread {
 
                 this.connections.remove(toRemove.get(i)).shutdown();
             }
+            
 
             int[] newV = controller.getCurrentViewAcceptors();
+            
+            logger.info("newV is "+newV);
 
-//            for (int i = 0; i < newV.length; i++) {
-//                if (newV[i] != me) {
-//                    getConnection(newV[i]);
-//                }
-//            }
-
-            HashMap<Integer, HostsConfig.Config> hm = cinfo.getAllConnectionsMap();
-
-            for (Integer key : hm.keySet())
-            {
-                if (key != me)
-                {
-                    getConnection(key);
+            for (int i = 0; i < newV.length; i++) {
+                if (newV[i] != me) {
+                    getConnection(newV[i]);
                 }
             }
+
+//            HashMap<Integer, HostsConfig.Config> hm = cinfo.getAllConnectionsMap();
+//
+//            for (Integer key : hm.keySet())
+//            {
+//                if (key != me)
+//                {
+//                    getConnection(key);
+//                }
+//            }
 
 
 //            for (int i = 0; i < this.cinfo.totalCount; i++) {

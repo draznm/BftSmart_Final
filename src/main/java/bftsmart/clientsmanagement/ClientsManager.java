@@ -279,27 +279,6 @@ public class ClientsManager {
         // If isNextBatchReady() and messages dont contain other cluster messages then send
         // reconfiguration request.
 
-        /******* Tejas Code ******/
-//        if (this.ClusterNumber==0)
-//        {
-//
-//            return havePending;
-//
-//        }
-
-
-//        if (this.ClusterNumber==1)
-//        {
-//            if (isNextBatchReady() && !otherClusters)
-//            {
-//                VMServices vm = new VMServices(null, "config"+Integer.toString(0));
-//
-//                vm.updateClusters();
-//
-//                logger.info("SENDING RECONFIG REQUEST");
-//
-//            }
-//        }
 
 
         return havePending;
@@ -364,6 +343,8 @@ public class ClientsManager {
      * @return the pending request, or null
      */
     public TOMMessage getPending(int reqId) {
+        logger.info("reqId is "+ reqId+", TOMMessage.getSenderFromId(reqId): "+ 
+                TOMMessage.getSenderFromId(reqId));
         ClientData clientData = getClientData(TOMMessage.getSenderFromId(reqId));
 
         clientData.clientLock.lock();
@@ -503,7 +484,8 @@ public class ClientsManager {
                             || (((!request.signed) || clientData.verifySignature(request.serializedMessage, request.serializedMessageSignature)) // message is either not signed or if it is signed the signature is valid
                             && (controller.getStaticConf().getUseSignatures() != 1 || request.signed || !fromClient)))) { // additionally, unsigned messages from the client are not allowed when useSignatures == 1. Forwarded and proposed requests do not have 'signed' set to true.
 
-                logger.info("Message from client {} is valid with ID: {} and sender:{}", clientData.getClientId(), request.getId(), request.getSender());
+                logger.info("Message from client {} is valid with ID: {} and sender:{}", 
+                        clientData.getClientId(), request.getId(), request.getSender());
 
                 //I don't have the message but it is valid, I will
                 //insert it in the pending requests of this client

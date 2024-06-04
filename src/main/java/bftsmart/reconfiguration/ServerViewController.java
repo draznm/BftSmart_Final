@@ -232,7 +232,7 @@ public class ServerViewController extends ViewController {
 
         logger.info("New view: " + newV);
         logger.info("Installed on CID: " + cid);
-        logger.info("lastJoinSet: " + jSet + "forceLC : " + forceLC);
+        logger.info("lastJoinSet: " + jSet + "forceLC : " + forceLC+", jSetInfo: "+ jSetInfo+", jSet: "+jSet+", rSet: "+rSet+", f: "+f+", cid:"+cid);
 
         //TODO:Remove all information stored about each process in rSet
         //processes execute the leave!!!

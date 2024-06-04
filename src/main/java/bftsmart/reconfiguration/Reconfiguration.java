@@ -77,9 +77,13 @@ public class Reconfiguration {
                 request.toString().getBytes());
         request.setSignature(signature);
 //        byte[] reply = proxy.invoke(TOMUtil.getBytes(request), TOMMessageType.RECONFIG);
+
+        logger.info("sending RECONFIG message");
         byte[] reply = proxy.invokeWithTimeout(TOMUtil.getBytes(request), TOMMessageType.RECONFIG, 10);
 
         request = null;
+        
+        
         return (ReconfigureReply)TOMUtil.getObject(reply);
     }
     

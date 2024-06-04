@@ -413,7 +413,7 @@ public class ServiceProxy extends TOMSender {
 			TOMulticast(request, reqId, operationId, reqType);
 		}
 
-		logger.info("Sending request (" + reqType + ") with reqId=" + reqId);
+		logger.info("1, Sending request (" + reqType + ") with reqId=" + reqId);
 		logger.info("Expected number of matching replies: " + replyQuorum);
 
 		// This instruction blocks the thread, until a response is obtained.

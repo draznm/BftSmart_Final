@@ -85,6 +85,8 @@ public class YCSBClient extends DB {
         myId = initId +40* ( (int) (ClientID/ncls) )*ClientID+counter.addAndGet(1);
 //        myId = initId + counter.addAndGet(1);
 
+        
+
         proxy = new ServiceProxy(myId, "config"+Integer.toString(ClientID%ncls));
         
         
@@ -110,7 +112,8 @@ public class YCSBClient extends DB {
         config_id = "config0";
         
 
-        System.out.println("YCSBKVClient. Initiated client id, myId: " + ClientID + ", "+ myId+ " ncls: "+ncls);
+        System.out.println("YCSBKVClient. Initiated client id, myId: " + myId+ ", ClientID"
+                + ClientID+ " ncls: "+ncls);
     }
 
     @Override

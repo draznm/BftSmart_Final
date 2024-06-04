@@ -1166,7 +1166,7 @@ public final class DeliveryThread extends Thread {
         
         byte[] response = controller.executeUpdates(consId);
         TOMMessage[] dests = controller.clearUpdates();
-		logger.info("processReconfigMessages are {}", dests);
+        logger.info("processReconfigMessages");
 
         if (controller.getCurrentView().isMember(receiver.getId())) {
             for (TOMMessage dest : dests) {

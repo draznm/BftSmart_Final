@@ -667,7 +667,7 @@ public final class DeliveryThread extends Thread {
             if (decidedMessage.getReqType() == RECONFIG
                     && decidedMessage.getViewID() == controller.getCurrentViewId()) {
                 logger.info("containsReconfig: decidedMessage.getSender(): "+decidedMessage.getSender()+ 
-                        ""+decidedMessage.getSequence()+", viewId: "+decidedMessage.getViewID());
+                        ", seq: "+decidedMessage.getSequence()+", viewId: "+decidedMessage.getViewID());
                 return true;
             }
         }

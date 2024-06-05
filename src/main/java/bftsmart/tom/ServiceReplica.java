@@ -312,7 +312,7 @@ public class ServiceReplica {
                         tomLayer.join();
                         tomLayer.getDeliveryThread().join();
 
-                    } catch (InterruptedException ex) {
+                    } catch (Exception ex) {
                         logger.error("Interruption while joining threads", ex);
                     }
 

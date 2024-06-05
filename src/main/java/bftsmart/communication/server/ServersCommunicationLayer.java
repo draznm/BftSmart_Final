@@ -288,6 +288,7 @@ public class ServersCommunicationLayer extends Thread {
 
             for (int i = 0; i < newV.length; i++) {
                 if (newV[i] != me) {
+                    logger.info("newV[i]  is "+newV[i] );
                     getConnection(newV[i]);
                 }
             }

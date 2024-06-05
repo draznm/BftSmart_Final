@@ -103,7 +103,7 @@ public class YCSBClient extends DB {
         {
 
             smartIds[i] = Integer.parseInt("17");
-            ipAddresses[i] = "10.138.0.102";
+            ipAddresses[i] = "10.138.0.120";
 
         }
 
@@ -189,14 +189,14 @@ public class YCSBClient extends DB {
 //        }
 
 //
-//        if( (TxnCounter>=1000)&&(TxnCounter%10==0)&&((TxnCounter/10)%2==0) )
-//        {
-//            vms.addServerMultiple(smartIds, ipAddresses, port, portRR);
-//        }
-//        if ( (TxnCounter>=1000)&&(TxnCounter%10==0)&&((TxnCounter/10)%2==1) )
-//        {
-//            vms.removeServers(smartIds);
-//        }
+        if( (TxnCounter<=30000)&&(TxnCounter>=20000)&&(TxnCounter%10==0)&&((TxnCounter/10)%2==0) )
+        {
+            vms.addServerMultiple(smartIds, ipAddresses, port, portRR);
+        }
+        if ((TxnCounter<=30000)&& (TxnCounter>=20000)&&(TxnCounter%10==0)&&((TxnCounter/10)%2==1) )
+        {
+            vms.removeServers(smartIds);
+        }
 //
 
 

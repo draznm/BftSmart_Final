@@ -202,11 +202,31 @@ public class ServersCommunicationLayer extends Thread {
         if (controller.isInCurrentView()) {
             int[] initialV = controller.getCurrentViewAcceptors();
 
-            for (int i = 0; i < initialV.length; i++) {
-                    if (initialV[i] != me) {
-                    getConnection(initialV[i]);
+//            for (int i = 0; i < initialV.length; i++) {
+//                    if (initialV[i] != me) {
+//                    getConnection(initialV[i]);
+//                }
+//            }
+
+
+
+            HashMap<Integer, HostsConfig.Config> hm = cinfo.getAllConnectionsMap();
+
+            for (Integer key : hm.keySet())
+            {
+                if (key != me) {
+                    logger.info("getConnection HERE ");
+                    getConnection(key);
                 }
             }
+
+
+//            for (int i = 0; i < cinfo.totalCount; i++) {
+//                if (i != me) {
+//                    getConnection(i);
+//                }
+//            }
+
 
 
 

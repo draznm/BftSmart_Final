@@ -195,18 +195,18 @@ public class YCSBClient extends DB {
         if (ClientID==1)
         {
 
-            if( (TxnCounter<=30010)&&(TxnCounter>=20000)&&(TxnCounter%10==0)&&((TxnCounter/10)%2==0) )
-            {
-
-                System.out.println("test123: add server request");
-                vms.addServerMultiple(smartIds, ipAddresses, port, portRR);
-            }
-            if ((TxnCounter<=30010)&& (TxnCounter>=20000)&&(TxnCounter%10==0)&&((TxnCounter/10)%2==1) )
-            {
-                System.out.println("test123: leave server request");
-
-                vms.removeServers(smartIds);
-            }
+//            if( (TxnCounter<=30010)&&(TxnCounter>=20000)&&(TxnCounter%10==0)&&((TxnCounter/10)%2==0) )
+//            {
+//
+//                System.out.println("test123: add server request");
+//                vms.addServerMultiple(smartIds, ipAddresses, port, portRR);
+//            }
+//            if ((TxnCounter<=30010)&& (TxnCounter>=20000)&&(TxnCounter%10==0)&&((TxnCounter/10)%2==1) )
+//            {
+//                System.out.println("test123: leave server request");
+//
+//                vms.removeServers(smartIds);
+//            }
         }
         
         

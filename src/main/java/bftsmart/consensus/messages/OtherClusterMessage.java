@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class OtherClusterMessage extends SystemMessage {
     private transient Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -16,7 +15,7 @@ public class OtherClusterMessage extends SystemMessage {
 
     private transient OtherClusterMessageData ocmd;
     private byte[] payload;
-    private transient ReentrantLock lock = new ReentrantLock();
+
 
     /**
      * Empty constructor
@@ -79,26 +78,13 @@ public class OtherClusterMessage extends SystemMessage {
 
 
     public byte[] convertToBytes(OtherClusterMessageData OCmsg) throws IOException {
-        this.lock.unlock();
-
-        try
-        {
-            
-            ByteArrayOutputStream bosCTB = new ByteArrayOutputStream();
-            ObjectOutput outCTB = new ObjectOutputStream(bosCTB);
-            outCTB.writeObject(OCmsg);
-            byte b[] = bosCTB.toByteArray();
-            outCTB.close();
-            bosCTB.close();
-            return b;
-
-            
-        }
-        finally {
-            lock.unlock();
-
-        }
-
+        ByteArrayOutputStream bosCTB = new ByteArrayOutputStream();
+        ObjectOutput outCTB = new ObjectOutputStream(bosCTB);
+        outCTB.writeObject(OCmsg);
+        byte b[] = bosCTB.toByteArray();
+        outCTB.close();
+        bosCTB.close();
+        return b;
 
     }
 

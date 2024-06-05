@@ -463,7 +463,10 @@ public class ServersCommunicationLayer extends Thread {
         }
 
         try {
-            serverSocket.close();
+            if (serverSocket!=null)
+            {
+                serverSocket.close();
+            }
         } catch (IOException ex) {
             logger.error("Failed to close server socket", ex);
         }

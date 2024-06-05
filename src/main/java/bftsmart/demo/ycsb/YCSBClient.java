@@ -66,6 +66,8 @@ public class YCSBClient extends DB {
     int port;
     int portRR;
     String config_id;
+    
+    int ClientID;
 
 
 
@@ -77,7 +79,7 @@ public class YCSBClient extends DB {
     public void init() {
         Properties props = getProperties();
         int initId = Integer.valueOf((String) props.get("smart-initkey"));
-        int ClientID = Integer.valueOf((String) props.get("ClientID"));
+        ClientID = Integer.valueOf((String) props.get("ClientID"));
         ClusterInfo cinfo = new ClusterInfo();
 
         int ncls = cinfo.nClusters;
@@ -189,14 +191,25 @@ public class YCSBClient extends DB {
 //        }
 
 //
-        if( (TxnCounter<=30000)&&(TxnCounter>=20000)&&(TxnCounter%10==0)&&((TxnCounter/10)%2==0) )
+
+        if (ClientID==1)
         {
-            vms.addServerMultiple(smartIds, ipAddresses, port, portRR);
+
+            if( (TxnCounter<=30000)&&(TxnCounter>=20000)&&(TxnCounter%10==0)&&((TxnCounter/10)%2==0) )
+            {
+
+                System.out.println("test123: add server request");
+                vms.addServerMultiple(smartIds, ipAddresses, port, portRR);
+            }
+            if ((TxnCounter<=30000)&& (TxnCounter>=20000)&&(TxnCounter%10==0)&&((TxnCounter/10)%2==1) )
+            {
+                System.out.println("test123: leave server request");
+
+                vms.removeServers(smartIds);
+            }
         }
-        if ((TxnCounter<=30000)&& (TxnCounter>=20000)&&(TxnCounter%10==0)&&((TxnCounter/10)%2==1) )
-        {
-            vms.removeServers(smartIds);
-        }
+        
+        
 //
 
 

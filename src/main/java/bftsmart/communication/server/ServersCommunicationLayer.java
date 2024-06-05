@@ -210,15 +210,19 @@ public class ServersCommunicationLayer extends Thread {
 
 
 
-//            HashMap<Integer, HostsConfig.Config> hm = cinfo.getAllConnectionsMap();
-//
-//            for (Integer key : hm.keySet())
-//            {
-//                if (key != me) {
-//                    logger.info("getConnection HERE ");
-//                    getConnection(key);
-//                }
-//            }
+            HashMap<Integer, HostsConfig.Config> hm = cinfo.getAllConnectionsMap();
+
+            for (Integer key : hm.keySet())
+            {
+                if (key != me) {
+                    logger.info("getConnection HERE ");
+                    if (hm.get(key).ClusterNumber!= hm.get(me).ClusterNumber)
+                    {
+                        getConnection(key);
+
+                    }
+                }
+            }
 
 
 //            for (int i = 0; i < cinfo.totalCount; i++) {

@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
+import java.util.ConcurrentModificationException;
 
 public class OtherClusterMessage extends SystemMessage {
     private transient Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -78,12 +79,36 @@ public class OtherClusterMessage extends SystemMessage {
 
 
     public byte[] convertToBytes(OtherClusterMessageData OCmsg) throws IOException {
-        ByteArrayOutputStream bosCTB = new ByteArrayOutputStream();
-        ObjectOutput outCTB = new ObjectOutputStream(bosCTB);
-        outCTB.writeObject(OCmsg);
-        byte b[] = bosCTB.toByteArray();
-        outCTB.close();
-        bosCTB.close();
+        
+        boolean success = false;
+        
+        byte b[];
+        
+        while(success!=true)
+        {
+            try{
+            
+            
+            ByteArrayOutputStream bosCTB = new ByteArrayOutputStream();
+            ObjectOutput outCTB = new ObjectOutputStream(bosCTB);
+
+            outCTB.writeObject(OCmsg);
+
+
+            b = bosCTB.toByteArray();
+            outCTB.close();
+            bosCTB.close();
+            
+            success = true;
+            
+            }
+        catch (ConcurrentModificationException e) {
+                    logger.info("ConcurrentModificationException caught during serialization: " + e.getMessage());
+                }
+            
+            
+        }
+            
         return b;
 
     }

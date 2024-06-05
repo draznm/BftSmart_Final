@@ -820,7 +820,10 @@ public class ServiceReplica {
 
         // Assemble the total order messaging layer
         MessageFactory messageFactory = new MessageFactory(id);
-
+        if (cs==null)
+        {
+            logger.info("cs=null here");
+        }
         Acceptor acceptor = new Acceptor(cs, messageFactory, SVController);
         cs.setAcceptor(acceptor);
 

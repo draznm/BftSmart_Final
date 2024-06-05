@@ -329,9 +329,13 @@ public class ServerConnection {
         connectLock.lock();
         
         if (socket != null) {
+            
+            logger.info("closing socket");
             try {
                 socketOutStream.flush();
                 socket.close();
+                logger.info("closing socket complete");
+
             } catch (IOException ex) {
                 logger.debug("Error closing socket to "+remoteId);
             } catch (NullPointerException npe) {

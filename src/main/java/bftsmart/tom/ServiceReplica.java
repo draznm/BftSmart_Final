@@ -304,25 +304,27 @@ public class ServiceReplica {
             @Override
             public void run() {
                 if (tomLayer != null && cs != null) {   
-                    tomLayer.shutdown();
-
-                    try {
-                        cs.join();
-                        cs.getServersConn().join();
-                        tomLayer.join();
-                        tomLayer.getDeliveryThread().join();
-
-                    } catch (Exception ex) {
-                        logger.error("Interruption while joining threads", ex);
-                    }
-
-                    tomStackCreated = false;
-                    tomLayer = null;
-                    cs = null;
-
-                    init();
-                    recoverer.setReplicaContext(replicaCtx);
-                    replier.setReplicaContext(replicaCtx);
+              
+//                    
+//                    tomLayer.shutdown();
+//
+//                    try {
+//                        cs.join();
+//                        cs.getServersConn().join();
+//                        tomLayer.join();
+//                        tomLayer.getDeliveryThread().join();
+//
+//                    } catch (Exception ex) {
+//                        logger.error("Interruption while joining threads", ex);
+//                    }
+//
+//                    tomStackCreated = false;
+//                    tomLayer = null;
+//                    cs = null;
+//
+//                    init();
+//                    recoverer.setReplicaContext(replicaCtx);
+//                    replier.setReplicaContext(replicaCtx);
                 
                 }     
             }

@@ -82,7 +82,7 @@ public class OtherClusterMessage extends SystemMessage {
         
         boolean success = false;
         
-        byte b[];
+        byte b[] = null;
         
         while(success!=true)
         {

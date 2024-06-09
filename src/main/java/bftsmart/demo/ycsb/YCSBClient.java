@@ -105,7 +105,7 @@ public class YCSBClient extends DB {
         {
 
             smartIds[i] = Integer.parseInt("17");
-            ipAddresses[i] = "10.138.0.87";
+            ipAddresses[i] = "10.138.0.12";
 
         }
 

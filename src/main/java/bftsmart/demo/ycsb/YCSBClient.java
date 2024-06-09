@@ -105,7 +105,7 @@ public class YCSBClient extends DB {
         {
 
             smartIds[i] = Integer.parseInt("17");
-            ipAddresses[i] = "10.138.0.65";
+            ipAddresses[i] = "10.138.0.29";
 
         }
 
@@ -195,13 +195,13 @@ public class YCSBClient extends DB {
         if (ClientID==1)
         {
 
-            if( (TxnCounter<=11006)&&(TxnCounter>=10000)&&((TxnCounter)%2==0) )
+            if( (TxnCounter<=11003)&&(TxnCounter>=10000)&&((TxnCounter)%2==0) )
             {
 
                 System.out.println("test123: add server request");
                 vms.addServerMultiple(smartIds, ipAddresses, port, portRR);
             }
-            if ((TxnCounter<=11006)&& (TxnCounter>=10000)&&((TxnCounter)%2==1) )
+            if ((TxnCounter<=11003)&& (TxnCounter>=10000)&&((TxnCounter)%2==1) )
             {
                 System.out.println("test123: leave server request");
 

@@ -296,6 +296,8 @@ public class ServiceProxy extends TOMSender {
 				logger.debug("###################RETRY#######################");
 				return invokeOrdered(request);
 			} else {
+                                    logger.info("Throwing RuntimeException after no response could be extracted.");
+                                
 				throw new RuntimeException("Received n-f replies without f+1 of them matching.");
 			}
 		} else {

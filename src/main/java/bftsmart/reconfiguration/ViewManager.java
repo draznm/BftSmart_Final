@@ -202,8 +202,10 @@ public class ViewManager {
         ReconfigureReply r = new ReconfigureReply();
 
         View v;
+        
+        int counter = 0;
 
-        while(successful_reconfig!=true)
+        while((successful_reconfig!=true) &&(counter<3))
         {
             try
                 {
@@ -225,6 +227,8 @@ public class ViewManager {
                     + ", cid: "+ cid+ " exception: "+e.getMessage());
                     
                     e.printStackTrace();
+                    
+                    counter = counter + 1;
                 }
 
         }

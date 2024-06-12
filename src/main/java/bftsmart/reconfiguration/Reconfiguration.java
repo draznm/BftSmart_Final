@@ -73,6 +73,12 @@ public class Reconfiguration {
     }
     
     public ReconfigureReply execute(){
+
+
+        boolean check = (request ==null);
+        System.out.println("excecute with check=null, "+ check);
+
+        
         byte[] signature = TOMUtil.signMessage(proxy.getViewManager().getStaticConf().getPrivateKey(),
                 request.toString().getBytes());
         request.setSignature(signature);

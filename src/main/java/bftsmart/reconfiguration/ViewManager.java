@@ -207,7 +207,8 @@ public class ViewManager {
         {
             try
                 {
-                    logger.info("Trying reconfig execution");
+                    boolean check = (rec==null);
+                    logger.info("Trying reconfig execution, check="+ check);
                     
                     r = rec.execute();
                     v = r.getView();
@@ -221,6 +222,8 @@ public class ViewManager {
                 {
                     logger.info("Exception caught with addIds: "+addIds 
                     + ", cid: "+ cid+ " exception: "+e.getMessage());
+                    
+                    e.printStackTrace();
                 }
 
         }

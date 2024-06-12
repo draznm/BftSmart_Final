@@ -125,7 +125,8 @@ public class ViewManager {
                 {
                     r = rec.execute();
                     v = r.getView();
-                    logger.info("New view f: " + v.getF());
+                    logger.info("New view f: " + v.getId()+", processes: "+v.getProcesses()+ ", v.getN(): "+
+                            v.getN());
                     successful_reconfig = true;
 
 

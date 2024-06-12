@@ -524,18 +524,23 @@ public final class DeliveryThread extends Thread {
 
 
                 boolean containsReconfig = false;
-        
-                for (TOMMessage[] req: msg.getOcmd().requests)
+                
+                if (msg.getOcmd().requests!=null)
                 {
-                    for (TOMMessage d: req)
- 
-                    if (d.getReqType()==RECONFIG)
+                    for (TOMMessage[] req: msg.getOcmd().requests)
                     {
-                        containsReconfig = true;
+                        for (TOMMessage d: req)
 
-                        logger.info("Tejas: reached inside deliveryOtherCluster Contains Reconfig");
+                        if (d.getReqType()==RECONFIG)
+                        {
+                            containsReconfig = true;
+
+                            logger.info("Tejas: reached inside deliveryOtherCluster Contains Reconfig");
+                        }
                     }
                 }
+        
+
 
 //consensusIds, regenciesIds, leadersIds, cDecs, requests
         

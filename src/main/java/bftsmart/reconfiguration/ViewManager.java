@@ -205,7 +205,7 @@ public class ViewManager {
         
         int counter = 0;
 
-        while((successful_reconfig!=true) &&(counter<3))
+        while((successful_reconfig!=true)) // &&(counter<10)
         {
             try
                 {

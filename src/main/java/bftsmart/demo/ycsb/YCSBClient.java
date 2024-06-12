@@ -178,33 +178,34 @@ public class YCSBClient extends DB {
                 + " bytes"+ ", TxnCounter = "+ TxnCounter);
 
 
-        byte[] reply = proxy.invokeOrdered(msg.getBytes());
+        byte[] reply = null;
+        if (ClientID!=4)
+        {
+            reply = proxy.invokeOrdered(msg.getBytes());
+
+        }
 
 
         YCSBMessage replyMsg = null;
 
-//        try
-//        {
+        
+        if (reply!=null)
+        {
             replyMsg = YCSBMessage.getObject(reply);
-//
-//        }
-//        catch (Exception e)
-//        {
-//            return -1;
-//        }
 
-//
+        }
 
-        if (ClientID==0)
+
+        if (ClientID==4)
         {
 
-            if( (TxnCounter<=11134)&&(TxnCounter>=10000)&&((TxnCounter)%2==0) )
+            if( (TxnCounter<=1134)&&(TxnCounter>=0)&&((TxnCounter)%2==0) )
             {
 
                 System.out.println("test123: add server request");
                 vms.addServerMultiple(smartIds, ipAddresses, port, portRR, TxnCounter);
             }
-            if ((TxnCounter<=11134)&& (TxnCounter>=10000)&&((TxnCounter)%2==1) )
+            if ((TxnCounter<=1134)&& (TxnCounter>=0)&&((TxnCounter)%2==1) )
             {
                 System.out.println("test123: leave server request");
 
@@ -214,9 +215,17 @@ public class YCSBClient extends DB {
         
         
 //
+        if (reply!=null)
+        {
+            return replyMsg.getResult();
 
+        }
+        else
+        {
+            return 1;
+        }
 
-        return replyMsg.getResult();
+        
     }
 
 }

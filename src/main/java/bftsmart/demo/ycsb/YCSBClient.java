@@ -100,6 +100,9 @@ public class YCSBClient extends DB {
         nnodes = Integer.parseInt("1");
         smartIds = new int[nnodes];
         ipAddresses = new String[nnodes];
+        
+        
+        System.out.println("cinfo.hm.get(17).host is "+ cinfo.hm.get(17).host);
 
         for (int i = 0; i < nnodes;i++)
         {

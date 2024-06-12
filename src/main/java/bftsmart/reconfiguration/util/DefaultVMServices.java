@@ -42,7 +42,7 @@ public class DefaultVMServices extends VMServices {
             
 //            (new DefaultVMServices()).removeServer(smartId);
             
-            (new DefaultVMServices()).removeServers(smartIds);
+            (new DefaultVMServices()).removeServers(smartIds, -1);
                 
         }else if(args.length >= 5){
             System.out.println("####Tpp Service[Join]####");
@@ -69,7 +69,7 @@ public class DefaultVMServices extends VMServices {
 
             System.out.println("####Tpp Service[Join]####"+smartIds +", "+ipAddresses);
 
-            (new DefaultVMServices(null, config_id)).addServerMultiple(smartIds, ipAddresses, port, portRR);
+            (new DefaultVMServices(null, config_id)).addServerMultiple(smartIds, ipAddresses, port, portRR, -1);
 
 //            (new DefaultVMServices()).addServer(smartId, ipAddress, port, portRR);
 

@@ -135,7 +135,7 @@ public class ViewManager {
                 }
             catch (Exception e) 
                 {
-                    logger.info("Exception caught" );
+                    logger.info("Exception caught with addIds: "+addIds );
                 }
 
         }
@@ -188,5 +188,58 @@ public class ViewManager {
 
     public void close() {
         rec.close();
+    }
+
+    void executeUpdates(int cid) {
+        
+        
+        
+        logger.info("addIds: " + addIds);
+        connect();
+
+        boolean successful_reconfig = false;
+
+        ReconfigureReply r = new ReconfigureReply();
+
+        View v;
+
+        while(successful_reconfig!=true)
+        {
+            try
+                {
+                    r = rec.execute();
+                    v = r.getView();
+//                    logger.info();
+                    logger.info("New view f: " + v.getId()+", processes: "+Arrays.toString(v.getProcesses())+ ", v.getN(): "+
+                            v.getN());
+                    successful_reconfig = true;
+
+
+                }
+            catch (Exception e) 
+                {
+                    logger.info("Exception caught with addIds: "+addIds 
+                    + ", cid: "+ cid);
+                }
+
+        }
+
+
+
+        VMMessage msg = new VMMessage(id, r);
+
+
+        Integer[] addIds_array = new Integer[addIds.size()];
+        for (int i = 0; i < addIds.size(); i++) {
+            addIds_array[i] = addIds.get(i);
+        }
+
+
+        if (addIds.size() > 0) { 
+
+            logger.info("addIds.toArray(new Integer[1]) is "+ addIds_array);
+            sendResponse(addIds_array, msg);
+            addIds.clear();
+        }
     }
 }

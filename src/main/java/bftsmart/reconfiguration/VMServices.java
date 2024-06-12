@@ -66,7 +66,7 @@ public class VMServices {
     }
     
     
-        public void addServerMultiple(int[] ids, String[] ipAddresss, int port, int portRR) {
+        public void addServerMultiple(int[] ids, String[] ipAddresss, int port, int portRR, int cid) {
             
             
             ViewManager viewManager = new ViewManager(configDir, keyLoader);
@@ -81,7 +81,7 @@ public class VMServices {
             }
 
         
-        execute(viewManager);
+        execute(viewManager,cid);
 
     }
     
@@ -105,7 +105,7 @@ public class VMServices {
      * 
      * @param ids
      */
-    public void removeServers (int[] ids) {
+    public void removeServers (int[] ids, int cid) {
         
         ViewManager viewManager = new ViewManager(keyLoader);
         
@@ -116,7 +116,7 @@ public class VMServices {
         }
         
         
-        execute(viewManager);
+        execute(viewManager, cid);
 
     }
     
@@ -138,4 +138,13 @@ public class VMServices {
         
         viewManager.close();
     }
+    
+    private void execute(ViewManager viewManager, int cid) {
+
+    viewManager.executeUpdates(cid);
+
+    viewManager.close();
+    }
+    
+    
 }

@@ -31,6 +31,8 @@ import bftsmart.tom.util.Extractor;
 import bftsmart.tom.util.KeyLoader;
 import bftsmart.tom.util.TOMUtil;
 import java.security.Provider;
+import java.util.HashMap;
+import java.util.HashSet;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -617,7 +619,9 @@ public class ServiceProxy extends TOMSender {
 			if (reply.getSequence() == reqId && reply.getReqType() == requestType) {
 
 				logger.info("Receiving reply from " + reply.getSender()
-						+ " with reqId:" + reply.getSequence() + ". Putting on pos=" + pos);
+						+ " with reqId:" + reply.getSequence() 
+                                        + ". Putting on pos=" + pos+ ", requestType= "
+                                        + requestType + ", reply.getViewID()= "+reply.getViewID());
 
 				if(requestType == TOMMessageType.UNORDERED_HASHED_REQUEST)
 				{
@@ -638,11 +642,27 @@ public class ServiceProxy extends TOMSender {
 					// Compare the reply just received, to the others
 					
 					for (int i = 0; i < replies.length; i++) {
+                                            
+                                                HashSet<Integer> tempH = new HashSet<>();
+                                                
 
-						if ((i != pos || getViewManager().getCurrentViewN() == 1) && replies[i] != null
-								&& (comparator.compare(replies[i].getContent(), reply.getContent()) == 0)) {
-							sameContent++;
+						if ((i != pos || getViewManager().getCurrentViewN() == 1)
+                                                        && replies[i] != null
+								&& 
+                                                        (comparator.compare(replies[i].getContent(),
+                                                                reply.getContent()) == 0)  ) {
+                                                    
+                                                    
+                                                    
+                                                        if (!tempH.contains(replies[i].getSender()))
+                                                        {
+                                                            sameContent++;
+                                                            tempH.add(replies[i].getSender());
+                                                        }
+							
+                                                        
 							if (sameContent >= replyQuorum) {
+                                                            
 								response = extractor.extractResponse(replies, sameContent, pos);
 								reqId = -1;
 								this.sm.release(); // resumes the thread that is executing the "invoke" method

@@ -207,9 +207,10 @@ public class ViewManager {
         {
             try
                 {
+                    logger.info("Trying reconfig execution");
+                    
                     r = rec.execute();
                     v = r.getView();
-//                    logger.info();
                     logger.info("New view f: " + v.getId()+", processes: "+Arrays.toString(v.getProcesses())+ ", v.getN(): "+
                             v.getN());
                     successful_reconfig = true;
@@ -219,7 +220,7 @@ public class ViewManager {
             catch (Exception e) 
                 {
                     logger.info("Exception caught with addIds: "+addIds 
-                    + ", cid: "+ cid);
+                    + ", cid: "+ cid+ " exception: "+e.getMessage());
                 }
 
         }

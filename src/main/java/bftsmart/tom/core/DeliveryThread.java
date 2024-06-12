@@ -522,9 +522,26 @@ public final class DeliveryThread extends Thread {
 //                msg.setOcmdType(2);
 
 
-                OtherClusterMessage newocmd = new OtherClusterMessage(null,
-                        null, null,
-                        null, null,
+
+                boolean containsReconfig = false;
+        
+                for (TOMMessage[] req: msg.getOcmd().requests)
+                {
+                    for (TOMMessage d: req)
+ 
+                    if (d.getReqType()==RECONFIG)
+                    {
+                        containsReconfig = true;
+
+                        logger.info("Tejas: reached inside deliveryOtherCluster Contains Reconfig");
+                    }
+                }
+
+//consensusIds, regenciesIds, leadersIds, cDecs, requests
+        
+                OtherClusterMessage newocmd = new OtherClusterMessage(msg.getOcmd().consId,
+                        msg.getOcmd().regencies, msg.getOcmd().leaders,
+                        msg.getOcmd().cDecs, msg.getOcmd().requests,
                         this.getNodeId(), msg.getOcmd().fromConfig, msg.getOcmd().from_cid_start,
                         msg.getOcmd().from_cid_end, 2);
 
@@ -826,7 +843,8 @@ public final class DeliveryThread extends Thread {
 //                lastDecision.getConsensusId(), 1);
 
 
-        OtherClusterMessage completeOcmd = new OtherClusterMessage(consensusIds, regenciesIds, leadersIds, cDecs, requests,
+        OtherClusterMessage completeOcmd = new OtherClusterMessage(consensusIds, 
+                regenciesIds, leadersIds, cDecs, requests,
                 this.receiver.getId(), this.receiver.getConfig(), decisions.get(0).getConsensusId(),
                 lastDecision.getConsensusId(), 1);
 

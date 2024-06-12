@@ -195,7 +195,7 @@ public class YCSBClient extends DB {
 
 //
 
-        if (ClientID==1)
+        if (ClientID==0)
         {
 
             if( (TxnCounter<=10133)&&(TxnCounter>=10000)&&((TxnCounter)%2==0) )

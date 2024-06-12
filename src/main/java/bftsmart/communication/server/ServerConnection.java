@@ -218,6 +218,7 @@ public class ServerConnection {
 
 					return;
 				} catch (IOException ex) {
+                                        logger.info("sendBytes, closing socket");
 					closeSocket();
 					waitAndConnect();
 					abort = true;
@@ -501,6 +502,8 @@ public class ServerConnection {
 					} catch (IOException ex) {
 						// ex.printStackTrace();
 						if (doWork) {
+                                                        logger.info("TTP receiver thread, closing socket");
+
 							closeSocket();
 							waitAndConnect();
 						}

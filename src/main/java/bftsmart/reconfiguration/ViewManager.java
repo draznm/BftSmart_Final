@@ -30,6 +30,7 @@ import org.slf4j.LoggerFactory;
 import bftsmart.communication.server.ServerConnection;
 import bftsmart.reconfiguration.views.View;
 import bftsmart.tom.util.KeyLoader;
+import java.util.Arrays;
 
 /**
  *
@@ -125,7 +126,8 @@ public class ViewManager {
                 {
                     r = rec.execute();
                     v = r.getView();
-                    logger.info("New view f: " + v.getId()+", processes: "+v.getProcesses()+ ", v.getN(): "+
+//                    logger.info();
+                    logger.info("New view f: " + v.getId()+", processes: "+Arrays.toString(v.getProcesses())+ ", v.getN(): "+
                             v.getN());
                     successful_reconfig = true;
 

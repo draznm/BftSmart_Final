@@ -856,13 +856,45 @@ public final class DeliveryThread extends Thread {
 
         logger.info("\n\n\n\n\n\n\n\n tgtArray, consensusIds, consensusIds[0], lastcid is {}, {}, {}, {}, ocmd = {}", tgtArray,
                 consensusIds, consensusIds[0], lastcid, this.ocmd);
+        
+        
+        
+        boolean containsReconfig = false;
+        
+        for (Decision d: decisions)
+        {
+            if (containsReconfig(d))
+            {
+                containsReconfig = true;
+                
+                logger.info("Going to Send Reconfig message to OtherClusters");
+            }
+        }
 
 
 //	if (2>1)
-        if ((lastcid != -8000) && (this.receiver.getId() == tomLayer.execManager.getCurrentLeader())) {
+        if ((lastcid != -8000) && (this.receiver.getId() == tomLayer.execManager.getCurrentLeader())) 
+        {
             logger.info("\n\n\n\n\n SENDING OTHER CLUSTERS {} THE DECIDED VALUES", tgtArray);
-            this.tomLayer.getCommunication().send(tgtArray, this.ocmd);
-        } else {
+            
+            
+            
+            if(containsReconfig)
+            {
+                this.tomLayer.getCommunication().send(tgtArray, completeOcmd);
+
+            }
+            else
+            {
+                this.tomLayer.getCommunication().send(tgtArray, this.ocmd);
+
+            }
+            
+            
+            
+        } 
+        else 
+        {
             if ((this.receiver.getId() == tomLayer.execManager.getCurrentLeader()) && (clusterid != 0)) {
                 logger.info("\n\n\n\n\n SENDING OTHER CLUSTERS THE DECIDED VALUES");
                 this.tomLayer.getCommunication().send(tgtArray, this.ocmd);
@@ -872,6 +904,10 @@ public final class DeliveryThread extends Thread {
             logger.debug("Not sending multicluster msg, clusterid==1 is  {}", clusterid == 1);
             //                this.tomLayer.getCommunication().send(tgtArray, this.ocmd);
         }
+        
+        
+        
+        
         logger.debug("OtherClusterMessage Sent to {}, with type {}",
                 tgtArray, this.ocmd.getOcmd().type);
 
@@ -1158,7 +1194,7 @@ public final class DeliveryThread extends Thread {
         receiver.receiveMessages(consId, regencies, leaders, cDecs, requests);
     }
 
-
+    // no utility function
     private void deliverMessages(int[] consId, int[] regencies, int[] leaders, CertifiedDecision[] cDecs,
                                  TOMMessage[][] requests, ArrayList<OtherClusterMessage> ocmArray) throws IOException, ClassNotFoundException {
         receiver.receiveMessages(consId, regencies, leaders, cDecs, requests, ocmArray);

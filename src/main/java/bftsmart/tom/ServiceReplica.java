@@ -687,7 +687,7 @@ public class ServiceReplica {
                                 throw new UnsupportedOperationException("Non-existent interface");
                             }   break;
                         case RECONFIG:
-                            logger.info("case RECONFIG 1");
+                            logger.info("case RECONFIG 2");
                             SVController.enqueueUpdate(request);
                             break;
                         default: //this code should never be executed

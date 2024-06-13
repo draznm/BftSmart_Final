@@ -85,7 +85,7 @@ public class Reconfiguration {
 //        byte[] reply = proxy.invoke(TOMUtil.getBytes(request), TOMMessageType.RECONFIG);
 
         System.out.println("sending RECONFIG message");
-        byte[] reply = proxy.invokeWithTimeout(TOMUtil.getBytes(request), TOMMessageType.RECONFIG, 6);
+        byte[] reply = proxy.invokeWithTimeout(TOMUtil.getBytes(request), TOMMessageType.RECONFIG, 6, 0);
 
         request = null;
         
@@ -97,6 +97,26 @@ public class Reconfiguration {
     public void close(){
         proxy.close();
         proxy = null;
+    }
+
+    ReconfigureReply execute(int cid) {
+
+        boolean check = (request ==null);
+        System.out.println("excecute with check=null, "+ check);
+
+        
+        byte[] signature = TOMUtil.signMessage(proxy.getViewManager().getStaticConf().getPrivateKey(),
+                request.toString().getBytes());
+        request.setSignature(signature);
+//        byte[] reply = proxy.invoke(TOMUtil.getBytes(request), TOMMessageType.RECONFIG);
+
+        System.out.println("sending RECONFIG message");
+        byte[] reply = proxy.invokeWithTimeout(TOMUtil.getBytes(request), TOMMessageType.RECONFIG, 6, cid);
+
+        request = null;
+        
+        
+        return (ReconfigureReply)TOMUtil.getObject(reply);
     }
     
 }

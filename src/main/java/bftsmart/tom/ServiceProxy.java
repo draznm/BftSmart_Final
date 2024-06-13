@@ -300,7 +300,7 @@ public class ServiceProxy extends TOMSender {
 			} else {
                                     logger.info("Supposed to throw exception: Received n-f replies without f+1 of them matching");
                                 
-//				throw new RuntimeException("Received n-f replies without f+1 of them matching.");
+				throw new RuntimeException("Received n-f replies without f+1 of them matching.");
 			}
 		} else {
 			//normal operation
@@ -662,6 +662,10 @@ public class ServiceProxy extends TOMSender {
 							
                                                         
 							if (sameContent >= replyQuorum) {
+                                                            
+                                                                logger.info("sameContent: "+ 
+                                                                        sameContent+ ", replyQuorum: "
+                                                                        + replyQuorum+", replies[i].getid: "+replies[i].getId());
                                                             
 								response = extractor.extractResponse(replies, sameContent, pos);
 								reqId = -1;

@@ -634,6 +634,10 @@ public class ServiceProxy extends TOMSender {
 					}
 
 				}else{
+                                    
+                                        logger.info("requestType == TOMMessageType.ORDERED_REQUEST = "
+                                                +(requestType == TOMMessageType.ORDERED_REQUEST));
+                                        
 					if (replies[pos] == null) {
 						receivedReplies++;
 					}
@@ -665,7 +669,9 @@ public class ServiceProxy extends TOMSender {
                                                             
                                                                 logger.info("sameContent: "+ 
                                                                         sameContent+ ", replyQuorum: "
-                                                                        + replyQuorum+", replies[i].getid: "+replies[i].getId());
+                                                                        + replyQuorum+
+                                                                        ", replies[i].getid: "
+                                                                        +replies[i].getId());
                                                             
 								response = extractor.extractResponse(replies, sameContent, pos);
 								reqId = -1;

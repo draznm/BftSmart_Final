@@ -635,8 +635,7 @@ public class ServiceProxy extends TOMSender {
 
 				}else{
                                     
-                                        logger.info("requestType == TOMMessageType.ORDERED_REQUEST = "
-                                                +(requestType == TOMMessageType.ORDERED_REQUEST));
+                                        logger.info("requestType == TOMMessageType.ORDERED_REQUEST = ");
                                         
 					if (replies[pos] == null) {
 						receivedReplies++;

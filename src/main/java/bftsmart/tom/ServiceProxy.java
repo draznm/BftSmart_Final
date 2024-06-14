@@ -649,7 +649,7 @@ public class ServiceProxy extends TOMSender {
 					replies[pos] = reply;
 
 					// Compare the reply just received, to the others
-                                        HashSet<Integer> tempH = new HashSet<>();
+//                                        HashSet<Integer> tempH = new HashSet<>();
 
 					for (int i = 0; i < replies.length; i++) {
                                             
@@ -663,10 +663,10 @@ public class ServiceProxy extends TOMSender {
                                                     
                                                     
                                                     
-                                                        if (!tempH.contains(replies[i].getSender()))
+//                                                        if (!tempH.contains(replies[i].getSender()))
                                                         {
                                                             sameContent++;
-                                                            tempH.add(replies[i].getSender());
+//                                                            tempH.add(replies[i].getSender());
                                                         }
 							
                                                         

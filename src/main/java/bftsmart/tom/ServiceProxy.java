@@ -255,6 +255,8 @@ public class ServiceProxy extends TOMSender {
 
 			TOMulticast(sm);
 		}else{
+                        logger.info("TOMulticast with reqId=" + reqId);
+
 			TOMulticast(request, reqId, operationId, reqType);
 		}
 

@@ -696,14 +696,27 @@ public class ServiceProxy extends TOMSender {
 							this.sm.release(); // resumes the thread that is executing the "invoke" method
 						}
 					}else if (requestType.equals(TOMMessageType.UNORDERED_HASHED_REQUEST)) {
-						if (hashResponseController.getNumberReplies() == getViewManager().getCurrentViewN()) {
+						if (hashResponseController.getNumberReplies() == 
+                                                        getViewManager().getCurrentViewN()) {
+							reqId = -1;
+							this.sm.release(); // resumes the thread that is executing the "invoke" method
+						}
+					}else if (requestType.equals(TOMMessageType.RECONFIG)) {
+                                                logger.info("3, response==null, releasing sm "
+                                                        + "with hashResponseController.getNumberReplies() "+
+                                                        hashResponseController.getNumberReplies() +
+                                                        "getViewManager().getCurrentViewN(): "+
+                                                        getViewManager().getCurrentViewN());
+
+						if (hashResponseController.getNumberReplies() == 
+                                                        getViewManager().getCurrentViewN()) {
 							reqId = -1;
 							this.sm.release(); // resumes the thread that is executing the "invoke" method
 						}
 					} else {  // UNORDERED
 						if (receivedReplies != sameContent) {
                                                     
-                                                        logger.info("3, response==null, releasing sm");
+                                                        logger.info("4, response==null, releasing sm");
 							reqId = -1;
 							this.sm.release(); // resumes the thread that is executing the "invoke" method
 						}

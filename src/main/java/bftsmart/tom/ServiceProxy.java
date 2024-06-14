@@ -273,7 +273,8 @@ public class ServiceProxy extends TOMSender {
 			}else{ 
 				if (!this.sm.tryAcquire(timeout, TimeUnit.SECONDS)) {
 					logger.info("###################TIMEOUT#######################");
-					logger.info("Reply timeout for reqId=" + reqId + ", Replies received: " + receivedReplies);
+					logger.info("Reply timeout for reqId=" + reqId +
+                                                ", Replies received: " + receivedReplies);
 					canSendLock.unlock();
 
 					return null;
@@ -598,7 +599,7 @@ public class ServiceProxy extends TOMSender {
 	 */
 	@Override
 	public void replyReceived(TOMMessage reply) {
-            logger.debug("Synchronously received reply from " + reply.getSender() + " with sequence number " + reply.getSequence());
+            logger.info("Synchronously received reply from " + reply.getSender() + " with sequence number " + reply.getSequence());
 
                 try {
 			canReceiveLock.lock();

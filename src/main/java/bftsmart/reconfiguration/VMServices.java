@@ -71,7 +71,7 @@ public class VMServices {
     
         public void addServerMultiple(int[] ids, String[] ipAddresss, int port, int portRR, int cid) {
             
-            logger.info()
+            logger.info("cid for join requests"+cid);
             
             
             ViewManager viewManager = new ViewManager(configDir, keyLoader);
@@ -124,9 +124,6 @@ public class VMServices {
         execute(viewManager, cid);
 
     }
-    
-    
-
 //    public void updateClusters() {
 //
 //        ViewManager viewManager = new ViewManager(keyLoader);
@@ -134,15 +131,9 @@ public class VMServices {
 //        execute(viewManager);
 //
 //    }
-
-
     
-    private void execute(ViewManager viewManager) {
-        
-        viewManager.executeUpdates();
-        
-        viewManager.close();
-    }
+    
+
     
     private void execute(ViewManager viewManager, int cid) {
 

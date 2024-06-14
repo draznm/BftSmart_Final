@@ -703,12 +703,12 @@ public class ServiceProxy extends TOMSender {
 						}
 					}else if (requestType.equals(TOMMessageType.RECONFIG)) {
                                                 logger.info("3, response==null, releasing sm "
-                                                        + "with hashResponseController.getNumberReplies() "+
-                                                        hashResponseController.getNumberReplies() +
+                                                        + "with receivedReplies "+
+                                                        receivedReplies +
                                                         "getViewManager().getCurrentViewN(): "+
                                                         getViewManager().getCurrentViewN());
 
-						if (hashResponseController.getNumberReplies() == 
+						if (receivedReplies == 
                                                         getViewManager().getCurrentViewN()) {
 							reqId = -1;
 							this.sm.release(); // resumes the thread that is executing the "invoke" method

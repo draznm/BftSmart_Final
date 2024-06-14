@@ -691,7 +691,7 @@ public class ServiceProxy extends TOMSender {
 					if (requestType.equals(TOMMessageType.ORDERED_REQUEST)) {
 						if (receivedReplies == getViewManager().getCurrentViewN()) {
                                                     
-                                                        logger.info("response==null, releasing sm");
+                                                        logger.info("1, response==null, releasing sm");
 							reqId = -1;
 							this.sm.release(); // resumes the thread that is executing the "invoke" method
 						}
@@ -702,6 +702,8 @@ public class ServiceProxy extends TOMSender {
 						}
 					} else {  // UNORDERED
 						if (receivedReplies != sameContent) {
+                                                    
+                                                        logger.info("3, response==null, releasing sm");
 							reqId = -1;
 							this.sm.release(); // resumes the thread that is executing the "invoke" method
 						}

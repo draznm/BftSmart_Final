@@ -172,7 +172,6 @@ public class YCSBClient extends DB {
         }
         YCSBMessage msg = YCSBMessage.newUpdateRequest(table, key, map);
         
-        TxnCounter = txn_counter_atomic.addAndGet(1);
 
         usedMemory = memoryBean.getHeapMemoryUsage().getUsed();
         System.out.println("table name is "+table+ ", key is "+ key + " values is "+
@@ -215,7 +214,8 @@ public class YCSBClient extends DB {
                 vms.removeServers(smartIds, TxnCounter);
             }
         }
-        
+        TxnCounter = txn_counter_atomic.addAndGet(1);
+
         
 //
         if (reply!=null)

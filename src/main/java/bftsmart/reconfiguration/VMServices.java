@@ -120,7 +120,8 @@ public class VMServices {
 
         }
         
-        
+        logger.info("cid for leave requests"+cid);
+
         execute(viewManager, cid);
 
     }
@@ -136,6 +137,9 @@ public class VMServices {
 
     
     private void execute(ViewManager viewManager, int cid) {
+        
+    logger.info("cid for execute"+cid);
+
 
     viewManager.executeUpdates(cid);
 

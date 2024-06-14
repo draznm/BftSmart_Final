@@ -453,7 +453,7 @@ public class ServiceProxy extends TOMSender {
 		if (response == null) {
 			//the response can be null if n-f replies are received but there isn't
 			//a replyQuorum of matching replies
-			logger.info("Received n-f replies and no response could be extracted.");
+			logger.info("invoke(): Received n-f replies and no response could be extracted.");
 
 			canSendLock.unlock();
 			if (reqType == TOMMessageType.UNORDERED_REQUEST || reqType == TOMMessageType.UNORDERED_HASHED_REQUEST) {
@@ -618,7 +618,7 @@ public class ServiceProxy extends TOMSender {
 			int sameContent = 1;
 			if (reply.getSequence() == reqId && reply.getReqType() == requestType) {
 
-				logger.info("Receiving reply from " + reply.getSender()
+				logger.info("replyReceived(): Receiving reply from " + reply.getSender()
 						+ " with reqId:" + reply.getSequence() 
                                         + ". Putting on pos=" + pos+ ", requestType= "
                                         + requestType + ", reply.getViewID()= "+reply.getViewID());
@@ -825,7 +825,7 @@ public class ServiceProxy extends TOMSender {
 		if (response == null) {
 			//the response can be null if n-f replies are received but there isn't
 			//a replyQuorum of matching replies
-			logger.info("Received n-f replies and no response could be extracted.");
+			logger.info("special_invoke(): Received n-f replies and no response could be extracted.");
 
 			canSendLock.unlock();
 			if (reqType == TOMMessageType.UNORDERED_REQUEST || reqType == TOMMessageType.UNORDERED_HASHED_REQUEST) {

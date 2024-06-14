@@ -653,8 +653,7 @@ public class ServiceProxy extends TOMSender {
 
 					for (int i = 0; i < replies.length; i++) {
                                             
-                                                
-
+                                           
 						if ((i != pos || getViewManager().getCurrentViewN() == 1)
                                                         && replies[i] != null
 								&& 
@@ -668,7 +667,7 @@ public class ServiceProxy extends TOMSender {
                                                             sameContent++;
 //                                                            tempH.add(replies[i].getSender());
                                                         }
-							
+							logger.info("sameContent: "+ sameContent);
                                                         
 							if (sameContent >= replyQuorum) {
                                                             
@@ -691,6 +690,8 @@ public class ServiceProxy extends TOMSender {
 				if (response == null) {
 					if (requestType.equals(TOMMessageType.ORDERED_REQUEST)) {
 						if (receivedReplies == getViewManager().getCurrentViewN()) {
+                                                    
+                                                        logger.info("response==null, releasing sm");
 							reqId = -1;
 							this.sm.release(); // resumes the thread that is executing the "invoke" method
 						}

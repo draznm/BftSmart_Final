@@ -233,7 +233,9 @@ public class ServiceProxy extends TOMSender {
 		replyQuorum = getReplyQuorum();
 
 		// Send the request to the replicas, and get its ID
-		reqId = req_id;//generateRequestId(reqType);
+		reqId = generateRequestId(reqType);
+                
+                logger.info("generateRequestId is "+reqId);
 		operationId = generateOperationId();
 		requestType = reqType;
 
@@ -345,7 +347,7 @@ public class ServiceProxy extends TOMSender {
 
 						canSendLock.unlock();
                                                 
-                                                logger.info("invoking from invokeTimeout for RECONFIG type messages");
+                                                logger.info("supposed to be invoking from invokeTimeout for RECONFIG type messages");
 						return invokeWithTimeout(request, reqType, 15, req_id);
                                                 
                                                 

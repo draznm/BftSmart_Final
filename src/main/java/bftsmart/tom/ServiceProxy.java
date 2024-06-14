@@ -283,7 +283,7 @@ public class ServiceProxy extends TOMSender {
 			logger.error("Problem aquiring semaphore",ex);
 		}
 
-		logger.debug("Response extracted = " + response);
+		logger.info("Response extracted = " + response);
 
 		byte[] ret = null;
 
@@ -618,10 +618,10 @@ public class ServiceProxy extends TOMSender {
 			int sameContent = 1;
 			if (reply.getSequence() == reqId && reply.getReqType() == requestType) {
 
-				logger.info("replyReceived(): Receiving reply from " + reply.getSender()
-						+ " with reqId:" + reply.getSequence() 
-                                        + ". Putting on pos=" + pos+ ", requestType= "
-                                        + requestType + ", reply.getViewID()= "+reply.getViewID());
+//				logger.info("replyReceived(): Receiving reply from " + reply.getSender()
+//						+ " with reqId:" + reply.getSequence() 
+//                                        + ". Putting on pos=" + pos+ ", requestType= "
+//                                        + requestType + ", reply.getViewID()= "+reply.getViewID());
 
 				if(requestType == TOMMessageType.UNORDERED_HASHED_REQUEST)
 				{

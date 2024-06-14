@@ -45,6 +45,9 @@ public class YCSBClient extends DB {
     
     VMServices vms;
     
+    
+    private static AtomicInteger txn_counter_atomic = new AtomicInteger();
+
     public int TxnCounter = 0;
 
     Client c;
@@ -169,7 +172,7 @@ public class YCSBClient extends DB {
         }
         YCSBMessage msg = YCSBMessage.newUpdateRequest(table, key, map);
         
-        TxnCounter = TxnCounter + 1;
+        TxnCounter = txn_counter_atomic.addAndGet(1);
 
         usedMemory = memoryBean.getHeapMemoryUsage().getUsed();
         System.out.println("table name is "+table+ ", key is "+ key + " values is "+

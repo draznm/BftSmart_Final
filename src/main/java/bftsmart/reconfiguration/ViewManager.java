@@ -111,7 +111,7 @@ public class ViewManager {
 
     public void executeUpdates() {
 
-        logger.info("addIds: " + addIds);
+        logger.info("executeUpdates(), addIds: " + addIds);
         connect();
 
         boolean successful_reconfig = false;
@@ -194,7 +194,7 @@ public class ViewManager {
         
         
         
-        logger.info("addIds: " + addIds);
+        logger.info("addIds: " + addIds+ ", cid: "+cid);
         connect();
 
         boolean successful_reconfig = false;
@@ -212,7 +212,7 @@ public class ViewManager {
                     boolean check = (rec==null);
                     logger.info("Trying reconfig execution, check="+ check);
                     
-                    r = rec.execute();
+                    r = rec.execute(cid);
                     v = r.getView();
                     logger.info("New view with id: " + v.getId()+
                             ", for cid: "+cid+", processes: "+Arrays.toString(v.getProcesses())+ ", v.getN(): "+

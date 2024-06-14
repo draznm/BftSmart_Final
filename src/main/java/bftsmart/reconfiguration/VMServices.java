@@ -14,7 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 package bftsmart.reconfiguration;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import bftsmart.tom.util.KeyLoader;
 
 /**
@@ -25,6 +26,8 @@ public class VMServices {
     
     private KeyLoader keyLoader;
     private String configDir= "config0";
+    
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
     
     /**
      * Constructor. It adopts the default RSA key loader and default configuration path.
@@ -67,6 +70,8 @@ public class VMServices {
     
     
         public void addServerMultiple(int[] ids, String[] ipAddresss, int port, int portRR, int cid) {
+            
+            logger.info()
             
             
             ViewManager viewManager = new ViewManager(configDir, keyLoader);

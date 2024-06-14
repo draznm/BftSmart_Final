@@ -231,7 +231,7 @@ public class ServiceProxy extends TOMSender {
 		replyQuorum = getReplyQuorum();
 
 		// Send the request to the replicas, and get its ID
-		reqId = req_id-1;//generateRequestId(reqType);
+		reqId = req_id;//generateRequestId(reqType);
 		operationId = generateOperationId();
 		requestType = reqType;
 

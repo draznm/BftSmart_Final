@@ -640,7 +640,8 @@ public class ServiceProxy extends TOMSender {
 
 				}else{
                                     
-                                        logger.info("requestType == TOMMessageType.ORDERED_REQUEST = ");
+                                        logger.info("replies.length:  "+ replies.length + ", replyQuorum = "
+                                        + replyQuorum);
                                         
 					if (replies[pos] == null) {
 						receivedReplies++;
@@ -648,10 +649,10 @@ public class ServiceProxy extends TOMSender {
 					replies[pos] = reply;
 
 					// Compare the reply just received, to the others
-					
+                                        HashSet<Integer> tempH = new HashSet<>();
+
 					for (int i = 0; i < replies.length; i++) {
                                             
-                                                HashSet<Integer> tempH = new HashSet<>();
                                                 
 
 						if ((i != pos || getViewManager().getCurrentViewN() == 1)

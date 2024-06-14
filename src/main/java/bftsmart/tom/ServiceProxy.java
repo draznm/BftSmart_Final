@@ -312,13 +312,19 @@ public class ServiceProxy extends TOMSender {
 			//******* EDUARDO BEGIN **************//
 			if (reqType == TOMMessageType.ORDERED_REQUEST) {
 				//Reply to a normal request!
-				if (response.getViewID() == getViewManager().getCurrentViewId()) {
+                                
+                                logger.info("response.getViewID(),getViewManager().getCurrentViewId(): " 
+                                +response.getViewID() +", "+getViewManager().getCurrentViewId());
+                                
+				if (response.getViewID() == getViewManager().getCurrentViewId()) 
+                                {
 					ret = response.getContent(); // return the response
 				} else {//if(response.getViewID() > getViewManager().getCurrentViewId())
 					//updated view received
 					reconfigureTo((View) TOMUtil.getObject(response.getContent()));
 
 					canSendLock.unlock();
+                                        logger.info("invoking from invokeWithTimeout");
 					return invoke(request, reqType);
 				}
 			} else if (reqType == TOMMessageType.UNORDERED_REQUEST || reqType == TOMMessageType.UNORDERED_HASHED_REQUEST){
@@ -492,7 +498,7 @@ public class ServiceProxy extends TOMSender {
 			} else {
 				if (response.getViewID() > getViewManager().getCurrentViewId()) {
 					//Reply to a reconfigure request!
-					logger.debug("Reconfiguration request' reply received!");
+					logger.info("Reconfiguration request' reply received!");
 					Object r = TOMUtil.getObject(response.getContent());
 					if (r instanceof View) { //did not executed the request because it is using an outdated view
 						reconfigureTo((View) r);
@@ -608,7 +614,8 @@ public class ServiceProxy extends TOMSender {
                 try {
 			canReceiveLock.lock();
 			if (reqId == -1) {//no message being expected
-				logger.debug("throwing out request: sender=" + reply.getSender() + " reqId=" + reply.getSequence());
+				logger.debug("throwing out request: sender=" + 
+                                        reply.getSender() + " reqId=" + reply.getSequence());
 				canReceiveLock.unlock();
 				return;
 			}

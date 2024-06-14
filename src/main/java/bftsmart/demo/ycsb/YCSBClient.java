@@ -84,8 +84,8 @@ public class YCSBClient extends DB {
 
         int ncls = cinfo.nClusters;
 
-        myId = initId +40* ( (int) (ClientID/ncls) )*ClientID+counter.addAndGet(1);
-//        myId = initId + counter.addAndGet(1);
+//        myId = initId +40* ( (int) (ClientID/ncls) )*ClientID+counter.addAndGet(1);
+        myId = initId + counter.addAndGet(1);
 
         
 
@@ -117,8 +117,8 @@ public class YCSBClient extends DB {
         config_id = "config0";
         
 
-        System.out.println("YCSBKVClient. Initiated client id, myId: " + myId+ ", ClientID"
-                + ClientID+ " ncls: "+ncls);
+        System.out.println("YCSBKVClient. Initiated client with  myId: " + myId+ ", ClientID"
+                + ClientID+ " ncls: "+ncls+ ", initId: "+ initId);
     }
 
     @Override

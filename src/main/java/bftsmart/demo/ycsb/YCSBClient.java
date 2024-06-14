@@ -87,8 +87,8 @@ public class YCSBClient extends DB {
 
         int ncls = cinfo.nClusters;
 
-//        myId = initId +40* ( (int) (ClientID/ncls) )*ClientID+counter.addAndGet(1);
-        myId = initId + counter.addAndGet(1);
+        myId = initId +20* ( (int) (ClientID/ncls) )*ClientID+counter.addAndGet(1);
+//        myId = initId + counter.addAndGet(1);
 
         
 

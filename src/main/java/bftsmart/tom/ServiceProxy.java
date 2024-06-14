@@ -220,6 +220,8 @@ public class ServiceProxy extends TOMSender {
         
         public byte[] invokeWithTimeout(byte[] request, TOMMessageType reqType, int timeout, int req_id) {
             
+            logger.info("req_id is "+ req_id);
+            
             try {
                 
 		canSendLock.lock();

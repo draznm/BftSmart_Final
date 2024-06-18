@@ -20,7 +20,9 @@ import bftsmart.consensus.Decision;
 import bftsmart.consensus.messages.OtherClusterMessage;
 import bftsmart.consensus.messages.OtherClusterMessageData;
 import bftsmart.demo.counter.ClusterInfo;
+import bftsmart.reconfiguration.ReconfigureReply;
 import bftsmart.reconfiguration.ServerViewController;
+import bftsmart.reconfiguration.views.View;
 import bftsmart.reconfiguration.util.HostsConfig;
 import bftsmart.statemanagement.ApplicationState;
 import bftsmart.statemanagement.SMMessage;
@@ -1227,6 +1229,11 @@ public final class DeliveryThread extends Thread {
         
         
         byte[] response = controller.executeUpdates(consId);
+        Object r = TOMUtil.getObject(response);
+        logger.info(""+r.getClass()+ ", (r instanceof ReconfigureReply): "+
+                (r instanceof ReconfigureReply)+", (r instanceof View) "+
+                (r instanceof View));
+        
         TOMMessage[] dests = controller.clearUpdates();
         logger.info("processReconfigMessages for cid:"+consId);
 

@@ -351,9 +351,10 @@ public class ServiceProxy extends TOMSender {
 
 						canSendLock.unlock();
                                                 
-                                                logger.info("supposed to be invoking from invokeTimeout for RECONFIG type messages");
-						ret = response.getContent();
-//                                                return invokeWithTimeout(request, reqType, 15, req_id);
+                                                logger.info("supposed to be invoking from invokeTimeout for "
+                                                        + "RECONFIG type messages");
+//						ret = response.getContent();
+                                                return invokeWithTimeout(request, reqType, 15, req_id);
                                                 
                                                 
 					}  else if (r instanceof ReconfigureReply) { //reconfiguration executed!

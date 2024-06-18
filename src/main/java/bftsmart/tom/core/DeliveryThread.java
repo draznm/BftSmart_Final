@@ -1240,11 +1240,13 @@ public final class DeliveryThread extends Thread {
         if (controller.getCurrentView().isMember(receiver.getId())) {
             for (TOMMessage dest : dests) {
 
-                logger.info("dest.getSender() are {}", dest.getSender());
+                logger.info("dest.getSender() are {}, dest.getSequence: {}, dest.getOperationId(): {}", dest.getSender(),
+                        dest.getSequence(), dest.getOperationId());
                 tomLayer.getCommunication().send(new int[]{dest.getSender()},
                         new TOMMessage(controller.getStaticConf().getProcessId(), dest.getSession(),
                                 dest.getSequence(), dest.getOperationId(), response,
                                 controller.getCurrentViewId(), RECONFIG));
+                
             }
 
             tomLayer.getCommunication().updateServersConnections();

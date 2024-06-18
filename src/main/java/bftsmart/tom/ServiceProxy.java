@@ -347,6 +347,10 @@ public class ServiceProxy extends TOMSender {
 					Object r = TOMUtil.getObject(response.getContent());
 					if (r instanceof View) { //did not executed 
                                             //the request because it is using an outdated view
+                                            
+                                            
+                                                logger.info("r is instance of View");
+
 						reconfigureTo((View) r);
 
 						canSendLock.unlock();
@@ -696,7 +700,15 @@ public class ServiceProxy extends TOMSender {
                                                                         +replies[i].getId());
                                                             
 								response = extractor.extractResponse(replies, sameContent, pos);
-								reqId = -1;
+								
+                                                                
+                                                                Object r = TOMUtil.getObject(response.getContent());
+                                                                logger.info("Extracted Response: "+r.getClass()+ ", (r instanceof ReconfigureReply): "+
+                                                                        (r instanceof ReconfigureReply)+", (r instanceof View) "+
+                                                                        (r instanceof View));
+
+                                                                
+                                                                reqId = -1;
 								this.sm.release(); // resumes the thread that is executing the "invoke" method
 								canReceiveLock.unlock();
 								return;

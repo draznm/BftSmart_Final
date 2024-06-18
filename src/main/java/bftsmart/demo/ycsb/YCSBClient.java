@@ -197,6 +197,7 @@ public class YCSBClient extends DB {
 
         }
 
+        boolean successfull_reconfig = true;
 
         if (ClientID==4)
         {
@@ -205,13 +206,13 @@ public class YCSBClient extends DB {
             {
 
                 System.out.println("test123: add server request");
-                vms.addServerMultiple(smartIds, ipAddresses, port, portRR, TxnCounter);
+                successfull_reconfig = vms.addServerMultiple(smartIds, ipAddresses, port, portRR, TxnCounter);
             }
             if ((TxnCounter<=1000)&& (TxnCounter>=0)&&((TxnCounter)%2==1) )
             {
                 System.out.println("test123: leave server request");
 
-                vms.removeServers(smartIds, TxnCounter);
+                successfull_reconfig = vms.removeServers(smartIds, TxnCounter);
             }
         }
         

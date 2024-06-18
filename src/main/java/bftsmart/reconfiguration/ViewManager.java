@@ -190,7 +190,7 @@ public class ViewManager {
         rec.close();
     }
 
-    void executeUpdates(int cid) {
+    public boolean executeUpdates(int cid) {
         
         
         
@@ -205,7 +205,7 @@ public class ViewManager {
         
         int counter = 0;
 
-        while((successful_reconfig!=true)) // &&(counter<10)
+//        while((successful_reconfig!=true)) // &&(counter<10)
         {
             try
                 {
@@ -229,6 +229,8 @@ public class ViewManager {
                     e.printStackTrace();
                     
                     counter = counter + 1;
+                    
+                    return successful_reconfig;
                 }
 
         }
@@ -250,5 +252,6 @@ public class ViewManager {
             sendResponse(addIds_array, msg);
             addIds.clear();
         }
+        return successful_reconfig;
     }
 }

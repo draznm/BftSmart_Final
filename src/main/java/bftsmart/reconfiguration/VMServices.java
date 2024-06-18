@@ -69,7 +69,7 @@ public class VMServices {
 //    }
     
     
-        public void addServerMultiple(int[] ids, String[] ipAddresss, int port, int portRR, int cid) {
+        public boolean addServerMultiple(int[] ids, String[] ipAddresss, int port, int portRR, int cid) {
             
             logger.info("cid for join requests"+cid);
             
@@ -86,7 +86,7 @@ public class VMServices {
             }
 
         
-        execute(viewManager,cid);
+        return execute(viewManager,cid);
 
     }
     
@@ -110,7 +110,7 @@ public class VMServices {
      * 
      * @param ids
      */
-    public void removeServers (int[] ids, int cid) {
+    public boolean removeServers (int[] ids, int cid) {
         
         ViewManager viewManager = new ViewManager(keyLoader);
         
@@ -122,7 +122,7 @@ public class VMServices {
         
         logger.info("cid for leave requests"+cid);
 
-        execute(viewManager, cid);
+        return execute(viewManager, cid);
 
     }
 //    public void updateClusters() {
@@ -136,14 +136,16 @@ public class VMServices {
     
 
     
-    private void execute(ViewManager viewManager, int cid) {
+    public boolean execute(ViewManager viewManager, int cid) {
         
     logger.info("cid for execute"+cid);
 
 
-    viewManager.executeUpdates(cid);
+    boolean succesfull_reconfig = viewManager.executeUpdates(cid);
 
     viewManager.close();
+    
+    return succesfull_reconfig;
     }
     
     

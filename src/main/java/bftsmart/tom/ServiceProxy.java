@@ -339,7 +339,11 @@ public class ServiceProxy extends TOMSender {
 			} else {
 				if (response.getViewID() > getViewManager().getCurrentViewId()) {
 					//Reply to a reconfigure request!
-					logger.info("Reconfiguration request' reply received!");
+					logger.info("Reconfiguration request' reply received!"
+                                                + "response.getViewID(): "+response.getViewID() +
+                                                "getViewManager().getCurrentViewId(): "+ 
+                                                getViewManager().getCurrentViewId());
+                                        
 					Object r = TOMUtil.getObject(response.getContent());
 					if (r instanceof View) { //did not executed 
                                             //the request because it is using an outdated view
@@ -348,7 +352,8 @@ public class ServiceProxy extends TOMSender {
 						canSendLock.unlock();
                                                 
                                                 logger.info("supposed to be invoking from invokeTimeout for RECONFIG type messages");
-						return invokeWithTimeout(request, reqType, 15, req_id);
+						ret = response.getContent();
+//                                                return invokeWithTimeout(request, reqType, 15, req_id);
                                                 
                                                 
 					}  else if (r instanceof ReconfigureReply) { //reconfiguration executed!

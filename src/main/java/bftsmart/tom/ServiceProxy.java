@@ -358,7 +358,8 @@ public class ServiceProxy extends TOMSender {
                                                 
                                                 
 					}  else if (r instanceof ReconfigureReply) { //reconfiguration executed!
-						reconfigureTo(((ReconfigureReply) r).getView());
+						logger.info("r is instance of ReconfigureReply");
+                                                reconfigureTo(((ReconfigureReply) r).getView());
 						ret = response.getContent();
 					} else{
 						logger.debug("Unknown response type");
@@ -719,7 +720,7 @@ public class ServiceProxy extends TOMSender {
 							this.sm.release(); // resumes the thread that is executing the "invoke" method
 						}
 					}else if (requestType.equals(TOMMessageType.RECONFIG)) {
-                                                logger.info("3, response==null, releasing sm "
+                                                logger.info("3, response==null, might be releasing sm "
                                                         + "with receivedReplies "+
                                                         receivedReplies +
                                                         "getViewManager().getCurrentViewN(): "+

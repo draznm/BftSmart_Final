@@ -216,7 +216,14 @@ public class YCSBClient extends DB {
             }
         }
         
+        System.out.println("successfull_reconfig is "+ successfull_reconfig);
+        
         TxnCounter = txn_counter_atomic.addAndGet(1);
+        
+        if (!successfull_reconfig)
+        {
+                    TxnCounter = txn_counter_atomic.addAndGet(1);
+        }
 
         
 //

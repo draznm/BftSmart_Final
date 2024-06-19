@@ -342,7 +342,7 @@ public class ServiceProxy extends TOMSender {
 					logger.info("Reconfiguration request' reply received!"
                                                 + "response.getViewID(): "+response.getViewID() +
                                                 "getViewManager().getCurrentViewId(): "+ 
-                                                getViewManager().getCurrentViewId());
+                                                getViewManager().getCurrentViewId()+ ", reqType:"+reqType);
                                         
 					Object r = TOMUtil.getObject(response.getContent());
 					if (r instanceof View) { //did not executed 

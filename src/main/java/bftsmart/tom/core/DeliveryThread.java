@@ -466,6 +466,7 @@ public final class DeliveryThread extends Thread {
         if (controller.hasUpdates()) {
             processReconfigMessages(lastDecision.getConsensusId());
         }
+        
         if (lastReconfig > -2 && lastReconfig <= lastDecision.getConsensusId()) {
 
             // set the consensus associated to the last decision as the last executed
@@ -1235,7 +1236,8 @@ public final class DeliveryThread extends Thread {
                 (r instanceof View));
         
         TOMMessage[] dests = controller.clearUpdates();
-        logger.info("processReconfigMessages for cid:"+consId);
+        logger.info("processReconfigMessages for cid:"+consId+
+                "controller.getCurrentViewId(): "+controller.getCurrentViewId());
 
         if (controller.getCurrentView().isMember(receiver.getId())) {
             for (TOMMessage dest : dests) {

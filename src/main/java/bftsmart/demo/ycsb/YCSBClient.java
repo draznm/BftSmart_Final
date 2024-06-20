@@ -199,7 +199,7 @@ public class YCSBClient extends DB {
 
         boolean successfull_reconfig = true;
 
-        int upperLimit = 151;
+        int upperLimit = 201;
                 
         if (ClientID==4)
         {

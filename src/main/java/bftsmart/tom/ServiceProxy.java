@@ -231,6 +231,7 @@ public class ServiceProxy extends TOMSender {
 		receivedReplies = 0;
 		response = null;
 		replyQuorum = getReplyQuorum();
+                
 
 		// Send the request to the replicas, and get its ID
 		reqId = req_id;//generateRequestId(reqType);
@@ -691,7 +692,8 @@ public class ServiceProxy extends TOMSender {
                                                         }
 							logger.info("sameContent: "+ sameContent);
                                                         
-							if (sameContent >= replyQuorum) {
+							if ((sameContent >= replyQuorum) || ((requestType == TOMMessageType.RECONFIG)&& 
+                                                                (sameContent>=getViewManager().getCurrentViewF())) ) {
                                                             
                                                                 logger.info("sameContent: "+ 
                                                                         sameContent+ ", replyQuorum: "

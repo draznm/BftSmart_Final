@@ -227,7 +227,7 @@ public class YCSBClient extends DB {
 //                    TxnCounter = txn_counter_atomic.addAndGet(1);
 //        }
         
-        if (TxnCounter> upperLimit)
+        if ((TxnCounter> upperLimit)&& (ClientID==4))
         {
             
             System.exit(0);

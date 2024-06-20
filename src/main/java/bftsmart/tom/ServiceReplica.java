@@ -423,7 +423,8 @@ public class ServiceReplica {
                 } else if (request.getViewID() < SVController.getCurrentViewId()) { 
                     // message sender had an old view, resend the message to
                     // him (but only if it came from consensus an not state transfer)
-                    
+                    logger.info("Outdated view of client, sending back View instead of reconfigurereply() "
+                            + "in case of RECONFIG");
                     tomLayer.getCommunication().send(new int[]{request.getSender()}, new TOMMessage(SVController.getStaticConf().getProcessId(),
                             request.getSession(), request.getSequence(), request.getOperationId(), TOMUtil.getBytes(SVController.getCurrentView()), SVController.getCurrentViewId(), request.getReqType()));
                 }

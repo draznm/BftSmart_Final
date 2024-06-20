@@ -174,10 +174,10 @@ public class YCSBClient extends DB {
         
 
         usedMemory = memoryBean.getHeapMemoryUsage().getUsed();
-        System.out.println("table name is "+table+ ", key is "+ key + " values is "+
-                values + "values size, keyset size are "+ values.size() + ", " + 
-                values.keySet() + "JVM Memory Used by the client: " + usedMemory 
-                + " bytes"+ ", TxnCounter = "+ TxnCounter);
+//        System.out.println("table name is "+table+ ", key is "+ key + " values is "+
+//                values + "values size, keyset size are "+ values.size() + ", " + 
+//                values.keySet() + "JVM Memory Used by the client: " + usedMemory 
+//                + " bytes"+ ", TxnCounter = "+ TxnCounter);
 
 
         byte[] reply = null;
@@ -202,21 +202,21 @@ public class YCSBClient extends DB {
         if (ClientID==4)
         {
 
-            if( (TxnCounter<=10)&&(TxnCounter>=0)&&((TxnCounter)%2==0) )
+            if( (TxnCounter<=100)&&(TxnCounter>=0)&&((TxnCounter)%2==0) )
             {
 
-                System.out.println("test123: add server request");
+//                System.out.println("test123: add server request");
                 successfull_reconfig = vms.addServerMultiple(smartIds, ipAddresses, port, portRR, TxnCounter);
             }
-            if ((TxnCounter<=10)&& (TxnCounter>=0)&&((TxnCounter)%2==1) )
+            if ((TxnCounter<=100)&& (TxnCounter>=0)&&((TxnCounter)%2==1) )
             {
-                System.out.println("test123: leave server request");
+//                System.out.println("test123: leave server request");
 
                 successfull_reconfig = vms.removeServers(smartIds, TxnCounter);
             }
         }
         
-        System.out.println("successfull_reconfig is "+ successfull_reconfig);
+//        System.out.println("successfull_reconfig is "+ successfull_reconfig);
         
         TxnCounter = txn_counter_atomic.addAndGet(1);
         

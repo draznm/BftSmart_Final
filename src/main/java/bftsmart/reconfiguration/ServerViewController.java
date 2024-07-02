@@ -248,6 +248,7 @@ public class ServerViewController extends ViewController {
 //            tomLayer.triggerTimeout(new LinkedList<TOMMessage>());
                 
         } 
+        
         return TOMUtil.getBytes(new ReconfigureReply(newV, jSetInfo.toArray(new String[0]),
                  cid, tomLayer.execManager.getCurrentLeader()));
     }

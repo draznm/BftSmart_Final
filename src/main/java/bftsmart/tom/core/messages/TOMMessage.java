@@ -114,7 +114,8 @@ public class TOMMessage extends SystemMessage implements Externalizable, Compara
 	 * @param view The view in which the message was sent
 	 * @param type Ordered or Unordered request
 	 */
-	public TOMMessage(int sender, int session, int sequence, int operationId, byte[] content, int view, TOMMessageType type) {
+	public TOMMessage(int sender, int session, int sequence, int operationId, 
+                byte[] content, int view, TOMMessageType type) {
 		super(sender);
 		this.session = session;
 		this.sequence = sequence;

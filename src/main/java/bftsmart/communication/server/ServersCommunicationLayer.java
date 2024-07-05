@@ -266,7 +266,7 @@ public class ServersCommunicationLayer extends Thread {
 
                     if (!this.controller.isCurrentViewMember(rm) && this.connections.get(rm)!=null) {
                         logger.info("Adding to Remove connection List, rm: {} ", rm);
-                        toRemove.add(rm);
+//                        toRemove.add(rm);
                     }
 
                 }
@@ -275,7 +275,7 @@ public class ServersCommunicationLayer extends Thread {
                     if (!this.controller.isCurrentViewMember(rm) && 
                             cinfo.getClusterNumber(rm)==cinfo.getClusterNumber(me) ) {
                         logger.info("Adding to Remove connection List, rm: {} ", rm);
-                        toRemove.add(rm);
+//                        toRemove.add(rm);
                     }
                 }
             }
@@ -320,7 +320,7 @@ public class ServersCommunicationLayer extends Thread {
 
             Iterator<Integer> it = this.connections.keySet().iterator();
             while (it.hasNext()) {
-                this.connections.get(it.next()).shutdown();
+//                this.connections.get(it.next()).shutdown();
             }
         }
 

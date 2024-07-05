@@ -440,7 +440,9 @@ public class ServerConnection {
 						logger.debug("Invalid message received. Ignoring!");
 					} catch (IOException ex) {
 						if (doWork) {
-							logger.info("Closing socket and reconnecting");
+							logger.info("Closing socket and reconnecting with remoteId: "+ 
+                                                                remoteId);
+                         
 //							closeSocket();
 //							waitAndConnect();
 						}

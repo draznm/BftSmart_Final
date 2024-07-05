@@ -543,7 +543,7 @@ public class NettyClientServerCommunicationSystemClientSide extends SimpleChanne
 	@Override
 	public void channelUnregistered(final ChannelHandlerContext ctx) throws Exception {
 		logger.info("channelUnregistered");
-		scheduleReconnect(ctx, 10);
+		scheduleReconnect(ctx, 0.1);
 	}
 
 	@Override

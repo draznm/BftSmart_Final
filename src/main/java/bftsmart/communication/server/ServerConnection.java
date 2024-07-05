@@ -441,8 +441,8 @@ public class ServerConnection {
 					} catch (IOException ex) {
 						if (doWork) {
 							logger.info("Closing socket and reconnecting");
-							closeSocket();
-							waitAndConnect();
+//							closeSocket();
+//							waitAndConnect();
 						}
 					} catch (Exception ex) {
 						logger.debug("Processing message failed. Ignoring!");

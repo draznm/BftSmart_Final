@@ -157,7 +157,7 @@ public class NettyClientServerCommunicationSystemClientSide extends SimpleChanne
 					rl.writeLock().lock();
 					try {
 						ChannelFuture future = connectToReplica(replicaId, secretKeyFactory);
-						logger.debug("ClientID {}, updating connection to replica {}, at address: {}", clientId,
+						logger.info("ClientID {}, updating connection to replica {}, at address: {}", clientId,
 								replicaId, controller.getRemoteAddress(replicaId));
 
 						future.awaitUninterruptibly();

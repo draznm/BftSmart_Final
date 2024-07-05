@@ -172,7 +172,7 @@ public class ServerConnection {
      * Stop message sending and reception.
      */
     public void shutdown() {
-        logger.debug("SHUTDOWN for "+remoteId);
+        logger.info("SHUTDOWN for "+remoteId);
         
         doWork = false;
         closeSocket();
@@ -440,7 +440,7 @@ public class ServerConnection {
 						logger.debug("Invalid message received. Ignoring!");
 					} catch (IOException ex) {
 						if (doWork) {
-							logger.debug("Closing socket and reconnecting");
+							logger.info("Closing socket and reconnecting");
 							closeSocket();
 							waitAndConnect();
 						}

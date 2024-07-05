@@ -548,7 +548,7 @@ public class NettyClientServerCommunicationSystemClientSide extends SimpleChanne
 
 	@Override
 	public void channelInactive(final ChannelHandlerContext ctx) {
-		logger.info("channelUnregistered");
+		logger.info("channelInactive");
 		scheduleReconnect(ctx, 10);
 	}
 

@@ -303,7 +303,7 @@ public class ServerConnection {
 		if (socket == null || !socket.isConnected()) {
 
 			if (isToConnect()) {
-//				logger.info("Reconnection SSLTLS");
+				logger.info("Reconnection SSLTLS");
 				ssltlsCreateConnection();
 			} else {
 				socket = newSocket;
@@ -360,7 +360,8 @@ public class ServerConnection {
             }
 
             outQueue.clear();
-            reconnect(null);
+            logger.info("reconnecting ");
+            reconnect(socket);
         }
     }
 
@@ -445,7 +446,7 @@ public class ServerConnection {
                                                                 remoteId);
                          
 //							closeSocket();
-//							waitAndConnect();
+							waitAndConnect();
 						}
 					} catch (Exception ex) {
 						logger.debug("Processing message failed. Ignoring!");

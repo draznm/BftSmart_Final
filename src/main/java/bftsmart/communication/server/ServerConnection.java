@@ -504,7 +504,8 @@ public class ServerConnection {
 					} catch (ClassNotFoundException ex) {
 						logger.error("Failed to deserialize message", ex);
 					} catch (IOException ex) {
-//						 ex.printStackTrace();
+						 ex.printStackTrace();
+                                                 logger.info("TTP receiver thread for remoteId:"+remoteId);
 //						if (doWork) {
 //                                                        logger.info("TTP receiver thread, closing socket, "
 //                                                                + "remoteId: "+ remoteId);

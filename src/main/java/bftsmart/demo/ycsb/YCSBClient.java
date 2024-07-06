@@ -243,7 +243,7 @@ public class YCSBClient extends DB {
         }
         
                 
-        if (ClientID==4)
+        if (ClientID==80)
         {
             if( (TxnCounter<=upperLimit)&&(TxnCounter>=0)&&((TxnCounter)%2==0) )
             {

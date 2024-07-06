@@ -31,6 +31,7 @@ import bftsmart.communication.server.ServerConnection;
 import bftsmart.reconfiguration.views.View;
 import bftsmart.tom.util.KeyLoader;
 import java.util.Arrays;
+import java.util.HashMap;
 
 /**
  *
@@ -47,6 +48,10 @@ public class ViewManager {
     //Need only inform those that are entering the systems, as those already
     //in the system will execute the reconfiguration request
     private List<Integer> addIds = new LinkedList<Integer>();
+    
+    
+    private HashMap<Integer, ServerConnection> connections = new HashMap<Integer, ServerConnection>();
+
 
     public ViewManager(KeyLoader loader) {
         this("config0", loader);
@@ -177,7 +182,24 @@ public class ViewManager {
         for (Integer i : targets) {
             try {
                 if (i.intValue() != id) {
-                    getConnection(i.intValue()).send(data);
+                    
+                    
+                    
+                    if(this.connections.containsKey(i.intValue()))
+                    {
+                        this.connections.get(i.intValue()).send(data);
+                    }
+                    else
+                    {
+                        
+                        this.connections.put(i.intValue(), getConnection(i.intValue()));
+                        this.connections.get(i.intValue()).send(data);
+
+                    }
+                    
+//                    getConnection(i.intValue()).send(data);
+                    
+                    
                 }
             } catch (InterruptedException ex) {
                // ex.printStackTrace();

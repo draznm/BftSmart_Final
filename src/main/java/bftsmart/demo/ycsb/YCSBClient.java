@@ -204,7 +204,7 @@ public class YCSBClient extends DB {
         
         
                 
-        if (TxnCounter==0)
+        if ((TxnCounter==0) && (ClientID==4))
         {
             try {
                 for (int iter=0;iter<30;iter++)

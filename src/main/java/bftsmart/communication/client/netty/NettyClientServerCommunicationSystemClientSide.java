@@ -543,13 +543,13 @@ public class NettyClientServerCommunicationSystemClientSide extends SimpleChanne
 	@Override
 	public void channelUnregistered(final ChannelHandlerContext ctx) throws Exception {
 		logger.info("channelUnregistered");
-		scheduleReconnect(ctx, 0.1);
+		scheduleReconnect(ctx, 100);
 	}
 
 	@Override
 	public void channelInactive(final ChannelHandlerContext ctx) {
 		logger.info("channelInactive");
-		scheduleReconnect(ctx, 0.1);
+		scheduleReconnect(ctx, 100);
 	}
 
 	private void closeChannelAndEventLoop(Channel c) {
@@ -575,7 +575,7 @@ public class NettyClientServerCommunicationSystemClientSide extends SimpleChanne
 			public void run() {
 				reconnect(ctx);
 			}
-		}, time, TimeUnit.SECONDS);
+		}, time, TimeUnit.MILLISECONDS);
 	}
 
 	private class SyncListener implements GenericFutureListener<ChannelFuture> {

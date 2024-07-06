@@ -27,6 +27,8 @@ public class VMServices {
     private KeyLoader keyLoader;
     private String configDir= "config0";
     
+    private ViewManager VM;
+    
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     
     /**
@@ -73,20 +75,23 @@ public class VMServices {
             
             logger.info("cid for join requests"+cid);
             
-            
-            ViewManager viewManager = new ViewManager(configDir, keyLoader);
+            if (this.VM==null)
+            {
+                this.VM = new ViewManager(configDir, keyLoader);
+
+            }
 
             for(int i=0; i < ids.length;i++)
             {
                 int id = ids[i];
                 String ipAddress = ipAddresss[i];
                         
-                viewManager.addServer(id, ipAddress, port, portRR);
+                this.VM.addServer(id, ipAddress, port, portRR);
                 
             }
 
         
-        return execute(viewManager,cid);
+        return execute(this.VM,cid);
 
     }
     
@@ -111,18 +116,22 @@ public class VMServices {
      * @param ids
      */
     public boolean removeServers (int[] ids, int cid) {
-        
-        ViewManager viewManager = new ViewManager(keyLoader);
+
+        if (this.VM==null)
+        {
+            this.VM = new ViewManager(configDir, keyLoader);
+
+        }      
         
         for (int id:ids)
         {
-            viewManager.removeServer(id);
+            this.VM.removeServer(id);
 
         }
         
         logger.info("cid for leave requests"+cid);
 
-        return execute(viewManager, cid);
+        return execute(this.VM, cid);
 
     }
 //    public void updateClusters() {
@@ -143,7 +152,7 @@ public class VMServices {
 
     boolean succesfull_reconfig = viewManager.executeUpdates(cid);
 
-    viewManager.close();
+//    viewManager.close();
     
     return succesfull_reconfig;
     }

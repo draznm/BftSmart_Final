@@ -198,10 +198,50 @@ public class YCSBClient extends DB {
             replyMsg = YCSBMessage.getObject(reply);
 
         }
+        
+        
+        
+        
+        
+                
+        if (TxnCounter==0)
+        {
+            try {
+                for (int iter=0;iter<30;iter++)
+                {
+                    Thread.sleep(1000);
+                    System.out.println("1 second passed");
+
+                }
+            } catch (InterruptedException ex) {
+                System.out.println("ex is "+ex.getMessage());
+            }
+        }
+        
+        
+        
+        
+        
+        
 
         boolean successfull_reconfig = true;
 
         int upperLimit = 0;
+        
+        if ((TxnCounter> upperLimit)&& (ClientID==4))
+        {
+            
+            try {
+                for (int iter=0;iter<300;iter++)
+                {
+                    Thread.sleep(1000);
+                    System.out.println("1 second passed");
+
+                }            } catch (InterruptedException ex) {
+                System.out.println("ex is "+ex.getMessage());
+            }
+        }
+        
                 
         if (ClientID==4)
         {
@@ -218,20 +258,7 @@ public class YCSBClient extends DB {
                 successfull_reconfig = vms.removeServers(smartIds, TxnCounter);
             }
         }
-        
-        if (TxnCounter==0)
-        {
-            try {
-                for (int iter=0;iter<30;iter++)
-                {
-                    Thread.sleep(1000);
-                    System.out.println("1 second passed");
 
-                }
-            } catch (InterruptedException ex) {
-                System.out.println("ex is "+ex.getMessage());
-            }
-        }
         
 //        System.out.println("successfull_reconfig is "+ successfull_reconfig);
         
@@ -242,19 +269,7 @@ public class YCSBClient extends DB {
 //                    TxnCounter = txn_counter_atomic.addAndGet(1);
 //        }
         
-        if ((TxnCounter> upperLimit)&& (ClientID==4))
-        {
-            
-            try {
-                for (int iter=0;iter<300;iter++)
-                {
-                    Thread.sleep(1000);
-                    System.out.println("1 second passed");
 
-                }            } catch (InterruptedException ex) {
-                System.out.println("ex is "+ex.getMessage());
-            }
-        }
 
         if (reply!=null)
         {

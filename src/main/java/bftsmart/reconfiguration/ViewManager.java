@@ -185,11 +185,22 @@ public class ViewManager {
                     
                     
                     
-//                    if(this.connections.containsKey(i.intValue()))
-//                    {
-//                        this.connections.get(i.intValue()).send(data);
-//                    }
-//                    else
+                    if(this.connections.containsKey(i.intValue()))
+                    {
+                        if (this.connections.get(i.intValue())!=null)
+                        {
+                            this.connections.get(i.intValue()).send(data);
+
+                        }
+                        else
+                        {
+                            this.connections.put(i.intValue(), getConnection(i.intValue()));
+                            this.connections.get(i.intValue()).send(data);
+                            
+                        }
+                        
+                    }
+                    else
                     {
                         
                         this.connections.put(i.intValue(), getConnection(i.intValue()));

@@ -152,7 +152,7 @@ public class VMServices {
 
     boolean succesfull_reconfig = viewManager.executeUpdates(cid);
 
-//    viewManager.close();
+    viewManager.close();
     
     return succesfull_reconfig;
     }

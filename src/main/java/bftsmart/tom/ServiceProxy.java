@@ -259,6 +259,8 @@ public class ServiceProxy extends TOMSender {
 			TOMulticast(sm);
 		}else{
                         logger.info("TOMulticast with reqId=" + reqId);
+                        
+//                        request.length;
 
 			TOMulticast(request, reqId, operationId, reqType);
 		}
@@ -359,7 +361,7 @@ public class ServiceProxy extends TOMSender {
                                                 logger.info("supposed to be invoking from invokeTimeout for "
                                                         + "RECONFIG type messages");
 //						ret = response.getContent();
-                                                return invokeWithTimeout(request, reqType, 15, req_id+1);
+                                                return invokeWithTimeout(request, reqType, 15, req_id);
                                                 
                                                 
 					}  else if (r instanceof ReconfigureReply) { //reconfiguration executed!

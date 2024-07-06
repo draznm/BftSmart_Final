@@ -247,7 +247,6 @@ public class YCSBClient extends DB {
         {
             if( (TxnCounter<=upperLimit)&&(TxnCounter>=0)&&((TxnCounter)%2==0) )
             {
-
 //                System.out.println("test123: add server request");
                 successfull_reconfig = vms.addServerMultiple(smartIds, ipAddresses, port, portRR, TxnCounter);
             }

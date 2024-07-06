@@ -49,6 +49,7 @@ import bftsmart.reconfiguration.ServerViewController;
 import bftsmart.reconfiguration.VMMessage;
 import bftsmart.tom.ServiceReplica;
 import bftsmart.tom.util.TOMUtil;
+import java.io.EOFException;
 import java.security.SecureRandom;
 import java.security.Security;
 import java.security.UnrecoverableKeyException;
@@ -507,8 +508,17 @@ public class ServerConnection {
                                                         logger.info("TTP receiver thread, closing socket, "
                                                                 + "remoteId: "+ remoteId);
 
-							closeSocket();
-							waitAndConnect();
+//							closeSocket();
+//							waitAndConnect();
+						}
+					} catch (EOFException ex) {
+						 ex.printStackTrace();
+						if (doWork) {
+                                                        logger.info("TTP receiver thread, closing socket, "
+                                                                + "remoteId: "+ remoteId);
+
+//							closeSocket();
+//							waitAndConnect();
 						}
 					}
 				} else {

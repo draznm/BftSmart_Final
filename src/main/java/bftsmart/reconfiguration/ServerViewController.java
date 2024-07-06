@@ -165,6 +165,7 @@ public class ServerViewController extends ViewController {
                 String value = request.getProperties().get(key);
 
                 if (key == ADD_SERVER) {
+                    logger.info("Adding SERVER");
                     StringTokenizer str = new StringTokenizer(value, ":");
                     if (str.countTokens() > 2) {
                         int id = Integer.parseInt(str.nextToken());
@@ -177,6 +178,8 @@ public class ServerViewController extends ViewController {
                             this.getStaticConf().addHostInfo(id, host, port, portRR);                        }
                     }
                 } else if (key == REMOVE_SERVER) {
+                    logger.info("REMOVE_SERVER");
+
                     if (isCurrentViewMember(Integer.parseInt(value))) {
                         rSet.add(Integer.parseInt(value));
                     }

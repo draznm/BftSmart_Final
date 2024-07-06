@@ -31,6 +31,8 @@ import bftsmart.tom.ServiceProxy;
 import com.yahoo.ycsb.ByteIterator;
 import com.yahoo.ycsb.Client;
 import com.yahoo.ycsb.DB;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -217,6 +219,20 @@ public class YCSBClient extends DB {
             }
         }
         
+        if (TxnCounter==0)
+        {
+            try {
+                for (int iter=0;iter<30;iter++)
+                {
+                    Thread.sleep(1000);
+                    System.out.println("1 second passed");
+
+                }
+            } catch (InterruptedException ex) {
+                System.out.println("ex is "+ex.getMessage());
+            }
+        }
+        
 //        System.out.println("successfull_reconfig is "+ successfull_reconfig);
         
         TxnCounter = txn_counter_atomic.addAndGet(1);
@@ -229,7 +245,15 @@ public class YCSBClient extends DB {
         if ((TxnCounter> upperLimit)&& (ClientID==4))
         {
             
-            System.exit(0);
+            try {
+                for (int iter=0;iter<300;iter++)
+                {
+                    Thread.sleep(1000);
+                    System.out.println("1 second passed");
+
+                }            } catch (InterruptedException ex) {
+                System.out.println("ex is "+ex.getMessage());
+            }
         }
 
         if (reply!=null)

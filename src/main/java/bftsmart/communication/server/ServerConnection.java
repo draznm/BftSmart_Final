@@ -391,7 +391,7 @@ public class ServerConnection {
 				}
             }
 
-            logger.debug("Sender for " + remoteId + " stopped!");
+            logger.info("Sender for " + remoteId + " stopped!");
         }
     }
 
@@ -439,7 +439,7 @@ public class ServerConnection {
 							}*/
 						}
 					} catch (ClassNotFoundException ex) {
-						logger.debug("Invalid message received. Ignoring!");
+						logger.info("Invalid message received. Ignoring!");
 					} catch (IOException ex) {
 						if (doWork) {
 							logger.info("Closing socket and reconnecting with remoteId: "+ 
@@ -449,7 +449,7 @@ public class ServerConnection {
 							waitAndConnect();
 						}
 					} catch (Exception ex) {
-						logger.debug("Processing message failed. Ignoring!");
+						logger.info("Processing message failed. Ignoring!");
 					}
 				} else {
 					waitAndConnect();

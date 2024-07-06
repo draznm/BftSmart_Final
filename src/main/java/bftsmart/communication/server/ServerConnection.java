@@ -511,16 +511,7 @@ public class ServerConnection {
 //							closeSocket();
 //							waitAndConnect();
 						}
-					} catch (EOFException ex) {
-						 ex.printStackTrace();
-						if (doWork) {
-                                                        logger.info("TTP receiver thread, closing socket, "
-                                                                + "remoteId: "+ remoteId);
-
-//							closeSocket();
-//							waitAndConnect();
-						}
-					}
+					} 
 				} else {
 					waitAndConnect();
 				}

@@ -71,7 +71,7 @@ public class ServerConnection {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
 
-    private static final long POOL_TIME = 5000;
+    private static final long POOL_TIME = 100;
     private ServerViewController controller;
     private SSLSocket socket;
     private DataOutputStream socketOutStream = null;
@@ -506,13 +506,13 @@ public class ServerConnection {
 					} catch (IOException ex) {
 						 ex.printStackTrace();
                                                  logger.info("TTP receiver thread for remoteId:"+remoteId);
-//						if (doWork) {
-//                                                        logger.info("TTP receiver thread, closing socket, "
-//                                                                + "remoteId: "+ remoteId);
-//
-////							closeSocket();
-////							waitAndConnect();
-//						}
+						if (doWork) {
+                                                        logger.info("TTP receiver thread, closing socket, "
+                                                                + "remoteId: "+ remoteId);
+
+							closeSocket();
+							waitAndConnect();
+						}
 					} 
 				} else {
 					waitAndConnect();

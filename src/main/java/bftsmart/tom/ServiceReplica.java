@@ -40,6 +40,7 @@ import bftsmart.tom.core.ReplyManager;
 import bftsmart.tom.core.TOMLayer;
 import bftsmart.tom.core.messages.TOMMessage;
 import bftsmart.tom.core.messages.TOMMessageType;
+import static bftsmart.tom.core.messages.TOMMessageType.RECONFIG;
 import bftsmart.tom.leaderchange.CertifiedDecision;
 import bftsmart.tom.server.BatchExecutable;
 import bftsmart.tom.server.Executable;
@@ -425,8 +426,20 @@ public class ServiceReplica {
                     // him (but only if it came from consensus an not state transfer)
                     logger.info("Outdated view of client, sending back View instead of reconfigurereply() "
                             + "in case of RECONFIG");
+                    
+                    
                     tomLayer.getCommunication().send(new int[]{request.getSender()}, new TOMMessage(SVController.getStaticConf().getProcessId(),
                             request.getSession(), request.getSequence(), request.getOperationId(), TOMUtil.getBytes(SVController.getCurrentView()), SVController.getCurrentViewId(), request.getReqType()));
+                    
+                    
+                    
+                    if (request.getReqType()==RECONFIG)
+                    {
+                        logger.info("reconfig not processed due to outdated view");
+//                        SVController.enqueueUpdate(request);
+                    }
+                    
+                    
                 }
                 requestCount++;
             }

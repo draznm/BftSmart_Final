@@ -445,10 +445,20 @@ public final class DeliveryThread extends Thread {
         tomLayer.clientsManager.requestsOrdered(requests);
 
         logger.debug("Getting lastdecision for cid: {}", tid);
+        
+        
+        
+        long startTime = System.currentTimeMillis();
 
+        
         deliverMessages(tempOcmd.consId, tempOcmd.regencies, tempOcmd.leaders,
                 tempOcmd.cDecs, SavedMessagesForExec.get(tid));
+    
+        
+        long elapsedTime = System.currentTimeMillis() - startTime;
 
+        logger.info("Execution(deliveryMessages()): Elapsed time in milliseconds: " + elapsedTime+ ", controller.hasUpdates(): "+
+                controller.hasUpdates());
 
         if (tid % 100 == 0) {
             logger.debug("deleting old info from tid: {} to {}", tid - 1100, tid - 100);
@@ -461,10 +471,22 @@ public final class DeliveryThread extends Thread {
             }
 
         }
+        
+        
+        
 
         // ******* EDUARDO BEGIN ***********//
         if (controller.hasUpdates()) {
+            startTime = System.currentTimeMillis();
+            
             processReconfigMessages(lastDecision.getConsensusId());
+            
+            
+            elapsedTime = System.currentTimeMillis() - startTime;
+            
+            logger.info("Reconfig Execution: Elapsed time in milliseconds: " + elapsedTime+ ", controller.hasUpdates(): "+
+            controller.hasUpdates());
+            
         }
         
         if (lastReconfig > -2 && lastReconfig <= lastDecision.getConsensusId()) {

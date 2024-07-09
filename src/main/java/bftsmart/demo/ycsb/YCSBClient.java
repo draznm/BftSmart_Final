@@ -226,7 +226,7 @@ public class YCSBClient extends DB {
 
         boolean successfull_reconfig = true;
 
-        int upperLimit = 402;
+        int upperLimit = 102;
         
         if ((TxnCounter> upperLimit)&& (ClientID==4))
         {

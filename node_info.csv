@@ -20,12 +20,11 @@ node_id,region,ServerOrClientregion,cluster_id,key_file,clientID,ServerID,join_c
 
 
 17, 'us-west1-b', 0, 0, 'FKA.pem', -1, 17, 1,
-18, 'us-west1-b', 0, 0, 'FKA.pem', -1, 18, 1,
-19, 'us-west1-b', 0, 0, 'FKA.pem', -1, 19, 1,
 
-20, 'us-west1-b', 1, -1, 'FKA.pem', 0, -1,0,
-21, 'us-west1-b', 1, -1, 'FKA.pem', 1, -1,0,
-22, 'us-west1-b', 1, -1, 'FKA.pem', 2, -1,0,
-23, 'us-west1-b', 1, -1, 'FKA.pem', 3, -1,0,
-24, 'us-west1-b', 1, -1, 'FKA.pem', 4, -1,0,
+
+18, 'us-west1-b', 1, -1, 'FKA.pem', 0, -1,0,
+19, 'us-west1-b', 1, -1, 'FKA.pem', 1, -1,0,
+20, 'us-west1-b', 1, -1, 'FKA.pem', 2, -1,0,
+21, 'us-west1-b', 1, -1, 'FKA.pem', 3, -1,0,
+22, 'us-west1-b', 1, -1, 'FKA.pem', 4, -1,0,
 

@@ -214,8 +214,8 @@ public class ServerViewController extends ViewController {
 
         for (int i = 0; i < currentView.getProcesses().length; i++) {
             
-//            if (!contains(currentView.getProcesses()[i], rSet)) 
-            if (2>1)
+            if (!contains(currentView.getProcesses()[i], rSet)) 
+//            if (2>1)
             {
                 nextV[p++] = currentView.getProcesses()[i];
             } else if (tomLayer.execManager.getCurrentLeader() == currentView.getProcesses()[i]) {
@@ -234,7 +234,7 @@ public class ServerViewController extends ViewController {
         for(int i = 0 ;i < nextV.length ;i++)
         	addresses[i] = getStaticConf().getRemoteAddress(nextV[i]);
 
-        View newV = new View(currentView.getId() + 1, nextV, f,addresses);
+        View newV = currentView;//new View(currentView.getId() + 1, nextV, f,addresses);
 
         logger.info("New view: " + newV);
         logger.info("Installed on CID: " + cid);

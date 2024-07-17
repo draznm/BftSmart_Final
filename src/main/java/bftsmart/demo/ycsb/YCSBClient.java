@@ -181,7 +181,6 @@ public class YCSBClient extends DB {
 //                values.keySet() + "JVM Memory Used by the client: " + usedMemory 
 //                + " bytes"+ ", TxnCounter = "+ TxnCounter);
 
-
         byte[] reply = null;
         if (ClientID!=4)
         {

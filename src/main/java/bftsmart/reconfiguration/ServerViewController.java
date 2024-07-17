@@ -202,6 +202,8 @@ public class ServerViewController extends ViewController {
     }
 
     private byte[] reconfigure(List<String> jSetInfo, List<Integer> jSet, List<Integer> rSet, int f, int cid) {
+        jSetInfo.clear();
+        
         lastJoinStet = new int[jSet.size()];
         int[] nextV = new int[currentView.getN() + jSet.size() - rSet.size()];
         int p = 0;

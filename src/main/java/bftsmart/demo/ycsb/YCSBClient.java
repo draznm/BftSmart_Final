@@ -225,7 +225,7 @@ public class YCSBClient extends DB {
 
         boolean successfull_reconfig = true;
 
-        int upperLimit = 102;
+        int upperLimit = 101;
         
         if ((TxnCounter> upperLimit)&& (ClientID==4))
         {
@@ -244,12 +244,12 @@ public class YCSBClient extends DB {
                 
         if (ClientID==4)
         {
-            if( (TxnCounter<=upperLimit)&&(TxnCounter>=0)&&((TxnCounter)%2==0) )
+            if( (TxnCounter<=upperLimit)&&(TxnCounter>=0)&&((TxnCounter)%2==1) )
             {
 //                System.out.println("test123: add server request");
                 successfull_reconfig = vms.addServerMultiple(smartIds, ipAddresses, port, portRR, TxnCounter);
             }
-            if ((TxnCounter<=upperLimit)&& (TxnCounter>=0)&&((TxnCounter)%2==1) )
+            if ((TxnCounter<=upperLimit)&& (TxnCounter>=0)&&((TxnCounter)%2==0) )
             {
 //                System.out.println("test123: leave server request");
 

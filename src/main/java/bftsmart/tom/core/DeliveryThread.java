@@ -1273,7 +1273,7 @@ public final class DeliveryThread extends Thread {
                 
             }
 
-            tomLayer.getCommunication().updateServersConnections();
+//            tomLayer.getCommunication().updateServersConnections();
 
         } else {
             logger.info("Supposed to Restarting receiver normally");

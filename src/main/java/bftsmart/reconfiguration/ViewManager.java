@@ -246,7 +246,7 @@ public class ViewManager {
                     logger.info("Trying reconfig execution, check="+ check);
                     
                     r = rec.execute(cid);
-                    v = r.getView();
+                    v = controller.getCurrentView();//r.getView();
                     logger.info("New view with id: " + v.getId()+
                             ", for cid: "+cid+", processes: "+Arrays.toString(v.getProcesses())+ ", v.getN(): "+
                             v.getN());

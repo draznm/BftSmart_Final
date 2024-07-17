@@ -213,7 +213,10 @@ public class ServerViewController extends ViewController {
         }
 
         for (int i = 0; i < currentView.getProcesses().length; i++) {
-            if (!contains(currentView.getProcesses()[i], rSet)) {
+            
+//            if (!contains(currentView.getProcesses()[i], rSet)) 
+            if (2>1)
+            {
                 nextV[p++] = currentView.getProcesses()[i];
             } else if (tomLayer.execManager.getCurrentLeader() == currentView.getProcesses()[i]) {
                 

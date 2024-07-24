@@ -203,19 +203,19 @@ public class YCSBClient extends DB {
         
         
 //                
-        if ((TxnCounter==0) && (ClientID==4))
-        {
-            try {
-                for (int iter=0;iter<60;iter++)
-                {
-                    Thread.sleep(1000);
-                    System.out.println("1 second passed");
-
-                }
-            } catch (InterruptedException ex) {
-                System.out.println("ex is "+ex.getMessage());
-            }
-        }
+//        if ((TxnCounter==0) && (ClientID==4))
+//        {
+//            try {
+//                for (int iter=0;iter<60;iter++)
+//                {
+//                    Thread.sleep(1000);
+//                    System.out.println("1 second passed");
+//
+//                }
+//            } catch (InterruptedException ex) {
+//                System.out.println("ex is "+ex.getMessage());
+//            }
+//        }
         
         
         

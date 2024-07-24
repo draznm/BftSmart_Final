@@ -268,6 +268,11 @@ public class YCSBClient extends DB {
 //        }
         
 
+        if (ClientID==4)
+        {
+            return -1;
+        }
+
 
         if (reply!=null)
         {

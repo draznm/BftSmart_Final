@@ -243,7 +243,7 @@ public class ViewManager {
             try
                 {
                     boolean check = (rec==null);
-                    logger.info("Trying reconfig execution, check="+ check);
+//                    logger.info("Trying reconfig execution, check="+ check);
                     
                     r = rec.execute(cid);
                     v = controller.getCurrentView();//r.getView();

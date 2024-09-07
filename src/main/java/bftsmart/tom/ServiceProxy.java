@@ -265,8 +265,8 @@ public class ServiceProxy extends TOMSender {
 			TOMulticast(request, reqId, operationId, reqType);
 		}
 
-		logger.info("Sending request (" + reqType + ") with reqId=" + reqId);
-		logger.info("Expected number of matching replies: " + replyQuorum+ ", invokeTimeout = "
+		logger.debug("Sending request (" + reqType + ") with reqId=" + reqId);
+		logger.debug("Expected number of matching replies: " + replyQuorum+ ", invokeTimeout = "
                         +invokeTimeout);
 
 		// This instruction blocks the thread, until a response is obtained.
@@ -449,8 +449,8 @@ public class ServiceProxy extends TOMSender {
 			TOMulticast(request, reqId, operationId, reqType);
 		}
 
-		logger.info("1, Sending request (" + reqType + ") with reqId=" + reqId);
-		logger.info("Expected number of matching replies: " + replyQuorum);
+		logger.debug("1, Sending request (" + reqType + ") with reqId=" + reqId);
+		logger.debug("Expected number of matching replies: " + replyQuorum);
 
 		// This instruction blocks the thread, until a response is obtained.
 		// The thread will be unblocked when the method replyReceived is invoked
@@ -627,7 +627,7 @@ public class ServiceProxy extends TOMSender {
 	 */
 	@Override
 	public void replyReceived(TOMMessage reply) {
-            logger.info("Synchronously received reply from " + reply.getSender() + " with sequence number " + reply.getSequence());
+            logger.debug("Synchronously received reply from " + reply.getSender() + " with sequence number " + reply.getSequence());
 
                 try {
 			canReceiveLock.lock();
@@ -692,12 +692,12 @@ public class ServiceProxy extends TOMSender {
                                                             sameContent++;
 //                                                            tempH.add(replies[i].getSender());
                                                         }
-							logger.info("sameContent: "+ sameContent);
+							logger.debug("sameContent: "+ sameContent);
                                                         
 							if ((sameContent >= replyQuorum) || ((requestType == TOMMessageType.RECONFIG)&& 
                                                                 (sameContent>=getViewManager().getCurrentViewF())) ) {
                                                             
-                                                                logger.info("sameContent: "+ 
+                                                                logger.debug("sameContent: "+ 
                                                                         sameContent+ ", replyQuorum: "
                                                                         + replyQuorum+
                                                                         ", replies[i].getid: "
@@ -707,7 +707,7 @@ public class ServiceProxy extends TOMSender {
 								
                                                                 
                                                                 Object r = TOMUtil.getObject(response.getContent());
-                                                                logger.info("Extracted Response: "+r.getClass()+ ", (r instanceof ReconfigureReply): "+
+                                                                logger.debug("Extracted Response: "+r.getClass()+ ", (r instanceof ReconfigureReply): "+
                                                                         (r instanceof ReconfigureReply)+", (r instanceof View) "+
                                                                         (r instanceof View));
 
@@ -725,7 +725,7 @@ public class ServiceProxy extends TOMSender {
 					if (requestType.equals(TOMMessageType.ORDERED_REQUEST)) {
 						if (receivedReplies == getViewManager().getCurrentViewN()) {
                                                     
-                                                        logger.info("1, response==null, releasing sm");
+                                                        logger.debug("1, response==null, releasing sm");
 							reqId = -1;
 							this.sm.release(); // resumes the thread that is executing the "invoke" method
 						}
@@ -840,8 +840,8 @@ public class ServiceProxy extends TOMSender {
                             TOMulticast(request, reqId, operationId, reqType);
                     }
 
-                    logger.info("Sending special request (" + reqType + ") with reqId=" + reqId);
-                    logger.info("Expected number of matching replies: " + replyQuorum);
+                    logger.debug("Sending special request (" + reqType + ") with reqId=" + reqId);
+                    logger.debug("Expected number of matching replies: " + replyQuorum);
 
 
 

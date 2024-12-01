@@ -484,7 +484,7 @@ public class ClientsManager {
                             || (((!request.signed) || clientData.verifySignature(request.serializedMessage, request.serializedMessageSignature)) // message is either not signed or if it is signed the signature is valid
                             && (controller.getStaticConf().getUseSignatures() != 1 || request.signed || !fromClient)))) { // additionally, unsigned messages from the client are not allowed when useSignatures == 1. Forwarded and proposed requests do not have 'signed' set to true.
 
-                logger.info("Message from client {} is valid with ID: {} and sender:{}", 
+                logger.debug("Message from client {} is valid with ID: {} and sender:{}",
                         clientData.getClientId(), request.getId(), request.getSender());
 
                 //I don't have the message but it is valid, I will
@@ -508,7 +508,7 @@ public class ClientsManager {
                 accounted = true;
             } else {
 
-                logger.info("Message from client {} is invalid", clientData.getClientId());
+                logger.debug("Message from client {} is invalid", clientData.getClientId());
             }
         } else {
             //I will not put this message on the pending requests list
@@ -521,7 +521,7 @@ public class ClientsManager {
                 if (reply != null && cs != null) {
 
                     if (reply.recvFromClient && fromClient) {
-                        logger.info("[CACHE] re-send reply [Sender: " + reply.getSender() + ", sequence: " + reply.getSequence()+", session: " + reply.getSession()+ "]");
+                        logger.debug("[CACHE] re-send reply [Sender: " + reply.getSender() + ", sequence: " + reply.getSequence()+", session: " + reply.getSession()+ "]");
                         cs.send(new int[]{request.getSender()}, reply);
 
                     }
@@ -534,7 +534,7 @@ public class ClientsManager {
                 accounted = true;
             } else {
 
-                logger.info("Message from client {} is too forward with clientData.getLastMessageReceived(),  request.getSequence() being {} and {}",
+                logger.debug("Message from client {} is too forward with clientData.getLastMessageReceived(),  request.getSequence() being {} and {}",
                         clientData.getClientId(), clientData.getLastMessageReceived(),  request.getSequence());
 
                 //a too forward message... the client must be malicious

@@ -499,7 +499,7 @@ public final class TOMLayer extends Thread implements RequestReceiver {
 
             if (!doWork) break;
 
-            logger.info("There are requests to be ordered. I will propose, with lastexec: {}",
+            logger.debug("There are requests to be ordered. I will propose, with lastexec: {}",
                     getLastExec());
 
 

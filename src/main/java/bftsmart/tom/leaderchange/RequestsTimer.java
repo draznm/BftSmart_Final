@@ -184,7 +184,7 @@ public class RequestsTimer {
         if (watched.size() >= 1 && enabled)
         {
             startTimer(request);
-            logger.info("starting timer for request: {}, with reqid: {}, opid:{}, sequence: {}, " +
+            logger.debug("starting timer for request: {}, with reqid: {}, opid:{}, sequence: {}, " +
                             "session:{}, replyserver:{}, req_view_id:{}",
                     request, request.getId(), request.getOperationId(), request.getSequence(),
                     request.getSession(), request.getReplyServer(), request.getViewID());

@@ -528,7 +528,7 @@ public final class DeliveryThread extends Thread {
 
         if (msg.getOcmd().type == 1) {
 //
-            logger.info("Tejas: reached inside deliveryOtherCluster type 1, from_cid_start: {} "
+            logger.debug("Tejas: reached inside deliveryOtherCluster type 1, from_cid_start: {} "
                     + "from: {}, fromConfig: {}, msg.getSender(): {}," +
                             " msg instanceof Forwarded: {}, getCurrentViewN: {}, last exec: {}",
                     msg.getOcmd().from_cid_start,
@@ -595,7 +595,7 @@ public final class DeliveryThread extends Thread {
 
         if (msg.getOcmd().type == 2) {
 
-            logger.info("Tejas: reached inside deliveryOtherCluster type 2, from_cid_start, from, fromConfig, msg.getSender()," +
+            logger.debug("Tejas: reached inside deliveryOtherCluster type 2, from_cid_start, from, fromConfig, msg.getSender()," +
                             " are {}, {}, {}, {},  getCurrentViewN: {}", msg.getOcmd().from_cid_start,
                     msg.getOcmd().from
                     , msg.getOcmd().fromConfig, msg.getSender(),
@@ -650,7 +650,7 @@ public final class DeliveryThread extends Thread {
                 {
 
                     long[] values = times_tracker.get(temp_cid);
-                    logger.info("values size, data: {}, {}",values.length, values);
+                    logger.debug("values size, data: {}, {}",values.length, values);
                     values[3] = (System.currentTimeMillis() );
                     times_tracker.put(temp_cid, values);
                 }
@@ -673,7 +673,7 @@ public final class DeliveryThread extends Thread {
 
         HashMap<Integer, OtherClusterMessage> temp = Saved_rvc_l.get(tid);
         if (temp == null) return false;
-        logger.info("othermsgs_received_mc for tid: {}, is temp size, nclusters is {}, {}, temp keyset {}", tid, temp.size(), this.cinfo.nClusters, temp.keySet());
+        logger.debug("othermsgs_received_mc for tid: {}, is temp size, nclusters is {}, {}, temp keyset {}", tid, temp.size(), this.cinfo.nClusters, temp.keySet());
 
         return temp.size() >= 2 * controller.getCurrentViewF() + 1;
 

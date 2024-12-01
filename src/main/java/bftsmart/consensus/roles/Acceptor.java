@@ -198,7 +198,7 @@ public final class Acceptor {
 
 		long consensusStartTime = System.nanoTime();
 
-		logger.info("Executing propose for cId:{}, Epoch Timestamp:{}, " +
+		logger.debug("Executing propose for cId:{}, Epoch Timestamp:{}, " +
 						"consensusStartTime: {}",
 				cid, epoch.getTimestamp(), consensusStartTime);
 

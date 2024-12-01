@@ -182,7 +182,7 @@ public class YCSBClient extends DB {
 //                + " bytes"+ ", TxnCounter = "+ TxnCounter);
 
         byte[] reply = null;
-        if (ClientID!=4)
+        if (ClientID!=40)
         {
             reply = proxy.invokeOrdered(msg.getBytes());
 
@@ -227,7 +227,7 @@ public class YCSBClient extends DB {
 
         int upperLimit = 25000;
         
-        if ((TxnCounter> upperLimit)&& (ClientID==4))
+        if ((TxnCounter> upperLimit)&& (ClientID==40))
         {
             
             try {
@@ -242,7 +242,7 @@ public class YCSBClient extends DB {
         }
         
                 
-        if (ClientID==4)
+        if (ClientID==40)
         {
             if( (TxnCounter<=upperLimit)&&(TxnCounter>=0)&&((TxnCounter)%2==1) )
             {

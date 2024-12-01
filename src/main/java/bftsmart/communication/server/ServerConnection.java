@@ -332,11 +332,11 @@ public class ServerConnection {
         
         if (socket != null) {
             
-            logger.info("closing socket");
+            logger.debug("closing socket");
             try {
                 socketOutStream.flush();
                 socket.close();
-                logger.info("closing socket complete");
+                logger.debug("closing socket complete");
 
             } catch (IOException ex) {
                 logger.debug("Error closing socket to "+remoteId);

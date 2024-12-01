@@ -360,7 +360,7 @@ public class ServerConnection {
             }
 
             outQueue.clear();
-            logger.info("reconnecting ");
+            logger.debug("reconnecting ");
             reconnect(socket);
         }
     }

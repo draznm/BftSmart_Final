@@ -259,7 +259,7 @@ public abstract class StateManager {
 
     public void currentConsensusIdAsked(int sender, int id) {
         
-        logger.info("Received CID query from {} with ID {}",sender,id);
+        logger.debug("Received CID query from {} with ID {}",sender,id);
         
         int me = SVController.getStaticConf().getProcessId();
 
@@ -286,7 +286,7 @@ public abstract class StateManager {
 //        if(thisDec==null && lastConsensusId > 0 ) lastConsensusId = lastConsensusId-1;
 //        int lastConsensusId = tomLayer.getDeliveryThread().getLastCID();
 
-        logger.info("Going to send back response to CID query with CID: {}",lastConsensusId);
+        logger.debug("Going to send back response to CID query with CID: {}",lastConsensusId);
 
 //        DefaultApplicationState state = new DefaultApplicationState(null, -1, lastConsensusId, null, null, -1);
 
@@ -296,19 +296,19 @@ public abstract class StateManager {
         SMMessage currentCIDReply = new StandardSMMessage(me, id, TOMUtil.SM_REPLY_INITIAL, 0, state, null, 0, 0);
         tomLayer.getCommunication().send(new int[]{sender}, currentCIDReply);
 
-        logger.info("Sent CID reply to replica {} with ID {}",sender,id);
+        logger.debug("Sent CID reply to replica {} with ID {}",sender,id);
     }
 
     public synchronized void currentConsensusIdReceived(SMMessage smsg) {
         
-        logger.info("Received  CID reply from replica ( or smsg.getSender()) {} with" +
+        logger.debug("Received  CID reply from replica ( or smsg.getSender()) {} with" +
                         " smsg.getCID() {} (expecting queryID {}),  waitingCID {}, isInitializing {}",
                 smsg.getSender(), smsg.getCID(), queryID, waitingCID, isInitializing);
         
         if (!isInitializing || waitingCID > -1 || queryID != smsg.getCID()) {
 //            if (waitingCID > -1 || queryID != smsg.getCID()) {
 
-            logger.info("Ignoring CID query from {} with ID {}, waitingCID {}, queryID {},  " +
+            logger.debug("Ignoring CID query from {} with ID {}, waitingCID {}, queryID {},  " +
                             "smsg.getCID() {}, isInitializing {}",
                     smsg.getSender(), smsg.getCID(), waitingCID, queryID, smsg.getCID(), isInitializing);
             
@@ -324,14 +324,14 @@ public abstract class StateManager {
         }
         
         replies.put(smsg.getSender(), smsg.getState().getLastCID());
-        logger.info("smsg.getSender() {}, smsg.getState().getLastCID() {}",smsg.getSender(),smsg.getState().getLastCID());
+        logger.debug("smsg.getSender() {}, smsg.getState().getLastCID() {}",smsg.getSender(),smsg.getState().getLastCID());
 
-        logger.info("Received {} replies for query ID {} with quorum {}",
+        logger.debug("Received {} replies for query ID {} with quorum {}",
                 replies.size(),queryID, SVController.getQuorum());
         
         if (replies.size() >= SVController.getQuorum()) {
             
-            logger.info("Received quorum of replies for query ID {}, replies.size(): {}", queryID, replies.size());
+            logger.debug("Received quorum of replies for query ID {}, replies.size(): {}", queryID, replies.size());
 
             HashMap<Integer, Integer> cids = new HashMap<>();
             for (int id : replies.keySet()) {
@@ -347,21 +347,21 @@ public abstract class StateManager {
             }
             for (int cid : cids.keySet()) {
                 
-                logger.info("CID {} came from {} replicas with quorum {}",
+                logger.debug("CID {} came from {} replicas with quorum {}",
                         cid, cids.get(cid),SVController.getQuorum());
 
 
                 
                 if (cids.get(cid) >= SVController.getQuorum()) {
                     
-                    logger.info("There is a quorum for CID {} with lastCID {}",cid, lastCID);
+                    logger.debug("There is a quorum for CID {} with lastCID {}",cid, lastCID);
                     
                     queries.clear();
                     
                     if (cid == lastCID) {
 //                    if (2>1) {
 
-                        logger.info("Replica state is up to date");
+                        logger.debug("Replica state is up to date");
                         dt.pauseDecisionDelivery();
                         isInitializing = false;
                         tomLayer.setLastExec(cid);
@@ -374,8 +374,8 @@ public abstract class StateManager {
                         double st = (startTime) / 1_000_000_000.0;
 
                         
-                        logger.info("requesting state time(sec): {}", st);
-                        logger.info("Requesting state from other replicas, with cid, lastCID being {}, {} ", cid, lastCID);
+                        logger.debug("requesting state time(sec): {}", st);
+                        logger.debug("Requesting state from other replicas, with cid, lastCID being {}, {} ", cid, lastCID);
                         
 
                         

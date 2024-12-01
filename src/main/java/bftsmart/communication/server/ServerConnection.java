@@ -601,7 +601,7 @@ public class ServerConnection {
 			new DataOutputStream(this.socket.getOutputStream())
 					.writeInt(this.controller.getStaticConf().getProcessId());
 
-			logger.info("Reached here inside Server Connection");
+			logger.debug("Reached here inside Server Connection");
 
 		} catch (SocketException e) {
 			logger.info("Connection refused (SocketException) with remoteid:{}", remoteId);

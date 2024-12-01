@@ -331,7 +331,7 @@ public class ServersCommunicationLayer extends Thread {
         connectionsLock.lock();
 
         ServerConnection ret = this.connections.get(remoteId);
-        logger.info("Getting connection for ret: {}, remoteId: {}",ret, remoteId);
+        logger.debug("Getting connection for ret: {}, remoteId: {}",ret, remoteId);
 
         if (ret == null) {
             logger.debug("Getting connection for remoteId: {}",remoteId);

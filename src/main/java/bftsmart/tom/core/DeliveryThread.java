@@ -921,7 +921,7 @@ public final class DeliveryThread extends Thread {
 
 
 //	if (2>1)
-        if ((lastcid != 5000) && (this.receiver.getId() == tomLayer.execManager.getCurrentLeader())) 
+        if ((lastcid != -5000) && (this.receiver.getId() == tomLayer.execManager.getCurrentLeader()))
         {
             logger.info("\n\n\n\n\n SENDING OTHER CLUSTERS {} THE DECIDED VALUES", tgtArray);
             

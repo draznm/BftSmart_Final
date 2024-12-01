@@ -125,7 +125,7 @@ public abstract class TOMSender implements ReplyReceiver, Closeable, AutoCloseab
 
 
 	public void TOMulticast(byte[] m, int reqId, int operationId, TOMMessageType reqType) {
-		logger.info("----OOOOO---- Sending message to {} and viewID:{}",
+		logger.debug("----OOOOO---- Sending message to {} and viewID:{}",
 				viewController.getCurrentViewProcesses(), viewController.getCurrentViewId());
 		cs.send(useSignatures, viewController.getCurrentViewProcesses(),
 				new TOMMessage(me, session, reqId, operationId, m, viewController.getCurrentViewId(),

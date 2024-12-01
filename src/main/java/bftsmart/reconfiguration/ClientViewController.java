@@ -63,7 +63,7 @@ public class ClientViewController extends ViewController {
         int nextV[] = getStaticConf().getInitialView();
         InetSocketAddress[] addresses = new InetSocketAddress[nextV.length];
         for (int i = 0; i < nextV.length; i++) {
-            logger.info("i = {}, addresses[i] = {} is ",i,addresses[i]);
+            logger.debug("i = {}, addresses[i] = {} is ",i,addresses[i]);
             addresses[i] = getStaticConf().getRemoteAddress(nextV[i]);
         }
 

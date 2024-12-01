@@ -648,10 +648,10 @@ public class ServiceProxy extends TOMSender {
 			int sameContent = 1;
 			if (reply.getSequence() == reqId && reply.getReqType() == requestType) {
 
-				logger.info("replyReceived(): Receiving reply from " + reply.getSender()
-						+ " with reqId:" + reply.getSequence() 
-                                        + ". Putting on pos=" + pos+ ", requestType= "
-                                        + requestType + ", reply.getViewID()= "+reply.getViewID());
+//				logger.info("replyReceived(): Receiving reply from " + reply.getSender()
+//						+ " with reqId:" + reply.getSequence()
+//                                        + ". Putting on pos=" + pos+ ", requestType= "
+//                                        + requestType + ", reply.getViewID()= "+reply.getViewID());
 
 				if(requestType == TOMMessageType.UNORDERED_HASHED_REQUEST)
 				{
@@ -665,8 +665,8 @@ public class ServiceProxy extends TOMSender {
 
 				}else{
                                     
-                                        logger.info("replies.length:  "+ replies.length + ", replyQuorum = "
-                                        + replyQuorum);
+//                                        logger.info("replies.length:  "+ replies.length + ", replyQuorum = "
+//                                        + replyQuorum);
                                         
 					if (replies[pos] == null) {
 						receivedReplies++;
@@ -692,7 +692,7 @@ public class ServiceProxy extends TOMSender {
                                                             sameContent++;
 //                                                            tempH.add(replies[i].getSender());
                                                         }
-							logger.debug("sameContent: "+ sameContent);
+//							logger.debug("sameContent: "+ sameContent);
                                                         
 							if ((sameContent >= replyQuorum) || ((requestType == TOMMessageType.RECONFIG)&& 
                                                                 (sameContent>=getViewManager().getCurrentViewF())) ) {
@@ -757,8 +757,8 @@ public class ServiceProxy extends TOMSender {
 					}
 				}
 			} else {
-				logger.info("Ignoring reply from " + reply.getSender()
-						+ " with reqId:" + reply.getSequence() + ". Currently wait reqId= " + reqId);
+//				logger.debug("Ignoring reply from " + reply.getSender()
+//						+ " with reqId:" + reply.getSequence() + ". Currently wait reqId= " + reqId);
                             
                         }
 

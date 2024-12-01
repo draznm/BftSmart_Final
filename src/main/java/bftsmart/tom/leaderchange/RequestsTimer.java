@@ -197,11 +197,11 @@ public class RequestsTimer {
      * @param request Request whose timer is to be canceled
      */
     public void unwatch(TOMMessage request) {
-        logger.info("unwatching request: {}, with watched.size() :{} ", request, watched.size());
+        logger.debug("unwatching request: {}, with watched.size() :{} ", request, watched.size());
         rwLock.writeLock().lock();
         if (watched.remove(request) && watched.isEmpty())
         {
-            logger.info("going to stop timer with watched.isempty: {}", watched.isEmpty());
+            logger.debug("going to stop timer with watched.isempty: {}", watched.isEmpty());
             stopTimer();
         }
         rwLock.writeLock().unlock();

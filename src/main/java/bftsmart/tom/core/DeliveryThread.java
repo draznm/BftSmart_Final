@@ -389,7 +389,7 @@ public final class DeliveryThread extends Thread {
 
 //            TOMMessage[] requests = extractMessagesFromDecision(dec);
 //            tomLayer.clientsManager.requestsOrdered(requests);
-            logger.info("Consensus " + dec.getConsensusId() + " finished. Decided size=" + decided.size());
+            logger.debug("Consensus " + dec.getConsensusId() + " finished. Decided size=" + decided.size());
 
             if (times_tracker.containsKey(dec.getConsensusId()))
             {
@@ -403,7 +403,7 @@ public final class DeliveryThread extends Thread {
         }
 
         if (!containsReconfig(dec)) {
-            logger.info("Decision from consensus " + dec.getConsensusId() + " does not contain reconfiguration");
+            logger.debug("Decision from consensus " + dec.getConsensusId() + " does not contain reconfiguration");
             // set this decision as the last one from this replica
             tomLayer.setLastExec(dec.getConsensusId());
             // define that end of this execution
@@ -457,7 +457,7 @@ public final class DeliveryThread extends Thread {
         
         long elapsedTime = System.currentTimeMillis() - startTime;
 
-        logger.info("Execution(deliveryMessages()): Elapsed time in milliseconds: " + elapsedTime+ ", controller.hasUpdates(): "+
+        logger.debug("Execution(deliveryMessages()): Elapsed time in milliseconds: " + elapsedTime+ ", controller.hasUpdates(): "+
                 controller.hasUpdates());
 
         if (tid % 100 == 0) {

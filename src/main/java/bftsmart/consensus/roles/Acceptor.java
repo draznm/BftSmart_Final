@@ -144,7 +144,7 @@ public final class Acceptor {
 	 * @param msg The message to be processed
 	 */
 	public final void processMessage(ConsensusMessage msg) {
-		logger.info("Processing consensusMessage from: {}, type: {}, " +
+		logger.debug("Processing consensusMessage from: {}, type: {}, " +
 						"propose, write, accept: {}, {}, {}", msg.getSender(), msg.getType(),
 				MessageFactory.PROPOSE,MessageFactory.WRITE, MessageFactory.ACCEPT);
 		Consensus consensus = executionManager.getConsensus(msg.getNumber());
@@ -177,7 +177,7 @@ public final class Acceptor {
 		int cid = epoch.getConsensus().getId();
 		int ts = epoch.getConsensus().getEts();
 		int ets = executionManager.getConsensus(msg.getNumber()).getEts();
-		logger.info("PROPOSE received from:{}, for consensus cId:{}, I am:{}", msg.getSender(), cid, me);
+		logger.debug("PROPOSE received from:{}, for consensus cId:{}, I am:{}", msg.getSender(), cid, me);
 		if (msg.getSender() == executionManager.getCurrentLeader() // Is the replica the leader?
 				&& epoch.getTimestamp() == 0 && ts == ets && ets == 0) { // Is all this in epoch 0?
 			executePropose(epoch, msg.getValue());
@@ -413,7 +413,7 @@ public final class Acceptor {
 	 */
 	private void acceptReceived(Epoch epoch, ConsensusMessage msg) {
 		int cid = epoch.getConsensus().getId();
-		logger.info("ACCEPT from " + msg.getSender() + " for consensus " + cid);
+		logger.debug("ACCEPT from " + msg.getSender() + " for consensus " + cid);
 		epoch.setAccept(msg.getSender(), msg.getValue());
 		epoch.addToProof(msg);
 

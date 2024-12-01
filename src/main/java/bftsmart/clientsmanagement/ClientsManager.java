@@ -497,7 +497,7 @@ public class ClientsManager {
 
                 //create a timer for this message
                 if (timer != null) {
-                    logger.info("watching request with id: {}, sequence: {} and " +
+                    logger.debug("watching request with id: {}, sequence: {} and " +
                             "op id: {}", request.getId(), request.getSequence(),
                             request.getOperationId());
                     timer.watch(request);
@@ -625,7 +625,7 @@ public class ClientsManager {
 
         //stops the timer associated with this message
         if (timer != null) {
-            logger.info("unwatching request with id: {}, req:{}, sequence:{}" +
+            logger.debug("unwatching request with id: {}, req:{}, sequence:{}" +
                             ", op_id:{}",request.getId(),
                     request, request.getSequence(), request.getOperationId() );
 

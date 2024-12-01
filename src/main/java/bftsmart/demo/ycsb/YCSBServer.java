@@ -219,8 +219,8 @@ public class YCSBServer extends DefaultRecoverable {
             System.out.println("[INFO] Processing an unordered request");
         }
 
-        System.out.println("[INFO] Processing an unordered request with " +
-                "aRequest.getType() being "+ aRequest.getType());
+//        System.out.println("[INFO] Processing an unordered request with " +
+//                "aRequest.getType() being "+ aRequest.getType());
 
 
         switch (aRequest.getType()) {

@@ -107,19 +107,19 @@ public class YCSBClient extends DB {
         ipAddresses = new String[nnodes];
         
         
-        System.out.println("cinfo.hm.get(17).host is "+ cinfo.hm.get(17).host);
-
-        for (int i = 0; i < nnodes;i++)
-        {
-
-            smartIds[i] = Integer.parseInt("17");
-            ipAddresses[i] = cinfo.hm.get(17).host;
-
-        }
-
-        port = Integer.parseInt("10000");
-        portRR = Integer.parseInt("20000");
-        config_id = "config0";
+//        System.out.println("cinfo.hm.get(17).host is "+ cinfo.hm.get(17).host);
+//
+//        for (int i = 0; i < nnodes;i++)
+//        {
+//
+//            smartIds[i] = Integer.parseInt("17");
+//            ipAddresses[i] = cinfo.hm.get(17).host;
+//
+//        }
+//
+//        port = Integer.parseInt("10000");
+//        portRR = Integer.parseInt("20000");
+//        config_id = "config0";
         
 
         System.out.println("YCSBKVClient. Initiated client with  myId: " + myId+ ", ClientID"

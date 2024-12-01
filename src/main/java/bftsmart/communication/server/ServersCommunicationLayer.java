@@ -215,7 +215,7 @@ public class ServersCommunicationLayer extends Thread {
             for (Integer key : hm.keySet())
             {
                 if (key != me) {
-                    logger.info("getConnection HERE ");
+                    logger.debug("getConnection HERE ");
                     if (hm.get(key).ClusterNumber!= hm.get(me).ClusterNumber)
                     {
                         getConnection(key);
@@ -450,7 +450,7 @@ public class ServersCommunicationLayer extends Thread {
                     pendingConn.add(new PendingConnection(newSocket, remoteId));
                     waitViewLock.unlock();
                 } else {
-					logger.info("dudud Trying establish connection with Replica: {}, {}, {}", remoteId, newSocket, serverSocketSSLTLS.getInetAddress());
+					logger.debug("dudud Trying establish connection with Replica: {}, {}, {}", remoteId, newSocket, serverSocketSSLTLS.getInetAddress());
                     establishConnection(newSocket, remoteId);
                 }
                 //******* EDUARDO END **************//
@@ -480,7 +480,7 @@ public class ServersCommunicationLayer extends Thread {
 
     //******* EDUARDO BEGIN **************//
     private void establishConnection(SSLSocket newSocket, int remoteId) throws IOException {
-        logger.info("this.controller.getStaticConf().getTTPId(),remoteId, this.controller.isCurrentViewMember(remoteId) are {}, {}, {} ",
+        logger.debug("this.controller.getStaticConf().getTTPId(),remoteId, this.controller.isCurrentViewMember(remoteId) are {}, {}, {} ",
                 this.controller.getStaticConf().getTTPId(),remoteId, this.controller.isCurrentViewMember(remoteId));
 
         if ((this.controller.getStaticConf().getTTPId() == remoteId) || this.controller.isCurrentViewMember(remoteId) || remoteId < 1000 )
@@ -494,7 +494,7 @@ public class ServersCommunicationLayer extends Thread {
             } else {
                 //reconnection	
             	logger.debug("ReConnecting with replica: {}", remoteId);
-                logger.info("ReConnecting with replica inside establishConnection: {}", remoteId);
+                logger.debug("ReConnecting with replica inside establishConnection: {}", remoteId);
 //                if (!this.connections.containsKey(remoteId))
                 {
                     this.connections.get(remoteId).reconnect(newSocket);

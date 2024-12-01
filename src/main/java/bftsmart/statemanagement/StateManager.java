@@ -242,7 +242,7 @@ public abstract class StateManager {
         
         while (isInitializing) {
             
-           logger.info("Tejas: Sending CID query with ID {} to replicas {}", queryID, target);
+           logger.debug("Tejas: Sending CID query with ID {} to replicas {}", queryID, target);
             
            queryID++;
 
